@@ -1,6 +1,7 @@
 import os
+from functions import *
 from read import *
 
 os.system("cls" if os.name == 'nt' else 'clear')
 print(gen["name"][0])
-print(gen["description"]) 
+print_description_slowly(gen["description"]) 
