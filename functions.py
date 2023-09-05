@@ -1,6 +1,6 @@
 import time
 
-def print_description_slowly(description, delay=0.02):     
+def ps(description, delay=0.02):     
     for char in description:         
         print(char, end='', flush=True)         
         time.sleep(delay)
@@ -23,8 +23,8 @@ def start_game():
 
     while player_input != 'quit':
         # This is where game logic would go
-        print("this is where game logic would go")
-        player_input = input("placeholder to stop infinite loop").lower()
+        ps("what do you want to do?")
+        player_input = input("placeholder to stop infinite loop\n >").lower()
         if player_input == "quit":
             print("Goodbye!")
             exit()
