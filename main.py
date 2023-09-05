@@ -22,6 +22,7 @@ def start_menu():
 		print("invalid answer, try again")
 		start_menu()
 def start_game():
+	print("\nYou wake up in a dimly lit cabin on board 600 Feet.")
 	while True:
 		player_input = input("Press Enter to start game")
 		if player_input == "quit":
