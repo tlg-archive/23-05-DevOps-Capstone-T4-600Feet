@@ -1,6 +1,5 @@
 import os
 from functions import *
-#from read import *
 import sys
 import json
 
@@ -19,4 +18,5 @@ print("remember that at anytime you can enter 'quit' and you will leave the game
 
 
 start_menu()
-	
+
+f.close()
