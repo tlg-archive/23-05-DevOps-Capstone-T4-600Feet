@@ -8,8 +8,9 @@
 
 
 		"rooms": [{
-	"name":"room1",	
-	"adjacent" : [1 ,2 ,3],
+	"name":"Tech",
+	"id": 1	
+	"adjacent" : [1 ,3],
 	"content" : {
 		"npc": {
 			"nameOfNpc": "hfdkjashflkahsflk",
@@ -30,8 +31,9 @@
 
 	}},
 	 {
-	"name":"room1",
-	"adjacent" : [1 ,2 ,3],
+	"name":"Sonar",
+	"id": 2
+	"adjacent" : [2 ,4],
 	"content" : {
 		"npc": {
 			"nameOfNpc": "fjsalkjfhas",
@@ -52,8 +54,9 @@
 
 	}},
          {
-	"name":"room1",
-        "adjacent" : [1 ,2 ,3],
+	"name":"Head",
+	"id": 3
+        "adjacent" : [3 ,5 ,4 ,1],
         "content" : {
                 "npc": {
                         "nameOfNpc": "fjsalkjfhas",
@@ -71,8 +74,71 @@
                 "computer" :{
 
                 }
+        }},
+	{
+	"name":"Galley",
+	"id": 4
+	"adjacent" : [4 ,2 ,3 ,6],
+	"content" : {
+		"npc": {
+			"nameOfNpc": "fjsalkjfhas",
+			"intro" : "xyz sentence",
+			"dialogue": {
+				"question1": "response1",
+				"question2": "response2",
+				"question3": "response3"},
+			"worry": "dont look so good"
+			},
+		"items": {
+			"advil": {"heal": 5},
+			"key": {"unlock": "True"}
+		},
+		"computer" :{
 
-        }}
+		}
+	}},
+	{
+	"name":"Rack",
+	"id": 5
+	"adjacent" : [5 ,6 ,3],
+	"content" : {
+		"npc": {
+			"nameOfNpc": "fjsalkjfhas",
+			"intro" : "xyz sentence",
+			"dialogue": {
+				"question1": "response1",
+				"question2": "response2",
+				"question3": "response3"},
+			"worry": "dont look so good"
+			},
+		"items": {
+			"advil": {"heal": 5},
+			"key": {"unlock": "True"}
+		},
+		"computer" :{
 
+		}
+	}},
+	{
+	"name":"Water",
+	"id": 6
+	"adjacent" : [6 ,5 ,4],
+	"content" : {
+		"npc": {
+			"nameOfNpc": "fjsalkjfhas",
+			"intro" : "xyz sentence",
+			"dialogue": {
+				"question1": "response1",
+				"question2": "response2",
+				"question3": "response3"},
+			"worry": "dont look so good"
+			},
+		"items": {
+			"advil": {"heal": 5},
+			"key": {"unlock": "True"}
+		},
+		"computer" :{
+
+		}
 	]
 }
