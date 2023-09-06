@@ -1,6 +1,40 @@
 import time
 import random
 
+move = ["move", "go", "travel", "run", "m"]
+talk = ["talk", "speak", "chat", "ta", "ask"]
+look = ["examine", "look", "focus", "observe", "inspect", "l"]
+take = ["grab", "take", "t", "pickup"]
+use = ["use", "interact"]
+
+allpossible = ["move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact"]
+
+def check_action(given_action):
+    if given_action in allpossible:
+        if given_action in move:
+            return 'm'
+        elif given_action in talk:
+            return 'ta'
+        elif given_action in look:
+            return 'l'
+        elif given_action in take:
+            return 't'
+        else:
+            return 'u'
+    else:
+        return 'invalid'
+
+def check_location(wanted_room, adjacent_rooms):
+    if wanted_room.isnumeric():
+        if int(wanted_room) in range(1,7) and int(wanted_room) in adjacent_rooms:
+            return True
+    else:
+        return False
+        
+def help_message():
+    print("this print help screen")
+
+
 def ps(description, delay=0.02):     
     for char in description:         
         print(char, end='', flush=True)         
@@ -76,14 +110,21 @@ def main():
         room_content = "some random function"
         print(f"you are in room {player.current_room}")
         print(f"Adjacent rooms {adjacent_rooms}")
-        action = input("\nDo you want to move?\n> ").upper()
-        if action == "M":
-            room_choice = int(input("Enter the room number to move to\n>"))
-            print(submarine)
-            if room_choice in adjacent_rooms:
-                player.move(room_choice)
+        pair = input("\n>").split()
+        action = pair[0] 
+        action = check_action(action)
+        if action == 'invalid':
+            print("that is not a valid action")
+            print("valid option are 'move' 'talk' 'take' 'use' and 'look'")
+            continue
+        #action = input("\n> ").lower()
+        if action == "m":
+            room_choice = check_location(pair[1], adjacent_rooms) 
+            if room_choice:
+                player.move(int(pair[1]))
             else:
-                print("you cannot move there")
+                print("you cannot move there\n")
+                continue
         else:
             print(submarine)
             break
