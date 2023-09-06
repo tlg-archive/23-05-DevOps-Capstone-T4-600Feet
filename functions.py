@@ -32,7 +32,7 @@ def check_location(wanted_room, adjacent_rooms):
         return False
         
 def help_message():
-    print("this print help screen")
+    return "this print help screen"
 
 
 def ps(description, delay=0.02):     
@@ -110,7 +110,11 @@ def main():
         room_content = "some random function"
         print(f"you are in room {player.current_room}")
         print(f"Adjacent rooms {adjacent_rooms}")
-        pair = input("\n>").split()
+        pair = input("\n>")
+        if pair.lower() == 'help':
+            print("you can do the following actions Move (M) Take (T) Look (L) Talk (TA)")
+            continue
+        pair = pair.split()
         action = pair[0] 
         action = check_action(action)
         if action == 'invalid':
