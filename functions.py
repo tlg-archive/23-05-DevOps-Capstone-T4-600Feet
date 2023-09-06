@@ -118,8 +118,8 @@ def main():
         action = pair[0] 
         action = check_action(action)
         if action == 'invalid':
-            print("that is not a valid action")
-            print("valid option are 'move' 'talk' 'take' 'use' and 'look'")
+            print("That is not a valid action")
+            print("Valid options are 'move' 'talk' 'take' 'use' and 'look'")
             continue
         #action = input("\n> ").lower()
         if action == "m":
