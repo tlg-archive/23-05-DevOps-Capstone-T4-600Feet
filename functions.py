@@ -73,6 +73,17 @@ def main():
 
     while True:
         adjacent_rooms = submarine.get_adjacent_rooms(player.current_room)       
+        room_content = "some random function"
         print(f"you are in room {player.current_room}")
+        print(f"Adjacent rooms {adjacent_rooms}")
         action = input("\nDo you want to move?\n> ").upper()
-        break
+        if action == "M":
+            room_choice = int(input("Enter the room number to move to\n>"))
+            print(submarine)
+            if room_choice in adjacent_rooms:
+                player.move(room_choice)
+            else:
+                print("you cannot move there")
+        else:
+            print(submarine)
+            break
