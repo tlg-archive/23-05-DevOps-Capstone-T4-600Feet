@@ -54,15 +54,7 @@ def start_menu():
         print("invalid answer, try again")
         start_menu()
 def start_game():
-    player_input = ''
-    while player_input != 'quit':
-        # This is where game logic would go
-        ps("what do you want to do?")
-        #player_input = input("placeholder to stop infinite loop\n >").lower()
-        main()
-        if player_input == "quit":
-            print("Goodbye!")
-            exit()
+    main()
 
 #def play_game(user_start):
 #    return 1
@@ -109,11 +101,14 @@ def main():
         adjacent_rooms = submarine.get_adjacent_rooms(player.current_room)       
         room_content = "some random function"
         print(f"you are in room {player.current_room}")
-        print(f"Adjacent rooms {adjacent_rooms}")
-        pair = input("\n>")
+        print(f"Adjacent rooms {adjacent_rooms}\n")
+        pair = input("What do you want to do\n>")
         if pair.lower() == 'help':
-            print("you can do the following actions Move (M) Take (T) Look (L) Talk (TA)")
+            print("you can do the following actions Move (M) Take (T) Look (L) Talk (TA)\nAt any point, you can type in 'quit' to exit the game.")
             continue
+        if pair.lower() == 'quit':
+            ps("Goodbye...")
+            exit()
         pair = pair.split()
         action = pair[0] 
         action = check_action(action)
