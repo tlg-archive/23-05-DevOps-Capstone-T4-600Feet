@@ -14,9 +14,7 @@ print(gen["titlesplash"]["description"])
 print(gen["titlesplash"]["intro"]) # remember to make slow print()
 print(gen["titlesplash"]["controls"]) # remember to make slow print()
 print("remember that at anytime you can enter 'quit' and you will leave the game") # remember to make slow print()
-
+f.close()
 
 
 start_menu()
-
-f.close()
