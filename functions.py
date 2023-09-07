@@ -1,6 +1,6 @@
 import time
 import random
-
+import json
 move = ["move", "go", "travel", "run", "m"]
 talk = ["talk", "speak", "chat", "ta", "ask"]
 look = ["examine", "look", "focus", "observe", "inspect", "l"]
@@ -8,6 +8,9 @@ take = ["grab", "take", "t", "pickup"]
 use = ["use", "interact"]
 
 allpossible = ["move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact"]
+
+f = open('gamedata.json')
+gamedata = json.load(f)
 
 def check_action(given_action):
     if given_action in allpossible:
@@ -56,8 +59,17 @@ def start_menu():
 def start_game():
     main()
 
-#def play_game(user_start):
-#    return 1
+
+def display_look(oobject):
+    npc = oobject[0]['nameOfNpc']
+    items = ' and '.join(oobject[1].keys())
+
+    print(f"you look around and see {npc} and {items}")
+    #this code may break when we alter the format the gamedata.json file
+    #return to this to validate the length of the item lists and npcs lists
+    #if there isnt anything say that instead of presenting nothing the .join
+    #word
+
 class Submarine:
     def __init__(self):
         self.rooms = {}
@@ -96,10 +108,16 @@ class Player:
 def main():
     submarine = Submarine()
     player = Player()
+    for i in range(len(gamedata['rooms'])):
+        stuffinroom = gamedata['rooms'][i]['content'].keys()
+        npc_data = gamedata['rooms'][i]['content']['npc']
+        item_data = gamedata['rooms'][i]['content']['items']
+        submarine.place_content(npc_data, i+1)
+        submarine.place_content(item_data, i+1)
 
     while True:
         adjacent_rooms = submarine.get_adjacent_rooms(player.current_room)       
-        room_content = "some random function"
+        room_content = submarine.get_room_content(player.current_room)
         print(f"you are in room {player.current_room}")
         print(f"Adjacent rooms {adjacent_rooms}\n")
         pair = input("What do you want to do\n>")
@@ -124,6 +142,8 @@ def main():
             else:
                 print("you cannot move there\n")
                 continue
+        elif action == 'l':
+            display_look(room_content)
         else:
             print(submarine)
             break
