@@ -5,7 +5,7 @@ import json
 
 os.system("cls" if os.name == 'nt' else 'clear')
 
-f = open('gamedata.json')
+f = open(os.path.abspath('gamedata.json'))
 gen = json.load(f)
 
 print(gen["titlesplash"]["name"][0])

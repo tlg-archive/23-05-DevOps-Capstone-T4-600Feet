@@ -1,6 +1,8 @@
 import time
 import random
 import json
+import sys
+
 move = ["move", "go", "travel", "run", "m"]
 talk = ["talk", "speak", "chat", "ta", "ask"]
 look = ["examine", "look", "focus", "observe", "inspect", "l"]
@@ -52,7 +54,7 @@ def start_menu():
         start_game()
     elif player_choice == "2":
         print("Goodbye!")
-        exit()
+        sys.exit()
     else:
         print("invalid answer, try again")
         start_menu()
@@ -126,7 +128,7 @@ def main():
             continue
         if pair.lower() == 'quit':
             ps("Goodbye...")
-            exit()
+            sys.exit()
         pair = pair.split()
         action = pair[0] 
         action = check_action(action)
