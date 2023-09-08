@@ -97,12 +97,15 @@ class Player:
         self.has_advil = False
         self.has_key = False
         self.has_bathroom_access = False
+        self.inventory = []
     def found_key():
         self.has_key = True
     def found_advil():
         self.has_advil = True
     def has_bathroom_access():
         self.has_bathroom_access = True
+    def add_to_inventory(self, item):
+        self.inventory.append(item)
     def move(self, room):
         self.current_room = room
         self.sanity = self.sanity - 1
@@ -120,8 +123,13 @@ def main():
     while True:
         adjacent_rooms = submarine.get_adjacent_rooms(player.current_room)       
         room_content = submarine.get_room_content(player.current_room)
+        print("=-=-=-=-=-=-=-=-=Location Data=-=-=-=-=-=-=-=-=")
         print(f"you are in room {player.current_room}")
         print(f"Adjacent rooms {adjacent_rooms}\n")
+        print("=-=-=-=-=-=-=-=-=Player Data=-=-=-=-=-=-=-=-=") 
+        print(f"Your sanity is at {player.sanity}")
+        print("=-=-=-=-=-=-=-=-=Inventory Data=-=-=-=-=-=-=-=-=")
+        print(f"Things in your inventory {player.inventory}")
         pair = input("What do you want to do\n>")
         if pair.lower() == 'help':
             print("you can do the following actions Move (M) Take (T) Look (L) Talk (TA)\nAt any point, you can type in 'quit' to exit the game.")
