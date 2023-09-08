@@ -2,6 +2,12 @@ import time
 import random
 import json
 import sys
+from threading import Thread
+import os
+
+
+f = open(os.path.abspath('gamedata.json'))
+gen = json.load(f)
 
 move = ["move", "go", "travel", "run", "m"]
 talk = ["talk", "speak", "chat", "ta", "ask"]
@@ -37,14 +43,12 @@ def check_location(wanted_room, adjacent_rooms):
         return False
         
 def help_message():
-    return "this print help screen"
+    "This is a help message"
 
-
-def ps(description, delay=0.02):     
+def ps(description, delay=0.01):     
     for char in description:         
         print(char, end='', flush=True)         
         time.sleep(delay)
-
 
 def start_menu():
     print("1.New Game")
@@ -59,6 +63,8 @@ def start_menu():
         print("invalid answer, try again")
         start_menu()
 def start_game():
+
+    ps(gen["titlesplash"]["intro"]) # remember to make slow print()
     main()
 
 
