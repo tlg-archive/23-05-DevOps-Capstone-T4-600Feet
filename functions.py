@@ -66,7 +66,7 @@ def start_menu():
         print("Goodbye!")
         sys.exit()
     else:
-        print("invalid answer, try again")
+        print("Invalid answer, try again")
         start_menu()
 def start_game():
 
@@ -142,7 +142,7 @@ def main():
         print(f"Your sanity is at {player.sanity}")
         print("=-=-=-=-=-=-=-=-=Inventory Data=-=-=-=-=-=-=-=-=")
         print(f"Things in your inventory {player.inventory}")
-        pair = input("What do you want to do\n>")
+        pair = input("What do you want to do\n>").lower()
         if pair.lower() == 'help':
             print("you can do the following actions Move (M) Take (T) Look (L) Talk (TA)\nAt any point, you can type in 'quit' to exit the game.")
             continue
@@ -170,6 +170,8 @@ def main():
             item_choice = check_item(pair[1], room_content[1].keys())
             if item_choice == True:
                 player.add_to_inventory(pair[1].lower())
+            else:
+                print(f"You cannot pick up {pair[1]}")
         else:
             print(submarine)
             break
