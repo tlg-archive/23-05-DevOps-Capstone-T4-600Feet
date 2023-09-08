@@ -9,6 +9,7 @@ import os
 f = open(os.path.abspath('gamedata.json'))
 gen = json.load(f)
 
+
 move = ["move", "go", "travel", "run", "m"]
 talk = ["talk", "speak", "chat", "ta", "ask"]
 look = ["examine", "look", "focus", "observe", "inspect", "l"]
@@ -160,6 +161,8 @@ def main():
                 continue
         elif action == 'l':
             display_look(room_content)
+        elif action == 't':
+            item_choice = check_item(pair[1], items)
         else:
             print(submarine)
             break
