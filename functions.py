@@ -36,6 +36,12 @@ def check_location(wanted_room, adjacent_rooms):
             return True
     else:
         return False
+    
+def check_item(wanted_item, room_items):
+    if wanted_item.lower() in room_items:
+        return True
+    else:
+        return False
         
 def help_message():
     return "this print help screen"
@@ -156,7 +162,9 @@ def main():
         elif action == 'l':
             display_look(room_content)
         elif action == 't':
-            item_choice = check_item(pair[1], items)
+            item_choice = check_item(pair[1], room_content[1].keys())
+            if item_choice == True:
+                player.add_to_inventory(pair[1].lower())
         else:
             print(submarine)
             break
