@@ -2,7 +2,6 @@ import time
 import random
 import json
 import sys
-from threading import Thread
 import os
 
 
