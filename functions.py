@@ -67,6 +67,7 @@ def start_menu():
     print("2.Quit")
     player_choice = input("Enter your choice '1 or 2'> ")
     if player_choice == "1":
+        os.system("cls" if os.name == 'nt' else 'clear')
         start_game()
     elif player_choice == "2":
         ps("Goodbye!")
