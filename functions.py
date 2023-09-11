@@ -173,7 +173,7 @@ def main():
             print("You can do the following actions: Move (M) Take (T) Look (L) Talk (TA)\nAt any point, you can type in 'quit' to exit the game.\n")
             continue
         if pair.lower() == 'quit':
-            ps("Goodbye...")
+            ps("Goodbye...\n")
             sys.exit()
         pair = pair.split()
         action = pair[0] 
@@ -198,7 +198,7 @@ def main():
                 player.add_to_inventory(pair[1].lower())
                 #submarine.rem_room_item(item_choice, player.current_room)
             else:
-                print(f"You cannot pick up {pair[1]}")
+                print(f"You cannot pick up {pair[1]}\n")
         elif action == "map":
             submarine.display_map(player.current_room)
             continue
@@ -207,7 +207,7 @@ def main():
             if item_choice:
                 player.remove_from_inventory(pair[1].lower())
                 submarine.place_content(pair[1].lower(), player.current_room)
-                ps(f"You dropped {pair[1]} in the room.")
+                ps(f"You dropped {pair[1]} in the room.\n")
         elif action == "ta":
             if pair[1].lower() == room_content[0]['nameOfNpc'].lower():
                 npc_intros = room_content[0]['intros']
