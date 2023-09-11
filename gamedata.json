@@ -81,8 +81,11 @@
 "adjacent": [4 ,2 ,3 ,6],
 "content" : {
 	"npc": {
-		"nameOfNpc": "fjsalkjfhas",
-		"intro" : "xyz sentence",
+		"nameOfNpc": "Chad",
+		"intros" : ["Hey there",
+		"Great day, isn't it?",
+		"What's up, fellow sailer?"
+		],
 		"dialogue": {
 			"question1": "response1",
 			"question2": "response2",
