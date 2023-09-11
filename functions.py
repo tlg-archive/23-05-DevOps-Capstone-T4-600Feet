@@ -12,11 +12,12 @@ gen = json.load(f)
 move = ["move", "go", "travel", "run", "m"]
 talk = ["talk", "speak", "chat", "ta", "ask"]
 look = ["examine", "look", "focus", "observe", "inspect", "l"]
-take = ["grab", "take", "t", "pickup"]
+take = ["grab", "take", "t", "pickup", "get"]
 use = ["use", "interact"]
 map = ["map"]
+drop = ['delete', 'drop']
 
-allpossible = ["move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact", "map"]
+allpossible = ["map", "get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact"]
 
 f = open('gamedata.json')
 gamedata = json.load(f)
@@ -33,6 +34,8 @@ def check_action(given_action):
             return 't'
         elif given_action in map:
             return 'map'
+        elif given_action in drop:
+            return 'd'
         else:
             return 'u'
     else:
@@ -134,6 +137,9 @@ class Player:
         self.has_bathroom_access = True
     def add_to_inventory(self, item):
         self.inventory.append(item)
+    def remove_from_inventory(self, item):
+        if item in self.inventory:
+            self.inventory.remove(item)
     def move(self, room):
         self.current_room = room
         self.sanity = self.sanity - 1
@@ -160,7 +166,7 @@ def main():
         print(f"Things in your inventory {player.inventory}")
         pair = input("What do you want to do\n>").lower()
         if pair.lower() == 'help':
-            print("you can do the following actions Move (M) Take (T) Look (L) Talk (TA)\nAt any point, you can type in 'quit' to exit the game.")
+            print("You can do the following actions: Move (M) Take (T) Look (L) Talk (TA)\nAt any point, you can type in 'quit' to exit the game.")
             continue
         if pair.lower() == 'quit':
             ps("Goodbye...")
@@ -186,11 +192,18 @@ def main():
             item_choice = check_item(pair[1], room_content[1].keys())
             if item_choice == True:
                 player.add_to_inventory(pair[1].lower())
+                #submarine.rem_room_item(item_choice, player.current_room)
             else:
                 print(f"You cannot pick up {pair[1]}")
         elif action == "map":
             submarine.display_map(player.current_room)
             continue
+        elif action == 'd':
+            item_choice = check_item(pair[1], player.inventory)
+            if item_choice:
+                player.remove_from_inventory(pair[1].lower())
+                submarine.place_content(pair[1].lower(), player.current_room)
+                ps(f"You dropped {pair[1]} in the room.")
         else:
             print("endgame ")
             break
