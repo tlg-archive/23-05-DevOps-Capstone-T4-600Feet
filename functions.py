@@ -3,6 +3,7 @@ import random
 import json
 import sys
 import os
+import random
 
 
 f = open(os.path.abspath('gamedata.json'))
@@ -124,12 +125,14 @@ class Submarine:
             
 class Player:
     def __init__(self):
-        self.current_room = 1
+        self.current_room = 4
         self.sanity = 30 # everymove subtracts 1
         self.has_advil = False
         self.has_key = False
         self.has_bathroom_access = False
         self.inventory = []
+    def get_current_room():
+        return self.current_room
     def found_key():
         self.has_key = True
     def found_advil():
@@ -167,7 +170,7 @@ def main():
         print(f"Things in your inventory {player.inventory}")
         pair = input("What do you want to do\n>").lower()
         if pair.lower() == 'help':
-            print("You can do the following actions: Move (M) Take (T) Look (L) Talk (TA)\nAt any point, you can type in 'quit' to exit the game.")
+            print("You can do the following actions: Move (M) Take (T) Look (L) Talk (TA)\nAt any point, you can type in 'quit' to exit the game.\n")
             continue
         if pair.lower() == 'quit':
             ps("Goodbye...\n")
@@ -205,6 +208,13 @@ def main():
                 player.remove_from_inventory(pair[1].lower())
                 submarine.place_content(pair[1].lower(), player.current_room)
                 ps(f"You dropped {pair[1]} in the room.\n")
+        elif action == "ta":
+            if pair[1].lower() == room_content[0]['nameOfNpc'].lower():
+                npc_intros = room_content[0]['intros']
+                print(random.choice(npc_intros))
+            else:
+                print(f"You can't talk to {pair[1]}")
+                print(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n")
         else:
             print("endgame ")
             break
