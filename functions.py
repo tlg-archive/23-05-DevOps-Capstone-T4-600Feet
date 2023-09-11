@@ -69,7 +69,7 @@ def start_menu():
     if player_choice == "1":
         start_game()
     elif player_choice == "2":
-        print("Goodbye!")
+        ps("Goodbye!")
         sys.exit()
     else:
         print("Invalid answer, try again")
