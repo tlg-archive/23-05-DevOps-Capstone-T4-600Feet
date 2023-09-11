@@ -14,9 +14,10 @@ talk = ["talk", "speak", "chat", "ta", "ask"]
 look = ["examine", "look", "focus", "observe", "inspect", "l"]
 take = ["grab", "take", "t", "pickup", "get"]
 use = ["use", "interact"]
+map = ["map"]
 drop = ['delete', 'drop']
 
-allpossible = ["get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact"]
+allpossible = ["map", "get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact"]
 
 f = open('gamedata.json')
 gamedata = json.load(f)
@@ -31,6 +32,8 @@ def check_action(given_action):
             return 'l'
         elif given_action in take:
             return 't'
+        elif given_action in map:
+            return 'map'
         elif given_action in drop:
             return 'd'
         else:
@@ -54,7 +57,7 @@ def check_item(wanted_item, room_items):
 def help_message():
     "This is a help message"
 
-def ps(description, delay=0.01):     
+def ps(description, delay=0):     
     for char in description:         
         print(char, end='', flush=True)         
         time.sleep(delay)
@@ -105,10 +108,19 @@ class Submarine:
     def get_room_content(self, room):
         return self.rooms[room]['content']
     
-    #def rem_room_item(self, item, room):
-    #    if item in self.rooms[room]['content']:
-    #        self.rooms[room]['content'].remove(item)
-
+    def display_map(self, player_current_room):
+        mapstring = ""
+        for room_num, room_data in self.rooms.items():
+            mapstring += f"Room {room_num}: "
+            if room_num == player_current_room:
+                mapstring+="[you  r here]"
+            else:
+                mapstring += " " *13
+            for adj_room in room_data["adjacent"]:
+                mapstring += f"-> room {adj_room} "
+        print("++++++++++++++++++++++++++++++++++++")
+        print(mapstring)
+            
 class Player:
     def __init__(self):
         self.current_room = 1
@@ -183,6 +195,9 @@ def main():
                 #submarine.rem_room_item(item_choice, player.current_room)
             else:
                 print(f"You cannot pick up {pair[1]}")
+        elif action == "map":
+            submarine.display_map(player.current_room)
+            continue
         elif action == 'd':
             item_choice = check_item(pair[1], player.inventory)
             if item_choice:
@@ -190,5 +205,5 @@ def main():
                 submarine.place_content(pair[1].lower(), player.current_room)
                 ps(f"You dropped {pair[1]} in the room.")
         else:
-            print(submarine)
+            print("endgame ")
             break
