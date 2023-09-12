@@ -58,7 +58,7 @@ def check_item(wanted_item, room_items):
 def help_message():
     "This is a help message"
 
-def ps(description, delay=0):     
+def ps(description, delay=0.005):     
     for char in description:         
         print(char, end='', flush=True)         
         time.sleep(delay)
@@ -78,7 +78,7 @@ def start_menu():
         start_menu()
 def start_game():
 
-    ps(gen["titlesplash"]["intro"]) # remember to make slow print()
+    ps(gen["titlesplash"]["intro"] + '\n') # remember to make slow print()
     main()
 
 
@@ -86,11 +86,9 @@ def display_look(oobject):
     npc = oobject[0]['nameOfNpc']
     items = ' and '.join(oobject[1].keys())
 
-    print(f"you look around and see {npc} and {items}")
-    #this code may break when we alter the format the gamedata.json file
-    #return to this to validate the length of the item lists and npcs lists
-    #if there isnt anything say that instead of presenting nothing the .join
-    #word
+    print(f"You look around and see {npc}.\n")
+    if len(oobject[1]) > 0:
+        print(f"You also see {items}.\n")
 
 class Submarine:
     def __init__(self):
@@ -104,11 +102,20 @@ class Submarine:
     def place_content(self, content, chosen_room):
         self.rooms[chosen_room]['content'].append(content)
 
+    def place_item(self, item, room):
+        if item == 'advil':
+            self.rooms[room]['content'][1].update({"advil": {"heal": 5}})
+        elif item == 'key':
+            self.rooms[room]['content'][1].update({"a key": {"unlock": "True"}})
+
     def get_adjacent_rooms(self, room):
         return self.rooms[room]['adjacent']
 
     def get_room_content(self, room):
         return self.rooms[room]['content']
+    
+    def rem_room_content(self, content, room):
+        self.rooms[room]['content'][1].pop(content)
     
     def display_map(self, player_current_room):
         mapstring = ""
@@ -169,6 +176,7 @@ def main():
         print("=-=-=-=-=-=-=-=-=Inventory Data=-=-=-=-=-=-=-=-=")
         print(f"Things in your inventory {player.inventory}")
         pair = input("What do you want to do\n>").lower()
+        os.system("cls" if os.name == 'nt' else 'clear')
         if pair.lower() == 'help':
             print("You can do the following actions: Move (M) Take (T) Look (L) Talk (TA)\nAt any point, you can type in 'quit' to exit the game.\n")
             continue
@@ -193,12 +201,22 @@ def main():
         elif action == 'l':
             display_look(room_content)
         elif action == 't':
-            item_choice = check_item(pair[1], room_content[1].keys())
-            if item_choice == True:
-                player.add_to_inventory(pair[1].lower())
-                #submarine.rem_room_item(item_choice, player.current_room)
+            if pair[1].lower() == 'key':
+                item_choice = check_item('a key', room_content[1].keys())
+                if item_choice == True:
+                    player.add_to_inventory(pair[1].lower())
+                    submarine.rem_room_content('a key', player.current_room)
+                    print("You picked up a key\n")
+                else:
+                    print(f"There is no {pair[1]} to pick up.\n")
             else:
-                print(f"You cannot pick up {pair[1]}\n")
+                item_choice = check_item(pair[1].lower(), room_content[1].keys())
+                if item_choice == True:
+                    player.add_to_inventory(pair[1].lower())
+                    submarine.rem_room_content(pair[1].lower(), player.current_room)
+                    print(f"You picked up {pair[1]}\n")
+                else:
+                    print(f"You cannot pick up {pair[1]}\n")
         elif action == "map":
             submarine.display_map(player.current_room)
             continue
@@ -206,14 +224,14 @@ def main():
             item_choice = check_item(pair[1], player.inventory)
             if item_choice:
                 player.remove_from_inventory(pair[1].lower())
-                submarine.place_content(pair[1].lower(), player.current_room)
-                ps(f"You dropped {pair[1]} in the room.\n")
+                submarine.place_item(pair[1].lower(), player.current_room)
+                ps(f"You dropped {pair[1]} in the room.\n\n")
         elif action == "ta":
             if pair[1].lower() == room_content[0]['nameOfNpc'].lower():
                 npc_intros = room_content[0]['intros']
                 print(random.choice(npc_intros))
             else:
-                print(f"You can't talk to {pair[1]}")
+                print(f"You can't talk to {pair[1]}\n")
                 print(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n")
         else:
             print("endgame ")

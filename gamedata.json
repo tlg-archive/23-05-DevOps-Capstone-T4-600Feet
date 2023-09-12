@@ -94,7 +94,7 @@
 		},
 	"items": {
 		"advil": {"heal": 5},
-		"key": {"unlock": "True"}
+		"a key": {"unlock": "True"}
 	},
 	"computer" :{
 
