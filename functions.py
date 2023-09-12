@@ -6,7 +6,7 @@ import os
 import random
 
 
-f = open(os.path.abspath('gamedata.json'))
+f = open('./data/gamedata.json')
 gen = json.load(f)
 
 
@@ -20,8 +20,8 @@ drop = ['delete', 'drop']
 
 allpossible = ["map", "get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact"]
 
-f = open('gamedata.json')
-gamedata = json.load(f)
+#f = open('gamedata.json')
+gamedata = gen#json.load(f)
 
 def check_action(given_action):
     if given_action in allpossible:
