@@ -138,13 +138,13 @@ class Player:
         self.has_key = False
         self.has_bathroom_access = False
         self.inventory = []
-    def get_current_room():
+    def get_current_room(self):
         return self.current_room
-    def found_key():
+    def found_key(self):
         self.has_key = True
-    def found_advil():
+    def found_advil(self):
         self.has_advil = True
-    def has_bathroom_access():
+    def has_bathroom_access(self):
         self.has_bathroom_access = True
     def add_to_inventory(self, item):
         self.inventory.append(item)
