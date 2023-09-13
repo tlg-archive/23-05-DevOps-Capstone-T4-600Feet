@@ -21,13 +21,12 @@ music = ["music"]
 
 allpossible = ["map", "get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact", "music"]
 
-#f = open('gamedata.json')
 gamedata = gen#json.load(f)
 
 def check_action(given_action):
     if given_action in allpossible:
-        if given_action in move:
-            return 'm'
+        if given_action in music:
+            return 'mu'
         elif given_action in talk:
             return 'ta'
         elif given_action in look:
@@ -38,8 +37,8 @@ def check_action(given_action):
             return 'map'
         elif given_action in drop:
             return 'd'
-        elif given_action in music:
-            return 'mu'
+        elif given_action in move:
+            return 'm'
         else:
             return 'u'
     else:
@@ -51,15 +50,19 @@ def check_location(wanted_room, adjacent_rooms):
             return True
     else:
         return False
-    
+def check_wanted_vol(wanted_vol):
+    if wanted_vol.lower() == 'on':
+        return 100
+    elif wanted_vol.lower() == "off":
+        return 1
+    elif wanted_vol.isnumeric() and int(wanted_vol) in range (0, 101):
+        return int(wanted_vol)
+    return False
 def check_item(wanted_item, room_items):
     if wanted_item.lower() in room_items:
         return True
     else:
         return False
-        
-def help_message():
-    "This is a help message"
 
 def ps(description, delay=0.005):     
     for char in description:         
@@ -223,7 +226,7 @@ def main():
         pair = input("What do you want to do\n>").lower()
         os.system("cls" if os.name == 'nt' else 'clear')
         if pair.lower() == 'help':
-            print("You can do the following actions: Move (M) Take (T) Look (L) Talk (TA) Volume(V (any number 0-100))\nAt any point, you can type in 'quit' to exit the game.\n")
+            print("You can do the following actions: Move (M) Take (T) Look (L) Talk (TA) Music(Music (any number 0-100))\nAt any point, you can type in 'quit' to exit the game.\n")
             continue
         if pair.lower() == 'quit':
             ps("Goodbye...\n")
@@ -255,8 +258,12 @@ def main():
                 print("you cannot move there\n")
                 continue
         elif action == 'mu':
-            set = int(pair[1])/100
-            pygame.mixer.music.set_volume(0.3 *set)
+            test_vol = check_wanted_vol(pair[1])
+            if type(test_vol) == type(1) and test_vol in range(0,101):
+                set = test_vol/100
+                pygame.mixer.music.set_volume(0.3 *set)
+            else:
+                print("that isnt possible")
         elif action == 'fx':
             set = int(pair[1])
         elif action == 'l':
