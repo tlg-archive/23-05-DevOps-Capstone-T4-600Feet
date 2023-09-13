@@ -195,6 +195,9 @@ def main():
             room_choice = check_location(pair[1], adjacent_rooms) 
             if room_choice:
                 player.move(int(pair[1]))
+                if player.sanity == 0:
+                    print("GAME OVER")
+                    break
             else:
                 print("you cannot move there\n")
                 continue
