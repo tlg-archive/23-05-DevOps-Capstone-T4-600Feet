@@ -81,6 +81,28 @@ def start_game():
     ps(gen["titlesplash"]["intro"] + '\n') # remember to make slow print()
     main()
 
+def save_game(player, submarine):
+        save_data = {
+            "current_room": player.current_room,
+            "inventory": player.inventory,
+            "sanity": player.sanity
+        
+    }
+        with open("save_game.json", "w") as save_file:
+            json.dump(save_data, save_file)
+        print("Game saved.")
+
+def load_game(player, submarine):
+        try:
+            with open("save_game.json", "r") as save_file:
+                save_data = json.load(save_file)
+                player.current_room = save_data["current_room"]
+                player.inventory = save_data["inventory"]
+                player.sanity = save_data["sanity"]
+            print("Game loaded.")
+        except FileNotFoundError:
+            print("No saved game found.")
+
 
 def display_look(oobject):
     npc = oobject[0]['nameOfNpc']
@@ -183,6 +205,12 @@ def main():
         if pair.lower() == 'quit':
             ps("Goodbye...\n")
             sys.exit()
+        elif pair.lower() == 'save':
+            save_game(player, submarine)
+            continue
+        elif pair.lower() == 'load':
+            load_game(player, submarine)
+            continue
         pair = pair.split()
         action = pair[0] 
         action = check_action(action)
