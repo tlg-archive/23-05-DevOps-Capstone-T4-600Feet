@@ -17,8 +17,9 @@ take = ["grab", "take", "t", "pickup", "get"]
 use = ["use", "interact"]
 map = ["map"]
 drop = ['delete', 'drop']
+music = ["music"]
 
-allpossible = ["map", "get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact"]
+allpossible = ["map", "get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact", "music"]
 
 #f = open('gamedata.json')
 gamedata = gen#json.load(f)
@@ -37,6 +38,8 @@ def check_action(given_action):
             return 'map'
         elif given_action in drop:
             return 'd'
+        elif given_action in music:
+            return 'mu'
         else:
             return 'u'
     else:
@@ -220,7 +223,7 @@ def main():
         pair = input("What do you want to do\n>").lower()
         os.system("cls" if os.name == 'nt' else 'clear')
         if pair.lower() == 'help':
-            print("You can do the following actions: Move (M) Take (T) Look (L) Talk (TA)\nAt any point, you can type in 'quit' to exit the game.\n")
+            print("You can do the following actions: Move (M) Take (T) Look (L) Talk (TA) Volume(V (any number 0-100))\nAt any point, you can type in 'quit' to exit the game.\n")
             continue
         if pair.lower() == 'quit':
             ps("Goodbye...\n")
@@ -251,6 +254,11 @@ def main():
             else:
                 print("you cannot move there\n")
                 continue
+        elif action == 'mu':
+            set = int(pair[1])/100
+            pygame.mixer.music.set_volume(0.3 *set)
+        elif action == 'fx':
+            set = int(pair[1])
         elif action == 'l':
             display_look(room_content)
         elif action == 't':
