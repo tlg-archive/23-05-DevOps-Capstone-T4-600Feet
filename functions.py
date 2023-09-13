@@ -82,26 +82,36 @@ def start_game():
     main()
 
 def save_game(player, submarine):
-        save_data = {
-            "current_room": player.current_room,
-            "inventory": player.inventory,
-            "sanity": player.sanity
-        
+    save_data = {
+        "current_room": player.current_room,
+        "inventory": player.inventory,
+        "sanity": player.sanity,
+        "rooms":{}
     }
-        with open("save_game.json", "w") as save_file:
-            json.dump(save_data, save_file)
+    for i in range(1, 7):
+        save_data["rooms"]["room"+str(i)] = submarine.get_room_content(i)
+    with open("save_game.json", "w") as save_file:
+        json.dump(save_data, save_file)
         print("Game saved.")
 
 def load_game(player, submarine):
-        try:
-            with open("save_game.json", "r") as save_file:
-                save_data = json.load(save_file)
-                player.current_room = save_data["current_room"]
-                player.inventory = save_data["inventory"]
-                player.sanity = save_data["sanity"]
-            print("Game loaded.")
-        except FileNotFoundError:
-            print("No saved game found.")
+    try:
+        with open("save_game.json", "r") as save_file:
+            save_data = json.load(save_file)
+            player.current_room = save_data["current_room"]
+            player.inventory = save_data["inventory"]
+            player.sanity = save_data["sanity"]
+        print("Game loaded.")
+    except FileNotFoundError:
+        print("No saved game found.")
+
+def reset_saved_data():
+    try:
+        os.remove("save_game.json")
+        print("Saved data reset to default.")
+    except FileNotFoundError:
+        print("No saved data found.")
+
 
 
 def display_look(oobject):
@@ -224,6 +234,7 @@ def main():
             if room_choice:
                 player.move(int(pair[1]))
                 if player.sanity == 0:
+                    reset_saved_data()
                     print("GAME OVER")
                     break
             else:
@@ -264,6 +275,7 @@ def main():
             else:
                 print(f"You can't talk to {pair[1]}\n")
                 print(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n")
+
         else:
             print("endgame ")
             break
