@@ -4,7 +4,7 @@ import json
 import sys
 import os
 import random
-
+import pygame.mixer
 
 f = open('./data/gamedata.json')
 gen = json.load(f)
@@ -111,6 +111,12 @@ def reset_saved_data():
         print("Saved data reset to default.")
     except FileNotFoundError:
         print("No saved data found.")
+
+
+def play_sound(filename):
+    sound = pygame.mixer.Sound(filename)
+    sound.play()
+
 
 
 
@@ -233,6 +239,7 @@ def main():
             room_choice = check_location(pair[1], adjacent_rooms) 
             if room_choice:
                 player.move(int(pair[1]))
+                play_sound("walk.mp3")
                 if player.sanity == 0:
                     reset_saved_data()
                     print("GAME OVER")
