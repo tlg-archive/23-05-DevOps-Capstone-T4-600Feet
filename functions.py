@@ -77,7 +77,6 @@ def start_menu():
         print("Invalid answer, try again")
         start_menu()
 def start_game():
-
     ps(gen["titlesplash"]["intro"] + '\n') # remember to make slow print()
     main()
 
@@ -196,6 +195,11 @@ class Player:
 def main():
     submarine = Submarine()
     player = Player()
+    pygame.mixer.init()
+    pygame.mixer.music.load('music.mp3')
+    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.play(-1)
+
     for i in range(len(gamedata['rooms'])):
         stuffinroom = gamedata['rooms'][i]['content'].keys()
         npc_data = gamedata['rooms'][i]['content']['npc']
