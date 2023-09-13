@@ -18,8 +18,8 @@ use = ["use", "interact"]
 map = ["map"]
 drop = ['delete', 'drop']
 music = ["music"]
-
-allpossible = ["map", "get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact", "music"]
+effects = ["sfx", "fx"]
+allpossible = ["map", "get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact", "music", 'sfx', 'fx']
 
 #f = open('gamedata.json')
 gamedata = gen#json.load(f)
@@ -40,6 +40,8 @@ def check_action(given_action):
             return 'd'
         elif given_action in music:
             return 'mu'
+        elif given_action in effects:
+            return 'fx'
         else:
             return 'u'
     else:
@@ -115,8 +117,9 @@ def reset_saved_data():
         print("No saved data found.")
 
 
-def play_sound(filename):
+def play_sound(filename, volume):
     sound = pygame.mixer.Sound(filename)
+    sound.set_volume(volume)
     sound.play()
 
 
@@ -202,7 +205,7 @@ def main():
     pygame.mixer.music.load('music.mp3')
     pygame.mixer.music.set_volume(0.3)
     pygame.mixer.music.play(-1)
-
+    sfx_volume = 1
     for i in range(len(gamedata['rooms'])):
         stuffinroom = gamedata['rooms'][i]['content'].keys()
         npc_data = gamedata['rooms'][i]['content']['npc']
@@ -246,7 +249,7 @@ def main():
             room_choice = check_location(pair[1], adjacent_rooms) 
             if room_choice:
                 player.move(int(pair[1]))
-                play_sound("walk.mp3")
+                play_sound("walk.mp3", sfx_volume)
                 if player.sanity == 0:
                     reset_saved_data()
                     print("GAME OVER")
@@ -258,7 +261,8 @@ def main():
             set = int(pair[1])/100
             pygame.mixer.music.set_volume(0.3 *set)
         elif action == 'fx':
-            set = int(pair[1])
+            sfx_volume = int(pair[1])/100
+            print("sound effects volume changed")
         elif action == 'l':
             display_look(room_content)
         elif action == 't':
