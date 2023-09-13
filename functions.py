@@ -37,7 +37,7 @@ def check_action(given_action):
             return 'map'
         elif given_action in drop:
             return 'd'
-        elif give_action in effects:
+        elif given_action in effects:
             return 'fx'
         elif given_action in move:
             return 'm'
@@ -66,7 +66,7 @@ def check_item(wanted_item, room_items):
     else:
         return False
 
-def ps(description, delay=0.005):     
+def ps(description, delay=0.00):     
     for char in description:         
         print(char, end='', flush=True)         
         time.sleep(delay)
@@ -268,7 +268,9 @@ def main():
             else:
                 print("that isnt possible")
         elif action == 'fx':
-            sfx_volume = int(pair[1])/100
+            test_vol = check_wanted_vol(pair[1])
+            if type(test_vol) == type(1) and test_vol in range(0,101):
+                sfx_volume = test_vol/100
             print("sound effects volume changed")
         elif action == 'l':
             display_look(room_content)
