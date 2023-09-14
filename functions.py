@@ -102,12 +102,19 @@ def save_game(player, submarine):
         print("Game saved.")
 
 def load_game(player, submarine):
+    #first clear the room
+    for room in submarine.rooms:
+        submarine.rooms[room]['content'][1].clear()
+
     try:
         with open("save_game.json", "r") as save_file:
             save_data = json.load(save_file)
             player.current_room = save_data["current_room"]
             player.inventory = save_data["inventory"]
             player.sanity = save_data["sanity"]
+            for room in submarine.rooms:
+                #get items only NOT NPCs
+                submarine.rooms[room]['content'][1] = save_data["rooms"]["room" + str(room)][1]
         print("Game loaded.")
     except FileNotFoundError:
         print("No saved game found.")
