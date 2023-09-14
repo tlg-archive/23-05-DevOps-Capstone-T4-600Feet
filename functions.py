@@ -311,6 +311,21 @@ def main():
             if pair[1].lower() == room_content[0]['nameOfNpc'].lower():
                 npc_intros = room_content[0]['intros']
                 print(random.choice(npc_intros))
+                for question in room_content[0]["dialogue"]:
+                    print(room_content[0]["dialogue"].get(question))
+                dialogue_choice = input("\nHow do you want to respond?\n> ")
+                os.system("cls" if os.name == 'nt' else 'clear')
+                while dialogue_choice != '4':
+                    if room_content[0]["responses"].get(dialogue_choice) == None:
+                        print("You must input a value between 1 and 4.\n")
+                    else:
+                        print(room_content[0]["responses"].get(dialogue_choice))
+                    for question in room_content[0]["dialogue"]:
+                        print(room_content[0]["dialogue"].get(question))
+                    dialogue_choice = input("\nHow do you want to respond?\n> ")
+                    os.system("cls" if os.name == 'nt' else 'clear')
+                print(room_content[0]["responses"].get('4'))
+
             else:
                 print(f"You can't talk to {pair[1]}\n")
                 print(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n")
