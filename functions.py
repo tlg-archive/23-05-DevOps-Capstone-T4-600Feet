@@ -14,12 +14,12 @@ move = ["move", "go", "travel", "run", "m"]
 talk = ["talk", "speak", "chat", "ta", "ask"]
 look = ["examine", "look", "focus", "observe", "inspect", "l"]
 take = ["grab", "take", "t", "pickup", "get"]
-use = ["use", "interact"]
+use = ["use", "interact", "u"]
 map = ["map"]
 drop = ['delete', 'drop']
 music = ["music"]
 effects = ["sfx", "fx"]
-allpossible = ["map", "get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact", "music", 'sfx', 'fx']
+allpossible = ["u", "map", "get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact", "music", 'sfx', 'fx']
 
 gamedata = gen#json.load(f)
 
@@ -195,10 +195,17 @@ class Player:
         return self.current_room
     def found_key(self):
         self.has_key = True
-    def found_advil(self):
-        self.has_advil = True
+    #def found_advil(self):
+    #    self.has_advil = True
     def has_bathroom_access(self):
         self.has_bathroom_access = True
+    def use_item(self, item_name):
+        if item_name == "advil" and item_name in self.inventory:
+            self.sanity += 5
+            self.remove_from_inventory('advil')
+            print("You used advil and your sanity has increased by 5.\n")
+        else:
+            print(f"You can't use {item_name} right now.\n")
     def add_to_inventory(self, item):
         self.inventory.append(item)
     def remove_from_inventory(self, item):
@@ -267,6 +274,8 @@ def main():
             else:
                 print("you cannot move there\n")
                 continue
+        elif action == 'u':
+            player.use_item(pair[1].lower())
         elif action == 'mu':
             test_vol = check_wanted_vol(pair[1])
             if type(test_vol) == type(1) and test_vol in range(0,101):
