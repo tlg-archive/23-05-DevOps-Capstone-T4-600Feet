@@ -1,0 +1,187 @@
+{
+	"titlesplash":	{
+	"name": "600ft ",
+	"description": "In the depths of the ocean, where sunlight rarely pierces through the water's murky veil, there you live aboard a submarine. It's a world in itself, a metal giant that flows through the undersea depths, carrying a diverse crew of sailors into the unknown. But within the confines of this steel vessel, reality begins to blur, and sanity is a fragile commodity.\n As you walk the fine line between reality and illusion, your interactions with the crew will determine your journey. Will you uncover the truth of what's happening on board, or will you succumb to the inevitable madness that lurks in the sub’s dark corners?\nThere are several objects and people on board that may point you in the right direction of what’s going on. Be careful not to linger, as actions will drain what’s left of your sanity…\n",
+	"intro":"\nYou wake up in a dimly lit cabin onboard to the smell of must, metal, and cheap cleaning supplies. You walk to the galley, dreading the idea of unseasoned, barely-heated, frozen meat in a stale taco shell.\nAt any point, you can type 'help' to bring up valid commands",
+	"controls": "you can do the following actions Move (M) Take (T) Look (L) Talk (TA)"      
+},
+
+
+"rooms": [{
+"name":"Tech",
+"id": 1,
+"adjacent": [1 ,3],
+"content" : {
+	"npc": {
+		"nameOfNpc": "nobody",
+		"intros" : ["You hear silence."],
+		"dialogue": {
+			"question1": "",
+			"question2": "",
+			"question3": "",
+			"question4": "4. Stop talking to yourself"
+		},
+		"responses": {
+			"1": "response1",
+			"2": "response2",
+			"3": "response3",
+			"4": "You come to your senses..."
+		}
+	},
+	"items": {
+		"advil": {"heal": 5},
+		"key": {"unlock": "True"}
+	},
+	"computer" :{
+		
+	}
+
+}},
+{
+"name":"Sonar",
+"id": 2,
+"adjacent": [2 ,4],
+"content" : {
+	"npc": {
+		"nameOfNpc": "nobody",
+		"intros" : ["You hear silence."],
+		"dialogue": {
+			"question1": "",
+			"question2": "",
+			"question3": "",
+			"question4": "4. Stop talking to yourself"
+		},
+		"responses": {
+			"1": "response1",
+			"2": "response2",
+			"3": "response3",
+			"4": "You come to your senses..."
+		}
+	},
+	"items": {
+		"a key": {"unlock": "True"}
+	},
+	"computer" :{
+
+	}
+
+}},
+	 {
+"name":"Head",
+"id": 3,
+	"adjacent": [3 ,5 ,4 ,1],
+	"content" : {
+			"npc": {
+					"nameOfNpc": "nobody",
+					"intros" : ["You hear silence."],
+					"dialogue": {
+						"question1": "",
+						"question2": "",
+						"question3": "",
+						"question4": "4. Stop talking to yourself"
+					},
+					"responses": {
+						"1": "response1",
+						"2": "response2",
+						"3": "response3",
+						"4": "You come to your senses..."
+					}
+				},
+			"items": {
+					"advil": {"heal": 5}
+			},
+			"computer" :{
+
+			}
+	}},
+{
+"name":"Galley",
+"id": 4,
+"adjacent": [4 ,2 ,3 ,6],
+"content" : {
+	"npc": {
+		"nameOfNpc": "Chad",
+		"intros" : ["Hey there",
+		"Great day, isn't it?",
+		"What's up, fellow sailor?"
+		],
+		"dialogue": {
+			"question1": "1. How do you feel on our first deployment? Doesn't it feel a little weird not to have seen the sun for so long?",
+			"question2": "2. What's it like being a machinist's mate?",
+			"question3": "3. Where are you at with your quals?",
+			"question4": "4. Bye."
+		},
+		"responses": {
+			"1": "I mean, I'll be excited to see it when we get to Japan, of course. But it's just as cool down here!\nHow many people get to see the inside of a nuclear sub\nlet alone work on one. How cool is that?",
+			"2": "I mean, it's grimy work, sure. But the people we work with makes it all worth it.\nAlso, have you seen the way civilians look up to us?\n\n We're heroes!",
+			"3": "Toughest part of being a sailor. Well, we showed up on the boat together, and I'd say I'm about halfway done.\nMaybe another 2 months or so and I'll have them done.",
+			"4": "Keep your chin up, dude!"
+		}
+	},
+	"items": {
+	},
+	"computer" :{
+
+	}
+}},
+{
+"name":"Rack",
+"id": 5,
+"adjacent" : [5 ,6 ,3],
+"content" : {
+	"npc": {
+		"nameOfNpc": "Connors",
+		"intros" : ["What's up, dude?",
+		"Why so mopey?",
+		"Just 2 more months to go before we port... I can't wait to see Okinawa."],
+		"dialogue": {
+			"question1": "1. You look pretty awake, considering you’ve been working on the reactor for the last 8 hours or so.",
+			"question2": "2. Is working as a nuke as hard as they say?",
+			"question3": "3. How much longer do you have on your contract?",
+			"question4": "4. Bye."
+		},
+		"responses": {
+			"1": "I'm excited, man. We're supposed to port in Japan in a month. Okinawa is supposed to be beautiful. Long beaches, great seafood… If Chad's as happy as he is living down here, I can't imagine how giddy he's going to be when he's throwing back a cocktail on the Japanese coast.",
+			"2": "Meh. The training was really hard. Stressed guys out like crazy. But now? It's tough at times, but more than anything it's actually really interesting. It's crazy how we're running on pure nuclear energy, we manage to do so cleanly, and I get to help make that work.",
+			"3": "I don't know that it matters. I'm planning on resigning anyway.",
+			"4": "See you around."
+		}
+	},
+	"items": {
+	},
+	"computer" :{
+
+	}
+}},
+{
+"name":"Water",
+"id": 6,
+"adjacent" : [6 ,5 ,4],
+"content" : {
+	"npc": {
+		"nameOfNpc": "Alan",
+		"intros" : ["Man these contracts are really something...",
+		"Harvard better be ready for me when I get out of here, man.",
+		"Hey, man, I don't want to be here either but....\nyou look like you'd rather be ANYWHERE else."],
+		"dialogue": {
+			"question1": "1. How are your quals going?",
+			"question2": "2. What are you going to do when you get out?",
+			"question3": "3. How much longer do you have on your contract?",
+			"question4": "4. Bye."
+		},
+		"responses": {
+			"1": "Honestly? They suck. We have no free time, no time to sleep...\nBut hey, I guess it's better than boot camp was.\n",
+			"2": "Only what I've told you a thousand times, man.\nI'm going to college, getting a real job.\nSomething that pays better and treats you like an actual human being, you know what I'm saying?\n",
+			"3": "3 years. 3 years and then life REALLY begins.\nJust hope I manage to stay sane until then...\n\nSame goes for you\n<Alan looks at you strangely>\n",
+			"4": "See you around."
+		}
+	},
+	"items": {
+	},
+	"computer" :{
+
+	}
+}
+}
+]
+}

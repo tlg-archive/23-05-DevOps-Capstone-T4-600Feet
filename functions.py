@@ -4,9 +4,9 @@ import json
 import sys
 import os
 import random
+import pygame.mixer
 
-
-f = open(os.path.abspath('gamedata.json'))
+f = open('./data/gamedata.json')
 gen = json.load(f)
 
 
@@ -14,19 +14,19 @@ move = ["move", "go", "travel", "run", "m"]
 talk = ["talk", "speak", "chat", "ta", "ask"]
 look = ["examine", "look", "focus", "observe", "inspect", "l"]
 take = ["grab", "take", "t", "pickup", "get"]
-use = ["use", "interact"]
+use = ["use", "interact", "u"]
 map = ["map"]
 drop = ['delete', 'drop']
+music = ["music"]
+effects = ["sfx", "fx"]
+allpossible = ["u", "map", "get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact", "music", 'sfx', 'fx']
 
-allpossible = ["map", "get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact"]
-
-f = open('gamedata.json')
-gamedata = json.load(f)
+gamedata = gen#json.load(f)
 
 def check_action(given_action):
     if given_action in allpossible:
-        if given_action in move:
-            return 'm'
+        if given_action in music:
+            return 'mu'
         elif given_action in talk:
             return 'ta'
         elif given_action in look:
@@ -37,6 +37,10 @@ def check_action(given_action):
             return 'map'
         elif given_action in drop:
             return 'd'
+        elif given_action in effects:
+            return 'fx'
+        elif given_action in move:
+            return 'm'
         else:
             return 'u'
     else:
@@ -48,17 +52,21 @@ def check_location(wanted_room, adjacent_rooms):
             return True
     else:
         return False
-    
+def check_wanted_vol(wanted_vol):
+    if wanted_vol.lower() == 'on':
+        return 100
+    elif wanted_vol.lower() == "off":
+        return 1
+    elif wanted_vol.isnumeric() and int(wanted_vol) in range (0, 101):
+        return int(wanted_vol)
+    return False
 def check_item(wanted_item, room_items):
     if wanted_item.lower() in room_items:
         return True
     else:
         return False
-        
-def help_message():
-    "This is a help message"
 
-def ps(description, delay=0.005):     
+def ps(description, delay=0.00):     
     for char in description:         
         print(char, end='', flush=True)         
         time.sleep(delay)
@@ -77,9 +85,54 @@ def start_menu():
         print("Invalid answer, try again")
         start_menu()
 def start_game():
-
     ps(gen["titlesplash"]["intro"] + '\n') # remember to make slow print()
     main()
+
+def save_game(player, submarine):
+    save_data = {
+        "current_room": player.current_room,
+        "inventory": player.inventory,
+        "sanity": player.sanity,
+        "rooms":{}
+    }
+    for i in range(1, 7):
+        save_data["rooms"]["room"+str(i)] = submarine.get_room_content(i)
+    with open("save_game.json", "w") as save_file:
+        json.dump(save_data, save_file)
+        print("Game saved.")
+
+def load_game(player, submarine):
+    #first clear the room
+    for room in submarine.rooms:
+        submarine.rooms[room]['content'][1].clear()
+
+    try:
+        with open("save_game.json", "r") as save_file:
+            save_data = json.load(save_file)
+            player.current_room = save_data["current_room"]
+            player.inventory = save_data["inventory"]
+            player.sanity = save_data["sanity"]
+            for room in submarine.rooms:
+                #get items only NOT NPCs
+                submarine.rooms[room]['content'][1] = save_data["rooms"]["room" + str(room)][1]
+        print("Game loaded.")
+    except FileNotFoundError:
+        print("No saved game found.")
+
+def reset_saved_data():
+    try:
+        os.remove("save_game.json")
+        print("Saved data reset to default.")
+    except FileNotFoundError:
+        print("No saved data found.")
+
+
+def play_sound(filename, volume):
+    sound = pygame.mixer.Sound(filename)
+    sound.set_volume(volume)
+    sound.play()
+
+
 
 
 def display_look(oobject):
@@ -138,14 +191,21 @@ class Player:
         self.has_key = False
         self.has_bathroom_access = False
         self.inventory = []
-    def get_current_room():
+    def get_current_room(self):
         return self.current_room
-    def found_key():
+    def found_key(self):
         self.has_key = True
-    def found_advil():
-        self.has_advil = True
-    def has_bathroom_access():
+    #def found_advil(self):
+    #    self.has_advil = True
+    def has_bathroom_access(self):
         self.has_bathroom_access = True
+    def use_item(self, item_name):
+        if item_name == "advil" and item_name in self.inventory:
+            self.sanity += 5
+            self.remove_from_inventory('advil')
+            print("You used advil and your sanity has increased by 5.\n")
+        else:
+            print(f"You can't use {item_name} right now.\n")
     def add_to_inventory(self, item):
         self.inventory.append(item)
     def remove_from_inventory(self, item):
@@ -158,6 +218,11 @@ class Player:
 def main():
     submarine = Submarine()
     player = Player()
+    pygame.mixer.init()
+    pygame.mixer.music.load('music.mp3')
+    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.play(-1)
+    sfx_volume = 1
     for i in range(len(gamedata['rooms'])):
         stuffinroom = gamedata['rooms'][i]['content'].keys()
         npc_data = gamedata['rooms'][i]['content']['npc']
@@ -178,11 +243,17 @@ def main():
         pair = input("What do you want to do\n>").lower()
         os.system("cls" if os.name == 'nt' else 'clear')
         if pair.lower() == 'help':
-            print("You can do the following actions: Move (M) Take (T) Look (L) Talk (TA)\nAt any point, you can type in 'quit' to exit the game.\n")
+            print("You can do the following actions: Move (M) Take (T) Look (L) Talk (TA) Music(Music (any number 0-100))\nAt any point, you can type in 'quit' to exit the game.\n")
             continue
         if pair.lower() == 'quit':
             ps("Goodbye...\n")
             sys.exit()
+        elif pair.lower() == 'save':
+            save_game(player, submarine)
+            continue
+        elif pair.lower() == 'load':
+            load_game(player, submarine)
+            continue
         pair = pair.split()
         action = pair[0] 
         action = check_action(action)
@@ -195,9 +266,28 @@ def main():
             room_choice = check_location(pair[1], adjacent_rooms) 
             if room_choice:
                 player.move(int(pair[1]))
+                play_sound("walk.mp3", sfx_volume)
+                if player.sanity == 0:
+                    reset_saved_data()
+                    print("GAME OVER")
+                    break
             else:
                 print("you cannot move there\n")
                 continue
+        elif action == 'u':
+            player.use_item(pair[1].lower())
+        elif action == 'mu':
+            test_vol = check_wanted_vol(pair[1])
+            if type(test_vol) == type(1) and test_vol in range(0,101):
+                set = test_vol/100
+                pygame.mixer.music.set_volume(0.3 *set)
+            else:
+                print("that isnt possible")
+        elif action == 'fx':
+            test_vol = check_wanted_vol(pair[1])
+            if type(test_vol) == type(1) and test_vol in range(0,101):
+                sfx_volume = test_vol/100
+            print("sound effects volume changed")
         elif action == 'l':
             display_look(room_content)
         elif action == 't':
@@ -230,9 +320,25 @@ def main():
             if pair[1].lower() == room_content[0]['nameOfNpc'].lower():
                 npc_intros = room_content[0]['intros']
                 print(random.choice(npc_intros))
+                for question in room_content[0]["dialogue"]:
+                    print(room_content[0]["dialogue"].get(question))
+                dialogue_choice = input("\nHow do you want to respond?\n> ")
+                os.system("cls" if os.name == 'nt' else 'clear')
+                while dialogue_choice != '4':
+                    if room_content[0]["responses"].get(dialogue_choice) == None:
+                        print("You must input a value between 1 and 4.\n")
+                    else:
+                        print(room_content[0]["responses"].get(dialogue_choice))
+                    for question in room_content[0]["dialogue"]:
+                        print(room_content[0]["dialogue"].get(question))
+                    dialogue_choice = input("\nHow do you want to respond?\n> ")
+                    os.system("cls" if os.name == 'nt' else 'clear')
+                print(room_content[0]["responses"].get('4'))
+
             else:
                 print(f"You can't talk to {pair[1]}\n")
                 print(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n")
+
         else:
             print("endgame ")
             break
