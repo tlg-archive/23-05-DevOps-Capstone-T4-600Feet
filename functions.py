@@ -117,23 +117,19 @@ def load_game(player, submarine):
                 submarine.rooms[room]['content'][1] = save_data["rooms"]["room" + str(room)][1]
         print("Game loaded.")
     except FileNotFoundError:
-        print("No saved game found.")
+        print("\nNo saved game found.\n")
 
 def reset_saved_data():
     try:
         os.remove("save_game.json")
-        print("Saved data reset to default.")
+        print("\nSaved data reset to default.\n")
     except FileNotFoundError:
         print("No saved data found.")
-
 
 def play_sound(filename, volume):
     sound = pygame.mixer.Sound(filename)
     sound.set_volume(volume)
     sound.play()
-
-
-
 
 def display_look(oobject):
     npc = oobject[0]['nameOfNpc']
@@ -237,11 +233,14 @@ def main():
         print(f"you are in room {player.current_room}")
         print(f"Adjacent rooms {adjacent_rooms}\n")
         print("=-=-=-=-=-=-=-=-=Player Data=-=-=-=-=-=-=-=-=") 
-        print(f"Your sanity is at {player.sanity}")
+        print(f"Your sanity is at {player.sanity}\n")
         print("=-=-=-=-=-=-=-=-=Inventory Data=-=-=-=-=-=-=-=-=")
-        print(f"Things in your inventory {player.inventory}")
+        print(f"Things in your inventory {player.inventory}\n")
         pair = input("What do you want to do\n>").lower()
         os.system("cls" if os.name == 'nt' else 'clear')
+        if pair.lower() == "setsanity1":
+            player.sanity = 1
+            print("Cheat activated! Sanity set to 1.")
         if pair.lower() == 'help':
             print("You can do the following actions: Move (M) Take (T) Look (L) Talk (TA) Music(Music (any number 0-100))\nAt any point, you can type in 'quit' to exit the game.\n")
             continue
@@ -269,8 +268,11 @@ def main():
                 play_sound("walk.mp3", sfx_volume)
                 if player.sanity == 0:
                     reset_saved_data()
-                    print("GAME OVER")
+                    print("\n\nAs the weight of unseen horrors and twisted visions press down upon you, you feel your last thread of sanity snap. The depths of the abyss are nothing compared to the chasm that now yawns within your mind. You've lost your grip on reality, and the darkness swallows you whole. You can no longer continue...\n\n")
+                    # SAMMY: looping back to game start
+                    start_menu()
                     break
+
             else:
                 print("you cannot move there\n")
                 continue
