@@ -9,6 +9,19 @@ import pygame.mixer
 f = open('./data/gamedata.json')
 gen = json.load(f)
 
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def press_enter_to_return():
+    print("\nPress Enter to return to the game.")
+    while True:
+        return_input = input("\n> ").strip().lower()
+        if return_input == '':
+            clear_screen()
+            break
+        else:
+            print("Invalid input. Press Enter to return to the game.")
+
 
 move = ["move", "go", "travel", "run", "m"]
 talk = ["talk", "speak", "chat", "ta", "ask"]
@@ -243,7 +256,16 @@ def main():
         pair = input("What do you want to do\n>").lower()
         os.system("cls" if os.name == 'nt' else 'clear')
         if pair.lower() == 'help':
-            print("You can do the following actions: Move (M) Take (T) Look (L) Talk (TA) Music(Music (any number 0-100))\nAt any point, you can type in 'quit' to exit the game.\n")
+            clear_screen()
+            print("=-=-=-=-=-=-=-=-=")
+            print("type 'map' to view a map of the submarine")
+            print("\n=-=-Game Commands-=-=")
+            print("\nMove (M) Take (T) Look (L) Talk (TA)")
+            print("=-=-=-=-=-=-=-=-=")
+            print("\n=-=-Sound Commands-=-=")
+            print("\nMusic (any number 0-100))")
+            #print("\nYou can do the following actions:")
+            press_enter_to_return()
             continue
         if pair.lower() == 'quit':
             ps("Goodbye...\n")
