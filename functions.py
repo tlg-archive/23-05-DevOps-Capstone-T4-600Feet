@@ -6,6 +6,7 @@ import os
 import random
 import pygame.mixer
 
+
 f = open('./data/gamedata.json')
 gen = json.load(f)
 
@@ -257,15 +258,21 @@ def main():
         if pair.lower() == 'help':
             clear_screen()
             print("=-=-Game Commands-=-=")
-            print("\n-type 'quit' at any point to exit the game")
-            print("-Move (M) Take (T) Look (L) Talk (TA)")
+            print("-type 'm (room #)' to move rooms ")
+            print("-type 't (item name)' to move rooms ")
+            print("-type 'l ()' to see descriptions of the rooms ")
+            print("- (TA)")
+            print("-type 'quit' at any point to exit the game")
             print("-type 'drop (item)' to drop an item")
             print("-type 'map' to view a map of the submarine")
             #print("=-=-=-=-=-=-=-=-=")
+            print("\n=-=-Items-=-=")
+            print("-there is a key in this game. find the key and take it")
+            print("-there is an advil in this game. use the advil to gain 5 sanity points")
             print("\n=-=-Sound Commands-=-=")
-            print("type music (any number 0-100) to lower or increase the music volume")
-            print("\n=-=-=-=-=-=-=-=-=")
-            print("\nWant to save your game?")
+            print("-type music (any number 0-100) to lower or increase the music volume")
+            print("-type sfx (any number 0-100) to lower or increase the sfx volume")
+            print("\n=-=-Save Your Game-=-=")
             print("1. type 'save' 2. exit the game 3. start a new game 4. type 'load'")
             print("you should see your previous game")
             print("=-=-=-=-=-=-=-=-=")
