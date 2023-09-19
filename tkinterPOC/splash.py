@@ -27,6 +27,6 @@ splash_description_text.insert(tk.END, game_description)
 splash_description_text.config(state=tk.DISABLED)  # Make it read-only
 splash_description_text.pack(pady=20, padx=(60, 20))
 
-#Return to continue into game
+#Return to continue into game per ticket #460
 root.bind('<Return>', start_game)
 root.mainloop()
