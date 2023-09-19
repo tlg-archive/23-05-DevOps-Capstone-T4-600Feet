@@ -2,6 +2,9 @@ from tkinter import *
 
 root = Tk()
 
+# Window Title
+root.title("test")
+
 #Label widget
 myLabel = Label(root, text="Hello, Rennie!")
 
