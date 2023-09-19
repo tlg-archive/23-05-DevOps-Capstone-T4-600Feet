@@ -3,7 +3,7 @@ from functions import *
 import sys
 import json
 import read
-import pygame
+
 
 os.system("cls" if os.name == 'nt' else 'clear')
 
