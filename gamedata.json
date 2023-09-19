@@ -22,8 +22,7 @@
 		"worry": "dont look so good"
 		},
 	"items": {
-		"advil": {"heal": 5},
-		"key": {"unlock": "True"}
+	 
 	},
 	"computer" :{
 		
@@ -45,8 +44,7 @@
 		"worry": "dont look so good"
 		},
 	"items": {
-		"advil": {"heal": 5},
-		"key": {"unlock": "True"}
+		"advil": {"heal": 5}
 	},
 	"computer" :{
 
@@ -68,8 +66,7 @@
 					"worry": "dont look so good"
 					},
 			"items": {
-					"advil": {"heal": 5},
-					"key": {"unlock": "True"}
+				 
 			},
 			"computer" :{
 
@@ -93,8 +90,7 @@
 		"worry": "dont look so good"
 		},
 	"items": {
-		"advil": {"heal": 5},
-		"a key": {"unlock": "True"}
+		 
 	},
 	"computer" :{
 
@@ -115,8 +111,7 @@
 		"worry": "dont look so good"
 		},
 	"items": {
-		"advil": {"heal": 5},
-		"key": {"unlock": "True"}
+	 
 	},
 	"computer" :{
 
@@ -137,7 +132,6 @@
 		"worry": "dont look so good"
 		},
 	"items": {
-		"advil": {"heal": 5},
 		"key": {"unlock": "True"}
 	},
 	"computer" :{
