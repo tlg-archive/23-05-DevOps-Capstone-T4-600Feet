@@ -86,8 +86,8 @@ def ps(description, delay=0.00):
         time.sleep(delay)
 
 def start_menu():
-    print("1.New Game")
-    print("2.Quit")
+     #updating this to put these options on the same line
+    print(f"\n{ '1. New Game' : <25} { '2. Quit' : >25}\n")
     player_choice = input("Enter your choice '1 or 2'> ")
     if player_choice == "1":
         os.system("cls" if os.name == 'nt' else 'clear')
