@@ -297,6 +297,9 @@ def main():
             continue
         #action = input("\n> ").lower()
         if action == "m":
+            if len(pair) < 2:
+                print("You need to specify a room number. For example, 'm 3' to move to room 3.\n")
+                continue
             room_choice = check_location(pair[1], adjacent_rooms) 
             if room_choice:
                 player.move(int(pair[1]))
@@ -376,6 +379,6 @@ def main():
                 print(f"You can't talk to {pair[1]}\n")
                 print(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n")
 
-        else:
-            print("endgame ")
+        #else:
+            #print("endgame ")
             break
