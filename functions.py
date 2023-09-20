@@ -1,3 +1,4 @@
+#All imports needed for game to run
 import time
 import random
 import json
@@ -22,8 +23,9 @@ def press_enter_to_return():
             break
         else:
             print("Invalid input. Press Enter to return to the game.")
-
-
+##################################
+#####Avaiable Action Commands#####
+##################################
 move = ["move", "go", "travel", "run", "m"]
 talk = ["talk", "speak", "chat", "ta", "ask"]
 look = ["examine", "look", "focus", "observe", "inspect", "l"]
@@ -37,6 +39,9 @@ allpossible = ["u", "map", "get", "drop", "delete", "move", "go", "travel", "run
 
 gamedata = gen#json.load(f)
 
+################################################
+###Action Command Check from Previous List######
+################################################
 def check_action(given_action):
     if given_action in allpossible:
         if given_action in music:
@@ -60,6 +65,9 @@ def check_action(given_action):
     else:
         return 'invalid'
 
+####################################################
+####Room and Floor set up with numeric values#######
+####################################################
 def check_location(wanted_room, adjacent_rooms):
     if wanted_room.isnumeric():
         if int(wanted_room) in range(1,7) and int(wanted_room) in adjacent_rooms:
@@ -85,6 +93,9 @@ def ps(description, delay=0.00):
         print(char, end='', flush=True)         
         time.sleep(delay)
 
+############################
+######Start Menu Setup######
+############################
 def start_menu():
      #updating this to put these options on the same line
     print(f"\n{ '1. New Game' : <25} { '2. Quit' : >25}\n")
@@ -102,6 +113,9 @@ def start_game():
     ps(gen["titlesplash"]["intro"] + '\n') # remember to make slow print()
     main()
 
+####################################
+######Save and Load Game Code#######
+####################################
 def save_game(player, submarine):
     save_data = {
         "current_room": player.current_room,
@@ -133,6 +147,10 @@ def load_game(player, submarine):
     except FileNotFoundError:
         print("\nNo saved game found.\n")
 
+
+####################################
+####Save Rest and Override##########
+####################################
 def reset_saved_data():
     try:
         os.remove("save_game.json")
@@ -140,6 +158,9 @@ def reset_saved_data():
     except FileNotFoundError:
         print("No saved data found.")
 
+#####################################
+#########Sound and Volume############
+#####################################
 def play_sound(filename, volume):
     sound = pygame.mixer.Sound(filename)
     sound.set_volume(volume)
@@ -153,6 +174,9 @@ def display_look(oobject):
     if len(oobject[1]) > 0:
         print(f"You also see {items}.\n")
 
+######################################
+#######Map and Submarine Code#########
+######################################
 class Submarine:
     def __init__(self):
         self.rooms = {}
@@ -181,18 +205,35 @@ class Submarine:
         self.rooms[room]['content'][1].pop(content)
     
     def display_map(self, player_current_room):
-        mapstring = ""
-        for room_num, room_data in self.rooms.items():
-            mapstring += f"Room {room_num}: "
-            if room_num == player_current_room:
-                mapstring+="[you  r here]"
-            else:
-                mapstring += " " *13
-            for adj_room in room_data["adjacent"]:
-                mapstring += f"-> room {adj_room} "
-        print("++++++++++++++++++++++++++++++++++++")
-        print(mapstring)
-            
+        map_visual = [
+            "         ------>Alan's Quarters[6]<--------------",
+            "        |              ^                        |",
+            "        |              |                        |",
+            "        |              |                        |",
+            "        V              V                        V",
+            "Connor's Quarters[5]<--->John's Quarters[3]<--->Chad's Quarters[4]",
+            "               ^                                       ^",
+            "               |                                       |",
+            "               |                                       |",
+            "               V                                       V",
+            "    Supply Room[1](advil)                      Storage Area[2](Key)"
+        ]
+
+        # Highlight the player's current room
+        for idx, line in enumerate(map_visual):
+            if f"[{player_current_room}]" in line:
+                map_visual[idx] = line.replace(f"[{player_current_room}]", f"[YOU ARE HERE {player_current_room}]")
+
+        for line in map_visual:
+            print(line)
+
+# Example of usage
+sub = Submarine()
+sub.display_map(3)
+
+############################################
+######Commands, Stats and Information#######
+############################################           
 class Player:
     def __init__(self):
         self.current_room = 4
@@ -225,6 +266,9 @@ class Player:
         self.current_room = room
         self.sanity = self.sanity - 1
 
+#########################
+######Game Setup#########
+#########################
 def main():
     submarine = Submarine()
     player = Player()
