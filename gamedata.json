@@ -1,121 +1,166 @@
 {
-	"titlesplash":	{
-	"name": "600ft ",
-	"description": "In the depths of the ocean, where sunlight rarely pierces through the water's murky veil, there you live aboard a submarine. It's a world in itself, a metal giant that flows through the undersea depths, carrying a diverse crew of sailors into the unknown. But within the confines of this steel vessel, reality begins to blur, and sanity is a fragile commodity.\n\n As you walk the fine line between reality and illusion, your interactions with the crew will determine your journey. Will you uncover the truth of what's happening on board, or will you succumb to the inevitable madness that lurks in the sub’s dark corners?\n\nThere are several objects and people on board that may point you in the right direction of what’s going on. Be careful not to linger, as actions will drain what’s left of your sanity…\n",
-	"intro":"\nYou wake up in a dimly lit cabin onboard to the smell of must, metal, and cheap cleaning supplies. You walk to the galley, dreading the idea of unseasoned, barely-heated, frozen meat in a stale taco shell.\nAt any point, you can type 'help' to bring up valid commands",
-	"controls": "you can do the following actions Move (M) Take (T) Look (L) Talk (TA)"      
-},
+    "titlesplash": {
+        "name": "600ft",
+        "description": "In the depths of the ocean, where sunlight rarely pierces through the water's murky veil, there you live aboard a submarine. It's a world in itself, a metal giant that flows through the undersea depths, carrying a diverse crew of sailors into the unknown. But within the confines of this steel vessel, reality begins to blur, and sanity is a fragile commodity. As you walk the fine line between reality and illusion, your interactions with the crew will shape your journey. Will you uncover the truth of what's happening on board, or will you succumb to the inevitable madness and fall victim to an unknown truth? You must talk to your fellow crew members and find out what is really going on. There are several objects and people on board that may point you in the right direction of what’s going on. Make sure you work quickly; a mind is a terrible thing to waste or, in this case, lose...",
+        "intro": "You zoned out and slowly come back to reality. You realize you are outside of Chad’s room but vaguely remember coming over to talk to him. You walk through the galley, assuming you needed something from Chad, hoping to remember when you get there. \nAt any point, you can type 'help' to bring up valid commands.",
+        "Objective": "Find out what is going on, on the ship and if there is anyone behind it or if something is behind it...",
+        "controls": "You can do the following actions: Move (M), Take (T), Look (L), Talk (TA).",
+        "Items": {
+            "Advil": "Advil can be used to maintain and regain sanity throughout your journey. Just remember you are underwater, and there are limited resources."
+        }
+    }
 
-{
-    "rooms": [
-      {
-        "name": "Supply Room",
-        "id": 1,
-        "adjacent": [1, 3],
-        "content": {
-          "items": {
-            "advil": {
-              "heal": 5,
-              "description": "Will help to recover lost sanity points and prevent you from falling victim to your thoughts"
+}
+
+  {
+        "rooms": [
+        {
+            "name": "Supply Room",
+            "id": 1,
+            "adjacent": [1, 3],
+            "Description": "It is easy to stop feeling like yourself in such grim conditions thankfully the supply room has just the thing to take the edge off. The room is filled with different medicine and supplies need to make you feel like yourself again",
+            "content": {
+                "items": {
+                    "advil": {
+                        "heal": 5,
+                        "description": "Will help to recover lost sanity points and prevent you from falling victim to your thoughts"
+                    }
+                }
             }
-          }
+        },
+        {
+            "name": "Storage Room",
+            "id": 2,
+            "adjacent": [2, 4],
+            "Description": "A room that can be described as organized chaos, nothings looks like it is where it is supposed to be but you know where everything is. Oddly enough there is a key on the floor that stands out from the chaos",
+            "content": {
+                "items": {
+                    "Computer": {},
+                    "key": {
+                        "description": "A mysterious key lays on the floor, it does not match the dark gloomy feeling of the room. It looks to be lined with gold and have a bright red design on it there is also a name that you cannot make out on it"
+                    }
+                }
+            }
+        },
+        {
+            "name": "John's Quarters",
+            "id": 3,
+            "adjacent": [3, 5, 4, 1],
+            "Description": "A clean and organized room, not pictures or anything to show some type of personality. It has the bare minimum to survive and be comfortable",
+            "content": {
+                "npc": {
+                    "Name": "John",
+                    "Location": "John's Quarters",
+                    "Description": "A man in his late 20s, not one for conversation prefers to keep to himself",
+                    "Greetings": ["What you want I'm off the clock for another 4 hours"],
+                    "PlayerChoices": [
+                        {
+                            "Choice": "Has something felt off with Connor to you?",
+                            "Response": "..... stay away from that topic."
+                        },
+                        {
+                            "Choice": "Has Chad been acting weird to you",
+                            "Response": "Chad is always weird with all those voices, if he was acting normal then I'd be concerned"
+                        },
+                        {
+                            "Choice": "Alan has been pretty on edge, do you think happened?",
+                            "Response": "Someone went through his room and put a dent in his safe, so I would be on edge too."
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Chad's Quarters",
+            "id": 4,
+            "adjacent": [4, 2, 3, 6],
+            "Description": "A room full of personality, posters all around with different dragons and fantasy characters.",
+            "content": {
+                "npc": {
+                    "Name": "Chad",
+                    "Location": "Chad's Quarters",
+                    "Description": "A man in his late 30s with orange hair and matching beard, he is sitting on his book reading a giant book",
+                    "Greetings": ["Hey buddy!!! Great to see you, come on in, I am just reading my DM manual"],
+                    "PlayerChoices": [
+                        {
+                            "Choice": "Have you seen Connor he has been acting a little different",
+                            "Response": "Thats a weird question to ask you ok?."
+                        },
+                        {
+                            "Choice": "What do you think of John?",
+                            "Response": "He is a little introverted but a lot of fun to game with"
+                        },
+                        {
+                            "Choice": "Have you seen Alan?",
+                            "Response": "He is in his room someone destroyed it, not cool at all"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Connor's Quarters",
+            "id": 5,
+            "adjacent": [5, 6, 3],
+            "Description": "A rather plain room, clean and organized but nothing special about it",
+            "content": {
+                "npc": {
+                    "Name": "Connor",
+                    "Location": "Connor's Quarters",
+                    "Description": "A pale man with no clear age, stands in center of room not moving",
+                    "Greetings": ["What do you want?"],
+                    "PlayerChoices": [
+                        {
+                            "Choice": "You ok?",
+                            "Response": "yes"
+                        },
+                        {
+                            "Choice": "You talk to Chad about the game tonight",
+                            "Response": "yes and if not I will"
+                        },
+                        {
+                            "Choice": "You worked with John right? You get along?",
+                            "Response": "Do we?"
+                        },
+                        {
+                            "Choice": "Have you checked on Alan",
+                            "Response": "Probably should"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Alan's Quarters",
+            "id": 6,
+            "adjacent": [6, 5, 4],
+            "Description": "A room that is usually organized and clean is now completely destroyed. There is a dented safe in the corner and boxes and paper thrown across the ground",
+            "content": {
+                "npc": {
+                    "Name": "Alan",
+                    "Location": "Alan's Quarters",
+                    "Description": "An older man",
+                    "Greetings": ["Hey Green horn what do you need"],
+                    "PlayerChoices": [
+                        {
+                            "Choice": "Oh my god what happened",
+                            "Response": "Someone completely destroyed my room, for no clear reason"
+                        },
+                        {
+                            "Choice": "Have you asked Chad",
+                            "Response": "He was with me when it happened, and no one else could lift my safe"
+                        },
+                        {
+                            "Choice": "Where you mad at Connor?",
+                            "Response": "We had some beef but nothing to destroy my room over"
+                        },
+                        {
+                            "Choice": "You ask John?",
+                            "Response": "I don't think he did it but who knows"
+                        }
+                    ]
+                }
+            }
         }
-      }
     ]
-  }
-{
-"name":"Storage Room",
-"id": 2,
-"adjacent": [2 ,4],
-"content" : {
-	"items": {
-        "Computer":{}
-		"key": {
-            "description": "A mysterious key lays on the floor, it does not match the dark gloomy feeling of the room. It looks to be lined with gold and have a bright red design on it"
-        }
-	},
-
-}},
-	 {
-"name":"John's Quarters",
-"id": 3,
-	"adjacent": [3 ,5 ,4 ,1],
-	"content" : {
-			"npc": {
-					"nameOfNpc": "John",
-					"intro" : "What do you want I am off the off for the next 6 hours",
-							"question1": "Has something felt off with Connor to you?",
-							"question2": "Has Chad been acting weird to you",
-							"question3": "Alan has been pretty on edge, do you think happened?"},
-					"worry": "dont look so good"
-					},
-			"items": {
-				 
-			},
-
-	}},
-{
-"name":"Chad's Quarters",
-"id": 4,
-"adjacent": [4 ,2 ,3 ,6],
-"content" : {
-	"npc": {
-		"nameOfNpc": "Chad",
-		"intros" : ["Hey there",
-		"Great day, isn't it?",
-		"What's up, fellow sailer?"
-		],
-		"dialogue": {
-			"question1": "response1",
-			"question2": "response2",
-			"question3": "response3"},
-		"worry": "dont look so good"
-		},
-	"items": {
-		 
-	},
-	"computer" :{
-
-	}
-}},
-{
-"name":"Rack",
-"id": 5,
-"adjacent" : [5 ,6 ,3],
-"content" : {
-	"npc": {
-		"nameOfNpc": "fjsalkjfhas",
-		"intro" : "xyz sentence",
-		"dialogue": {
-			"question1": "response1",
-			"question2": "response2",
-			"question3": "response3"},
-		"worry": "dont look so good"
-		},
-	"items": {
-	 
-	},
-
-}},
-{
-"name":"Water",
-"id": 6,
-"adjacent" : [6 ,5 ,4],
-"content" : {
-	"npc": {
-		"nameOfNpc": "fjsalkjfhas",
-		"intro" : "xyz sentence",
-		"dialogue": {
-			"question1": "response1",
-			"question2": "response2",
-			"question3": "response3"},
-		"worry": "dont look so good"
-		},
-	"items": {
-		"key": {"unlock": "True"}
-	},
-
-}
-}
-]
 }
