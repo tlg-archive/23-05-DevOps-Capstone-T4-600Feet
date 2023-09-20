@@ -228,8 +228,8 @@ class Submarine:
             print(line)
 
 # Example of usage
-sub = Submarine()
-sub.display_map(3)
+#sub = Submarine()
+#sub.display_map(3)
 
 ############################################
 ######Commands, Stats and Information#######
