@@ -19,7 +19,7 @@
             "Description": "It is easy to stop feeling like yourself in such grim conditions thankfully the supply room has just the thing to take the edge off. The room is filled with different medicine and supplies need to make you feel like yourself again",
             "content": {
                "npc": {
-                  "Name": "",
+                  "nameOfNpc": "",
                   "Location": "",
                   "Description": "",
                   "Greetings": "",
@@ -41,7 +41,7 @@
             "Description": "A room that can be described as organized chaos, nothings looks like it is where it is supposed to be but you know where everything is. Oddly enough there is a key on the floor that stands out from the chaos",
             "content": {
                "npc": {
-                  "Name": "",
+                  "nameOfNpc": "",
                   "Location": "",
                   "Description": "",
                   "Greetings": "",
@@ -63,7 +63,7 @@
             "Description": "A clean and organized room, not pictures or anything to show some type of personality. It has the bare minimum to survive and be comfortable",
             "content": {
                 "npc": {
-                    "Name": "John",
+                    "nameOfNpc": "John",
                     "Location": "John's Quarters",
                     "Description": "A man in his late 20s, not one for conversation prefers to keep to himself",
                     "Greetings": ["What you want I'm off the clock for another 4 hours"],
@@ -96,7 +96,7 @@
             "Description": "A room full of personality, posters all around with different dragons and fantasy characters.",
             "content": {
                 "npc": {
-                    "Name": "Chad",
+                    "nameOfNpc": "Chad",
                     "Location": "Chad's Quarters",
                     "Description": "A man in his late 30s with orange hair and matching beard, he is sitting on his book reading a giant book",
                     "Greetings": ["Hey buddy!!! Great to see you, come on in, I am just reading my DM manual"],
@@ -126,7 +126,7 @@
             "Description": "A rather plain room, clean and organized but nothing special about it",
             "content": {
                 "npc": {
-                    "Name": "Connor",
+                    "nameOfNpc": "Connor",
                     "Location": "Connor's Quarters",
                     "Description": "A pale man with no clear age, stands in center of room not moving",
                     "Greetings": ["What do you want?"],
@@ -160,7 +160,7 @@
             "Description": "A room that is usually organized and clean is now completely destroyed. There is a dented safe in the corner and boxes and paper thrown across the ground",
             "content": {
                 "npc": {
-                    "Name": "Alan",
+                    "nameOfNpc": "Alan",
                     "Location": "Alan's Quarters",
                     "Description": "An older man",
                     "Greetings": ["Hey Green horn what do you need"],
@@ -183,7 +183,6 @@
                         }
                     ]
                 },
-                
                 "items": {
                }
             }

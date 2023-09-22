@@ -400,6 +400,7 @@ def main():
                 player.remove_from_inventory(pair[1].lower())
                 submarine.place_item(pair[1].lower(), player.current_room)
                 ps(f"You dropped {pair[1]} in the room.\n\n")
+        
         elif action == "ta":
             if pair[1].lower() == room_content[0]['nameOfNpc'].lower():
                 npc_intros = room_content[0]['intros']
