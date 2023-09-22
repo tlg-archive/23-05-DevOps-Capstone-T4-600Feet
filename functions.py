@@ -23,6 +23,11 @@ def press_enter_to_return():
             break
         else:
             print("Invalid input. Press Enter to return to the game.")
+
+def invalid_command_message():
+    print("This is not a valid command.\nType 'help' to see valid commands.")
+
+
 ##################################
 #####Avaiable Action Commands#####
 ##################################
@@ -363,26 +368,38 @@ def main():
                 print("you cannot move there\n")
                 continue
         elif action == 'u':
-            player.use_item(pair[1].lower())
+            if len(pair) < 2: 
+                invalid_command_message()
+            else:
+                player.use_item(pair[1].lower())
             #########music#########
         elif action == 'mu':
             if len(pair) < 2:
-                print("That isn't a valid volume level.")
+                invalid_command_message()
             else:
                 test_vol = check_wanted_vol(pair[1])
                 if type(test_vol) == type(1) and test_vol in range(0,101):
                     set = test_vol/100
                     pygame.mixer.music.set_volume(0.3 *set)
                 else:
-                    print("That isn't a valid volume level.")
+                    invalid_command_message()
                 ########fx###########
         elif action == 'fx':
-            test_vol = check_wanted_vol(pair[1])
-            if type(test_vol) == type(1) and test_vol in range(0,101):
-                sfx_volume = test_vol/100
-            print("sound effects volume changed")
+            if len(pair) < 2:
+                invalid_command_message()
+            else:
+                test_vol = check_wanted_vol(pair[1])
+                if type(test_vol) == type(1) and test_vol in range(0,101):
+                    sfx_volume = test_vol/100
+                    print("sound effects volume changed")
+                else:
+                    invalid_command_message()
+                ########look command########### 
         elif action == 'l':
-            display_look(room_content)
+            if len(pair) < 2: 
+                invalid_command_message()
+            else:
+                display_look(room_content)
             continue
         elif action == 't':
             if pair[1].lower() == 'key':
@@ -412,23 +429,28 @@ def main():
                 ps(f"You dropped {pair[1]} in the room.\n\n")
             continue
         elif action == "ta":
-            if pair[1].lower() == room_content[0]['nameOfNpc'].lower():
-                npc_intros = room_content[0]['intros']
-                print(random.choice(npc_intros))
-                for question in room_content[0]["dialogue"]:
-                    print(room_content[0]["dialogue"].get(question))
-                dialogue_choice = input("\nHow do you want to respond?\n> ")
-                os.system("cls" if os.name == 'nt' else 'clear')
-                while dialogue_choice != '4':
-                    if room_content[0]["responses"].get(dialogue_choice) == None:
-                        print("You must input a value between 1 and 4.\n")
-                    else:
-                        print(room_content[0]["responses"].get(dialogue_choice))
+            if len(pair) < 2: 
+                invalid_command_message()
+            else:
+                if pair[1].lower() == room_content[0]['nameOfNpc'].lower():
+                    npc_intros = room_content[0]['intros']
+                    print(random.choice(npc_intros))
                     for question in room_content[0]["dialogue"]:
                         print(room_content[0]["dialogue"].get(question))
                     dialogue_choice = input("\nHow do you want to respond?\n> ")
                     os.system("cls" if os.name == 'nt' else 'clear')
-                print(room_content[0]["responses"].get('4'))
+                    while dialogue_choice != '4':
+                        if room_content[0]["responses"].get(dialogue_choice) == None:
+                            print("You must input a value between 1 and 4.\n")
+                        else:
+                            print(room_content[0]["responses"].get(dialogue_choice))
+                        for question in room_content[0]["dialogue"]:
+                            print(room_content[0]["dialogue"].get(question))
+                        dialogue_choice = input("\nHow do you want to respond?\n> ")
+                        os.system("cls" if os.name == 'nt' else 'clear')
+                    print(room_content[0]["responses"].get('4'))
+                else:
+                    invalid_command_message()
             continue 
         else:
             print(f"You can't talk to {pair[1]}\n")
