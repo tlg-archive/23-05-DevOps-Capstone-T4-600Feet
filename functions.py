@@ -300,7 +300,6 @@ def main():
         if not pair.strip():  # If the input is empty (only Enter pressed)
             continue  # Skip the rest of the loop and continue the game
 
-
         if pair.lower() == "setsanity1":
             player.sanity = 1
             print("Cheat activated! Sanity set to 1.")
@@ -365,13 +364,18 @@ def main():
                 continue
         elif action == 'u':
             player.use_item(pair[1].lower())
+            #########music#########
         elif action == 'mu':
-            test_vol = check_wanted_vol(pair[1])
-            if type(test_vol) == type(1) and test_vol in range(0,101):
-                set = test_vol/100
-                pygame.mixer.music.set_volume(0.3 *set)
+            if len(pair) < 2:
+                print("That isn't a valid volume level.")
             else:
-                print("that isnt possible")
+                test_vol = check_wanted_vol(pair[1])
+                if type(test_vol) == type(1) and test_vol in range(0,101):
+                    set = test_vol/100
+                    pygame.mixer.music.set_volume(0.3 *set)
+                else:
+                    print("That isn't a valid volume level.")
+                ########fx###########
         elif action == 'fx':
             test_vol = check_wanted_vol(pair[1])
             if type(test_vol) == type(1) and test_vol in range(0,101):
