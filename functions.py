@@ -296,6 +296,11 @@ def main():
         print(f"Things in your inventory {player.inventory}\n")
         pair = input("What do you want to do\n>").lower()
         os.system("cls" if os.name == 'nt' else 'clear')
+############ Check if the player pressed Enter, instead of quitting, it'll continue the game######
+        if not pair.strip():  # If the input is empty (only Enter pressed)
+            continue  # Skip the rest of the loop and continue the game
+
+
         if pair.lower() == "setsanity1":
             player.sanity = 1
             print("Cheat activated! Sanity set to 1.")
@@ -374,6 +379,7 @@ def main():
             print("sound effects volume changed")
         elif action == 'l':
             display_look(room_content)
+            continue
         elif action == 't':
             if pair[1].lower() == 'key':
                 item_choice = check_item('a key', room_content[1].keys())
@@ -400,7 +406,7 @@ def main():
                 player.remove_from_inventory(pair[1].lower())
                 submarine.place_item(pair[1].lower(), player.current_room)
                 ps(f"You dropped {pair[1]} in the room.\n\n")
-        
+            continue
         elif action == "ta":
             if pair[1].lower() == room_content[0]['nameOfNpc'].lower():
                 npc_intros = room_content[0]['intros']
@@ -419,11 +425,11 @@ def main():
                     dialogue_choice = input("\nHow do you want to respond?\n> ")
                     os.system("cls" if os.name == 'nt' else 'clear')
                 print(room_content[0]["responses"].get('4'))
-
-            else:
-                print(f"You can't talk to {pair[1]}\n")
-                print(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n")
-
+            continue 
+        else:
+            print(f"You can't talk to {pair[1]}\n")
+            print(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n")
+            continue
         #else:
             #print("endgame ")
             break
