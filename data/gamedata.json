@@ -18,6 +18,14 @@
             "adjacent": [1, 3],
             "Description": "It is easy to stop feeling like yourself in such grim conditions thankfully the supply room has just the thing to take the edge off. The room is filled with different medicine and supplies need to make you feel like yourself again",
             "content": {
+               "npc": {
+                  "Name": "",
+                  "Location": "",
+                  "Description": "",
+                  "Greetings": "",
+                  "PlayerChoices": []
+               },
+
                 "items": {
                     "advil": {
                         "heal": 5,
@@ -32,6 +40,14 @@
             "adjacent": [2, 4],
             "Description": "A room that can be described as organized chaos, nothings looks like it is where it is supposed to be but you know where everything is. Oddly enough there is a key on the floor that stands out from the chaos",
             "content": {
+               "npc": {
+                  "Name": "",
+                  "Location": "",
+                  "Description": "",
+                  "Greetings": "",
+                  "PlayerChoices": []
+               },
+
                 "items": {
                     "Computer": {},
                     "key": {
@@ -65,7 +81,12 @@
                             "Response": "Someone went through his room and put a dent in his safe, so I would be on edge too."
                         }
                     ]
-                }
+                },
+
+                "items": {
+                   }
+                
+
             }
         },
         {
@@ -93,7 +114,9 @@
                             "Response": "He is in his room someone destroyed it, not cool at all"
                         }
                     ]
-                }
+                },
+                "items": {
+               }
             }
         },
         {
@@ -125,7 +148,9 @@
                             "Response": "Probably should"
                         }
                     ]
-                }
+                },
+                "items": {
+               }
             }
         },
         {
@@ -157,7 +182,10 @@
                             "Response": "I don't think he did it but who knows"
                         }
                     ]
-                }
+                },
+                
+                "items": {
+               }
             }
         }
     ]
