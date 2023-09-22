@@ -396,37 +396,42 @@ def main():
                     invalid_command_message()
                 ########look command########### 
         elif action == 'l':
-            if len(pair) < 2: 
-                invalid_command_message()
-            else:
-                display_look(room_content)
+            display_look(room_content)
             continue
         elif action == 't':
-            if pair[1].lower() == 'key':
-                item_choice = check_item('a key', room_content[1].keys())
-                if item_choice == True:
-                    player.add_to_inventory(pair[1].lower())
-                    submarine.rem_room_content('a key', player.current_room)
-                    print("You picked up a key\n")
-                else:
-                    print(f"There is no {pair[1]} to pick up.\n")
+            if len(pair) < 2:
+                invalid_command_message()  # Call the function for invalid commands
             else:
-                item_choice = check_item(pair[1].lower(), room_content[1].keys())
-                if item_choice == True:
-                    player.add_to_inventory(pair[1].lower())
-                    submarine.rem_room_content(pair[1].lower(), player.current_room)
-                    print(f"You picked up {pair[1]}\n")
+                if pair[1].lower() == 'key':
+                    item_choice = check_item('a key', room_content[1].keys())
+                    if item_choice == True:
+                        player.add_to_inventory(pair[1].lower())
+                        submarine.rem_room_content('a key', player.current_room)
+                        print("You picked up a key\n")
+                    else:
+                        print(f"There is no {pair[1]} to pick up.\n")
                 else:
-                    print(f"You cannot pick up {pair[1]}\n")
+                    item_choice = check_item(pair[1].lower(), room_content[1].keys())
+                    if item_choice == True:
+                        player.add_to_inventory(pair[1].lower())
+                        submarine.rem_room_content(pair[1].lower(), player.current_room)
+                        print(f"You picked up {pair[1]}\n")
+                    else:
+                        print(f"You cannot pick up {pair[1]}\n")
         elif action == "map":
             submarine.display_map(player.current_room)
             continue
         elif action == 'd':
-            item_choice = check_item(pair[1], player.inventory)
-            if item_choice:
-                player.remove_from_inventory(pair[1].lower())
-                submarine.place_item(pair[1].lower(), player.current_room)
-                ps(f"You dropped {pair[1]} in the room.\n\n")
+            if len(pair) < 2:
+                invalid_command_message()
+            else:
+                item_choice = check_item(pair[1], player.inventory)
+                if item_choice:
+                    player.remove_from_inventory(pair[1].lower())
+                    submarine.place_item(pair[1].lower(), player.current_room)
+                    ps(f"You dropped {pair[1]} in the room.\n\n")
+                else:
+                    print(f"You don't have {pair[1]} in your inventory.")
             continue
         elif action == "ta":
             if len(pair) < 2: 
