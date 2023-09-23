@@ -9,6 +9,7 @@ import pygame
 from tkinter import Tk, Text, Entry, Frame, Button, Scrollbar, END
 import tkinter as tk
 from title import *
+from testfunctions import *
 
 # setting global variables
 game_output = None
@@ -16,6 +17,13 @@ user_input = None
 splash_title_label = None
 splash_description_text = None
 continue_label = None
+
+# function to clear main window
+def clear_main_frame():
+    main_frame.delete(1.0, tk.END)
+
+def clear_screen():
+    clear_main_frame() # Updated to TKinter function
 
 # handle user commands
 def handle_input(event):
@@ -30,9 +38,8 @@ def handle_input(event):
         state = "choose_input"
     elif state == "choose_input":
         if command == "1":
-            update_output("Starting a new game...")
-            #functions.start_game()
             splash()
+
         elif command == "2":
             update_output("You chose option 2!")
             sys.exit()

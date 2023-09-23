@@ -7,7 +7,6 @@ import os
 import random
 import pygame.mixer
 
-
 f = open('./data/gamedata.json')
 gen = json.load(f)
 
