@@ -23,9 +23,11 @@ def press_enter_to_return():
             break
         else:
             print("Invalid input. Press Enter to return to the game.")
+
 ##################################
 #####Avaiable Action Commands#####
 ##################################
+
 move = ["move", "go", "travel", "run", "m"]
 talk = ["talk", "speak", "chat", "ta", "ask"]
 look = ["examine", "look", "focus", "observe", "inspect", "l"]
@@ -42,6 +44,7 @@ gamedata = gen#json.load(f)
 ################################################
 ###Action Command Check from Previous List######
 ################################################
+
 def check_action(given_action):
     if given_action in allpossible:
         if given_action in music:
@@ -68,6 +71,7 @@ def check_action(given_action):
 ####################################################
 ####Room and Floor set up with numeric values#######
 ####################################################
+
 def check_location(wanted_room, adjacent_rooms):
     if wanted_room.isnumeric():
         if int(wanted_room) in range(1,7) and int(wanted_room) in adjacent_rooms:
