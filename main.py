@@ -83,7 +83,7 @@ def splash_clear(event=None):
 
     # create frames
     create_main_game_frame()
-    create_bottom_frame()
+    bottom_frame()
 
     global state
     state = "choose_input"
@@ -92,53 +92,34 @@ def splash_clear(event=None):
 def create_main_game_frame():
     global game_output
     # Create a main frame for game output
-    main_frame = Frame(root, bg='black')
+    main_frame = Frame(root, bg='blue')
     main_frame.pack(pady=20, padx=20, fill="both", expand=True)
-    # Please game_output in the main frame
-    game_output = Text(main_frame, wrap=tk.WORD, height=15, width=70, font=("Arial", 20), fg='white', bg='black', bd=0, highlightthickness=0)
+    
+    # Print game status info
+    # SAMMY: LIMITED TO 10 FOR NOW BUT CAN BE ADJUSTED
+    game_status_text_widget = tk.Text(main_frame, wrap=tk.WORD, height=10, width=70, font=("Arial", 20), fg='white', bg='black', bd=0, highlightthickness=0)
+    game_status_text_widget.pack(pady=10, padx=20, fill="both", expand=True)
+    game_status_text_widget.config(state=tk.DISABLED)
+
+    # Place game_output in the main frame
+    # SAMMY: LIMITED TO 5 FOR NOW BUT CAN BE ADJUSTED
+    game_output = Text(main_frame, wrap=tk.WORD, height=5, width=70, font=("Arial", 20), fg='white', bg='black', bd=0, highlightthickness=0)
     game_output.pack(pady=10, padx=20, fill="both", expand=True)
     game_output.config(state=tk.DISABLED)
 
-    """ ???artifact from previous build to have updated game status????
-    game_status_text_widget = tk.Text(main_frame, wrap=tk.WORD, height=15, width=70, font=("Arial", 20), fg='white', bg='black', bd=0, highlightthickness=0)
-    game_status_text_widget.pack(pady=10, padx=20, fill="both", expand=True)
-    game_status_text_widget.config(state=tk.DISABLED)
-    """
     return game_output
 
-""" def main_frame():
-    global game_output
-    # Create a main frame for game output
-    main_frame = Frame(root, bg='black')
-    main_frame.pack(pady=20, padx=20, fill="both", expand=True)
-    # Place game_output in the main frame
-    game_output = tk.Text(main_frame, wrap=tk.WORD, height=15, width=70, font=("Arial", 20), fg='white', bg='black', bd=0, highlightthickness=0)
-    game_output.pack(pady=10, padx=20, fill="both", expand=True)
-    game_output.config(state=tk.DISABLED) """
-
-def create_bottom_frame():
+def bottom_frame():
     global user_input
     # Create a bottom frame for user input
-    bottom_frame = Frame(root, bg='black')
-    bottom_frame.pack(pady=10, padx=20, fill="x")
-    # Place user_input in the bottom frame
-    user_input = Entry(bottom_frame, font=("Arial", 20), fg='black', bg='white', width=50)
-    user_input.pack(pady=10, padx=20, fill="x")
-    # Place curson in input box
-    user_input.focus_set()
-    user_input.bind('<Return>', handle_input)
-
-""" def bottom_frame():
-    global user_input
-    # Create a bottom frame for user input
-    bottom_frame = Frame(root, bg='black')
+    bottom_frame = Frame(root, bg='red')
     bottom_frame.pack(pady=10, padx=20, fill="x")
     # Place user_input in the bottom frame
     user_input = tk.Entry(bottom_frame, font=("Arial", 20), fg='black', bg='white', width=50)
     user_input.pack(pady=10, padx=20, fill="x")
     # Place curson in input box
     user_input.focus_set()
-    user_input.bind('<Return>', handle_input) """
+    user_input.bind('<Return>', handle_input)
 
 def update_game_state_display(text_widget, player, submarine):
     """Updates the game display with the current state."""
@@ -158,9 +139,6 @@ def update_game_state_display(text_widget, player, submarine):
     
     text_widget.insert(tk.END, display_text)
     text_widget.config(state=tk.DISABLED)  # Disable editing after updating
-
-# def initialize_interface():
-    # Create and configure your Tkinter interface elements here, including the main frame and Text widget.
 
 def start_game():
     submarine, player, sfx_volume = initialize_game()
@@ -188,13 +166,14 @@ def initialize_game():
 
     return submarine, player, sfx_volume
 
-# Initialize Tkinter
-root = tk.Tk()
-root.title('600 Feet') # title bar
-root.geometry('800x600') # window size
-root.configure(bg='black')  # set window background color to black
+def initialize_tkinter(): # Initialize Tkinter
+    root.title('600 Feet') # title bar
+    root.geometry('800x600') # window size
+    root.configure(bg='black')  # set window background color to black
 
-## START THE GAME ##
+## START PROGRAM ##
+root = tk.Tk()
+initialize_tkinter()
 splash()
 # referenced by def handle_input()
 state = "splash"
