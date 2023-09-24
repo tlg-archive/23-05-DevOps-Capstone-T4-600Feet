@@ -1,15 +1,14 @@
-""" Most recent additions:
-player_instance = None
-submarine_instance = None
-game_output = None 
-sfx_volume = None 
-NEW ERROR: 
-  File "/Users/stamimi/Capstone-T4-600Feet/main.py", line 39, in handle_input
-    process_command(command, player_instance, submarine_instance, game_output, sfx_volume)
-  File "/Users/stamimi/Capstone-T4-600Feet/main.py", line 108, in process_command
-    update_output("Invalid command. Type 'help' for a list of available commands.", game_output_widget)
-TypeError: update_output() takes 1 positional argument but 2 were given
+""" working thru: 
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/tkinter/__init__.py", line 1921, in __call__
+    return self.func(*args)
+  File "/Users/stamimi/Capstone-T4-600Feet/main.py", line 42, in handle_input
+    update_game_state_display(game_status_text_widget, player_instance, submarine_instance)
+  File "/Users/stamimi/Capstone-T4-600Feet/main.py", line 189, in update_game_state_display
+    adjacent_rooms = submarine.get_adjacent_rooms(player.current_room)
+AttributeError: 'NoneType' object has no attribute 'get_adjacent_rooms'
  """
+
 import os
 #import functions
 import sys
@@ -40,7 +39,7 @@ def clear_main_frame():
 # handle user commands
 def handle_input(event):
     # added player_instance, submarine_instance, sfx_volume due to "not defined" errors
-    global state
+    global state, submarine_instance, player_instance, sfx_volume
     command = user_input.get()
     print(f"Enter key pressed. Command entered: {command}") #debugging
     
@@ -72,7 +71,7 @@ def handle_input(event):
     # Process the command and update the GUI text widget
     process_command(command)
 
-def update_output(text):
+def update_output(text): 
     global game_output
     # set text to modifiable 
     game_output.config(state='normal')
@@ -116,8 +115,11 @@ def process_command(command, player, submarine, game_output_widget, sfx_volume):
             update_output("You need to specify an NPC to talk to.", game_output_widget)
     elif action in ["mu", "fx"]:
         handle_sound_control(command, sfx_volume)
+    #SAMMY: remarking to test -game_output to fix bug
+    #else:
+        #update_output("Invalid command. Type 'help' for a list of available commands.", game_output_widget)
     else:
-        update_output("Invalid command. Type 'help' for a list of available commands.", game_output_widget)
+        update_output("Invalid command. Type 'help' for a list of available commands.")
 
 def splash():
     global splash_title_label, splash_description_text, continue_label
@@ -194,6 +196,7 @@ def update_game_state_display(text_widget, player, submarine):
     text_widget.config(state=tk.NORMAL)  # Enable editing
     text_widget.delete("1.0", tk.END)  # Clear current display
     
+    print(f"value of submarine is {submarine}") # debug tracking
     adjacent_rooms = submarine.get_adjacent_rooms(player.current_room)
     room_content = submarine.get_room_content(player.current_room)
     
@@ -209,10 +212,10 @@ def update_game_state_display(text_widget, player, submarine):
     game_status_text_widget.config(state=tk.DISABLED)  # Disable editing after updating
 
 def start_game():
-    global state 
+    global state, submarine_instance, player_instance, sfx_volume 
     #state = "game_state" 
     state = "game_setup" # adding state for debugging
-    submarine, player, sfx_volume = initialize_game()
+    submarine, player, sfx_volume, submarine_instance, player_instance, sfx_volume = initialize_game()
     update_game_state_display(game_status_text_widget, player, submarine)  # Display initial game status
 
 def initialize_game():
