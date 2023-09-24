@@ -9,7 +9,6 @@ import pygame.mixer
 import tkinter as tk
 from common import clear_screen, press_enter_to_return, update_main_window, handle_sound_control
 
-
 root = tk.Tk()
 main_frame = tk.Frame(root)
 main_text = tk.Text(main_frame)
@@ -100,10 +99,10 @@ def check_item(wanted_item, room_items):
     else:
         return False
 
-def ps(description, delay=0.00):     
+""" def ps(description, delay=0.00):     
     for char in description:         
         print(char, end='', flush=True)         
-        time.sleep(delay)
+        time.sleep(delay) """
 
 ####################################
 ######Save and Load Game Code#######
@@ -374,6 +373,7 @@ def handle_save_load(command, player, submarine):
 ##################################
 ######Game Setup / Start #########
 ##################################
+
 
 """ while True:  KILLING TO TEST FOR BUGS
     command = input("What do you want to do?\n>").lower()

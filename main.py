@@ -1,3 +1,15 @@
+""" Most recent additions:
+player_instance = None
+submarine_instance = None
+game_output = None 
+sfx_volume = None 
+NEW ERROR: 
+  File "/Users/stamimi/Capstone-T4-600Feet/main.py", line 39, in handle_input
+    process_command(command, player_instance, submarine_instance, game_output, sfx_volume)
+  File "/Users/stamimi/Capstone-T4-600Feet/main.py", line 108, in process_command
+    update_output("Invalid command. Type 'help' for a list of available commands.", game_output_widget)
+TypeError: update_output() takes 1 positional argument but 2 were given
+ """
 import os
 #import functions
 import sys
@@ -15,6 +27,11 @@ user_input = None
 splash_title_label = None
 splash_description_text = None
 continue_label = None
+game_status_text_widget = None
+player_instance = None
+submarine_instance = None
+game_output = None 
+sfx_volume = None
 
 # function to clear main window
 def clear_main_frame():
@@ -22,12 +39,19 @@ def clear_main_frame():
 
 # handle user commands
 def handle_input(event):
+    # added player_instance, submarine_instance, sfx_volume due to "not defined" errors
     global state
     command = user_input.get()
     print(f"Enter key pressed. Command entered: {command}") #debugging
-    #functions.process_command(user_command, player_instance, submarine_instance, game_output)
+    
+    # clear user input field
     user_input.delete(0, tk.END)
-    #update_game_state_display(player_instance, submarine_instance)
+    
+    # Process the command
+    process_command(command, player_instance, submarine_instance, game_output, sfx_volume)
+    
+    # Update game state display
+    update_game_state_display(game_status_text_widget, player_instance, submarine_instance)
 
     if state == "splash":
         print("In splash state") # for debugging
@@ -37,11 +61,16 @@ def handle_input(event):
         print("In choose_input state") # for debugging
         if command == "1":
             start_game()
+            state = "game_state" # maybe move up a line?
+            print("In game state") # for debugging
         elif command == "2":
             update_output("You chose option 2!")
             sys.exit()
         else:
             update_output("Invalid choice. Please choose 1 or 2.")
+    
+    # Process the command and update the GUI text widget
+    process_command(command)
 
 def update_output(text):
     global game_output
@@ -51,6 +80,44 @@ def update_output(text):
     # disable text area to prevent player editing it
     game_output.config(state='disabled')
     game_output.see(END)
+
+def process_command(command, player, submarine, game_output_widget, sfx_volume):
+    # Split the command into action and arguments
+    command_parts = command.lower().split()
+    action = command_parts[0]
+
+    if action == "help":
+        handle_game_help(game_output_widget)
+    elif action in ["save", "load"]:
+        handle_save_load(action, player, submarine)
+    elif action == "quit":
+        handle_game_quit()
+    elif action == "setsanity1":
+        handle_game_cheats(action, player)
+    elif action == "map":
+        handle_map_display(submarine, player.current_room, game_output_widget)
+    elif action == "m":
+        if len(command_parts) > 1:
+            target_room = int(command_parts[1])
+            handle_player_movement(player, target_room, submarine, sfx_volume, game_output_widget)
+        else:
+            update_output("You need to specify a room number. For example, 'm 3' to move to room 3.", game_output_widget)
+    elif action in ["take", "use", "drop"]:
+        if len(command_parts) > 1:
+            item_choice = command_parts[1]
+            handle_item_interaction(player, item_choice, action, submarine, game_output_widget)
+        else:
+            update_output("You need to specify an item to interact with.", game_output_widget)
+    elif action == "ta":
+        if len(command_parts) > 1:
+            npc_name = command_parts[1]
+            handle_npc_interaction(player, npc_name, submarine.get_room_content(player.current_room), game_output_widget)
+        else:
+            update_output("You need to specify an NPC to talk to.", game_output_widget)
+    elif action in ["mu", "fx"]:
+        handle_sound_control(command, sfx_volume)
+    else:
+        update_output("Invalid command. Type 'help' for a list of available commands.", game_output_widget)
 
 def splash():
     global splash_title_label, splash_description_text, continue_label
@@ -90,7 +157,7 @@ def splash_clear(event=None):
     update_output("Enter '1' for new game, or '2' to quit")
 
 def create_main_game_frame():
-    global game_output
+    global game_output, game_status_text_widget
     # Create a main frame for game output
     main_frame = Frame(root, bg='blue')
     main_frame.pack(pady=20, padx=20, fill="both", expand=True)
@@ -122,7 +189,8 @@ def bottom_frame():
     user_input.bind('<Return>', handle_input)
 
 def update_game_state_display(text_widget, player, submarine):
-    """Updates the game display with the current state."""
+    # Update the output display with the current game state
+    global game_status_text_widget
     text_widget.config(state=tk.NORMAL)  # Enable editing
     text_widget.delete("1.0", tk.END)  # Clear current display
     
@@ -137,12 +205,14 @@ def update_game_state_display(text_widget, player, submarine):
     display_text += "=-=-=-=-=-=-=-=-=Inventory Data=-=-=-=-=-=-=-=-=\n"
     display_text += f"Things in your inventory: {', '.join(player.inventory)}\n"
     
-    text_widget.insert(tk.END, display_text)
-    text_widget.config(state=tk.DISABLED)  # Disable editing after updating
+    game_status_text_widget.insert(tk.END, display_text)
+    game_status_text_widget.config(state=tk.DISABLED)  # Disable editing after updating
 
 def start_game():
+    global state 
+    #state = "game_state" 
+    state = "game_setup" # adding state for debugging
     submarine, player, sfx_volume = initialize_game()
-    #initialize_interface()  # Initialize the Tkinter interface elements - needed?
     update_game_state_display(game_status_text_widget, player, submarine)  # Display initial game status
 
 def initialize_game():
