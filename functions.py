@@ -92,7 +92,7 @@ def play_sound(filename, volume):
     sound.play()
 
 ######################################
-#######Map and Submarine Code#########
+####### Submarine Class ##############
 ######################################
 
 class Submarine:
@@ -123,7 +123,7 @@ class Submarine:
         self.rooms[room]['content'][1].pop(content)
 
 ############################################
-######Commands, Stats and Information#######
+###### Player Class ########################
 ############################################           
 class Player:
     def __init__(self):

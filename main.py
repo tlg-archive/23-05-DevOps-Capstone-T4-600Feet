@@ -380,7 +380,6 @@ def handle_item_interaction(player, item_choice, action, submarine):
         else:
             update_output(f"You don't have a {item_choice} to drop.")
 
-#not sure about this
 def handle_look(command, player, submarine):
     if command == "look":
         room_content = submarine.get_room_content(player.current_room)
@@ -420,6 +419,8 @@ def handle_save_load(command, player, submarine):
         save_game(player, submarine)
     elif command == "load":
         load_game(player, submarine)
+
+# def handle_sound_control() in common.py 
 
 ## START PROGRAM ##
 root = tk.Tk()
