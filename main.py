@@ -20,10 +20,6 @@ player_instance = None
 submarine_instance = None
 sfx_volume = .9   # out of 1.0
 
-# deprecated globals below
-# player_current_room = 4
-# game_output = None  # redundant? 
-
 # function to clear main window
 def clear_main_frame():
     main_frame.delete(1.0, tk.END)
@@ -77,7 +73,7 @@ def process_command(command, player, submarine, game_output_widget, sfx_volume):
     action = check_action(command_parts[0])
 
     if action == 'invalid':
-        update_output("That is not a valid action. Type 'help' for a list of available commands.")
+        update_output("Type 'help' for a list of available commands.")
         # was: update_output("That is not a valid action. Type 'help' for a list of available commands.", game_output_widget)
         return
 
@@ -100,12 +96,12 @@ def process_command(command, player, submarine, game_output_widget, sfx_volume):
             handle_move(player, target_room, submarine, sfx_volume, game_output_widget)
         else:
             update_output("You need to specify a room number. For example, 'm 3' to move to room 3.")
-    elif action in ["take", "use", "drop"]:
+    elif action in ["t", "u", "d"]:
         if len(command_parts) > 1:
             item_choice = command_parts[1]
-            handle_item_interaction(player, item_choice, action, submarine, game_output_widget)
+            handle_item_interaction(player, item_choice, action, submarine)
         else:
-            update_output("You need to specify an item to interact with.", game_output_widget)
+            update_output("You need to specify an item to interact with.")
     elif action == "ta":
         if len(command_parts) > 1:
             npc_name = command_parts[1]
@@ -115,7 +111,7 @@ def process_command(command, player, submarine, game_output_widget, sfx_volume):
     elif action in ["mu", "fx"]:
         handle_sound_control(command, sfx_volume, game_output_widget)
     else:
-        update_output("Invalid command. Type 'help' for a list of available commands.")
+        update_output("else: update_output: Invalid command. Type 'help' for a list of available commands.")
 
 def splash():
     global splash_title_label, splash_description_text, continue_label
@@ -159,18 +155,16 @@ def splash_clear(event=None):
 def create_main_game_frame():
     global game_output, game_status_text_widget
     # Create a main frame for game output
-    main_frame = Frame(root, bg='blue')
+    main_frame = Frame(root, bg='black')
     main_frame.pack(pady=20, padx=20, fill="both", expand=True)
     
     # Print game status info
-    # SAMMY: LIMITED TO 10 FOR NOW BUT CAN BE ADJUSTED
-    game_status_text_widget = tk.Text(main_frame, wrap=tk.WORD, height=10, width=70, font=("Courier New", 20), fg='white', bg='black', bd=0, highlightthickness=0)
+    game_status_text_widget = tk.Text(main_frame, wrap=tk.WORD, height=10, width=70, font=("Courier New", 20), fg='white', bg='black', bd=5, relief='solid', highlightbackground='#006400', highlightcolor='#006400', highlightthickness=2)
     game_status_text_widget.pack(pady=10, padx=20, fill="both", expand=True)
     game_status_text_widget.config(state=tk.DISABLED)
 
     # Place game_output in the main frame
-    # SAMMY: LIMITED TO 5 FOR NOW BUT CAN BE ADJUSTED
-    game_output = Text(main_frame, wrap=tk.WORD, height=5, width=70, font=("Courier New", 20), fg='white', bg='black', bd=0, highlightthickness=0)
+    game_output = Text(main_frame, wrap=tk.WORD, height=10, width=70, font=("Courier New", 20), fg='white', bg='black', bd=5, relief='solid', highlightbackground='#006400', highlightcolor='#006400', highlightthickness=2)
     game_output.pack(pady=10, padx=20, fill="both", expand=True)
     game_output.config(state=tk.DISABLED)
 
@@ -179,11 +173,11 @@ def create_main_game_frame():
 def bottom_frame():
     global user_input
     # Create a bottom frame for user input
-    bottom_frame = Frame(root, bg='red')
-    bottom_frame.pack(pady=10, padx=20, fill="x")
+    bottom_frame = Frame(root, bg='black')
+    bottom_frame.pack(pady=5, padx=20, fill="x")
     # Place user_input in the bottom frame
-    user_input = tk.Entry(bottom_frame, font=("Courier New", 20), fg='black', bg='white', width=50)
-    user_input.pack(pady=10, padx=20, fill="x")
+    user_input = tk.Entry(bottom_frame, font=("Courier New", 20), fg='black', bg='white', width=50, bd=0, highlightthickness=0)
+    user_input.pack(pady=5, padx=20, fill="x")
     # Place curson in input box
     user_input.focus_set()
     user_input.bind('<Return>', handle_input)
@@ -249,7 +243,7 @@ def initialize_game():
 
 def initialize_tkinter(): # Initialize Tkinter
     root.title('600 Feet') # title bar
-    root.geometry('800x600') # window size
+    root.geometry('800x800') # window size
     root.configure(bg='black')  # set window background color to black
 
 #####################################
@@ -267,7 +261,7 @@ def save_game(player, submarine):
         save_data["rooms"]["room"+str(i)] = submarine.get_room_content(i)
     with open("save_game.json", "w") as save_file:
         json.dump(save_data, save_file)
-        update_output("Your game is saved, but you are still lost...")
+        update_output("Your game is saved, but your soul is still lost...")
 
 def load_game(player, submarine):
     #first clear the room
@@ -358,7 +352,7 @@ def handle_help(game_output_widget):
     update_output("-there is an advil in this game. use the advil to gain 5 sanity points")
     update_output("\n=-=-Sound Commands-=-=")
     update_output("-type music (any number 0-100) to lower or increase the music volume")
-    update_output("-type sfx (any number 0-100) to lower or increase the sfx volume")
+    update_output("-type fx (any number 0-100) to lower or increase the fx volume")
     update_output("\n=-=-Save Your Game-=-=")
     update_output("1. type 'save' 2. at any point type 'load' to restore your save 3. NOTE: saves do not currently carry across sessions")
     update_output("you should see your previous game")
@@ -367,16 +361,16 @@ def handle_help(game_output_widget):
 
 #change action to command? when I finally import
 def handle_item_interaction(player, item_choice, action, submarine):
-    if action == "take":
+    if action == "t":
         if submarine.is_item_in_room(item_choice, player.current_room):
             player.add_to_inventory(item_choice)
             submarine.rem_room_content(item_choice, player.current_room)
             update_output(f"You picked up {item_choice}")
         else:
             update_output(f"There is no {item_choice} to pick up.")
-    elif action == "use":
+    elif action == "u":
         player.use_item(item_choice)
-    elif action == "drop":
+    elif action == "d":
         if item_choice in player.inventory:
             player.remove_from_inventory(item_choice)
             submarine.place_item(item_choice, player.current_room)

@@ -27,16 +27,16 @@ def update_main_window(message):
 ### AVAILABLE ACTION COMMANDS ###
 #################################
 
-help = ["help"]
+help = ["help"] #works
 move = ["move", "go", "travel", "run", "m"] #works
 talk = ["talk", "speak", "chat", "ta", "ask"]
 look = ["examine", "look", "focus", "observe", "inspect", "l"] #look works but not syns
-take = ["grab", "take", "t", "pickup", "get"]
+take = ["grab", "take", "t", "pickup", "get"] #works
 use = ["use", "interact", "u"]
 map = ["map"] #works
 drop = ['delete', 'drop']
-music = ["music"]
-effects = ["sfx", "fx"]
+music = ["music"] #works
+effects = ["sfx", "fx"] #fx works but not syn
 save = ["save"] #works
 load = ["load"] #works
 quit = ["quit"] #works

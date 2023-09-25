@@ -7,7 +7,7 @@ import os
 import pygame
 import pygame.mixer
 import tkinter as tk
-from common import clear_screen, press_enter_to_return, update_main_window, handle_sound_control
+from common import clear_screen, press_enter_to_return, update_main_window
 
 f = open('./data/gamedata.json')
 gen = json.load(f)
@@ -69,6 +69,15 @@ class Submarine:
     
     def rem_room_content(self, content, room):
         self.rooms[room]['content'][1].pop(content)
+    
+    ## CHAT GPT PROVIDED THIS, NEED TO CORRECT ARGS AND VARIABLES? ##
+    def is_item_in_room(self, item_name, room):
+        room_content = self.get_room_content(room)
+        for content in room_content:
+            if isinstance(content, dict) and item_name in content:
+                return True
+        return False
+
 
 ####################
 ### PLAYER CLASS ###
@@ -92,6 +101,7 @@ class Player:
         self.has_bathroom_access = True
     def use_item(self, item_name):
         if item_name == "advil" and item_name in self.inventory:
+            from main import update_output
             self.sanity += 5
             self.remove_from_inventory('advil')
             print("You used advil and your sanity has increased by 5.\n")
@@ -105,32 +115,3 @@ class Player:
     def move(self, room):
         self.current_room = room
         self.sanity = self.sanity - 1
-
-########################
-### TKINTER HANDLERS ###
-########################
-
-def handle_npc_interaction(player, npc_name, room_content):
-    if npc_name.lower() == room_content[0]['nameOfNpc'].lower():
-        npc_intros = room_content[0]['intros']
-        print(random.choice(npc_intros))
-        if pair[1].lower() == room_content[0]['nameOfNpc'].lower():
-            npc_intros = room_content[0]['intros']
-            print(random.choice(npc_intros))
-            for question in room_content[0]["dialogue"]:
-                print(room_content[0]["dialogue"].get(question))
-            dialogue_choice = input("\nHow do you want to respond?\n> ")
-            os.system("cls" if os.name == 'nt' else 'clear')
-            while dialogue_choice != '4':
-                if room_content[0]["responses"].get(dialogue_choice) == None:
-                    print("You must input a value between 1 and 4.\n")
-                else:
-                    print(room_content[0]["responses"].get(dialogue_choice))
-                for question in room_content[0]["dialogue"]:
-                    print(room_content[0]["dialogue"].get(question))
-                dialogue_choice = input("\nHow do you want to respond?\n> ")
-                os.system("cls" if os.name == 'nt' else 'clear')
-            print(room_content[0]["responses"].get('4'))
-        else:
-            print(f"You can't talk to {pair[1]}\n")
-            print(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n")
