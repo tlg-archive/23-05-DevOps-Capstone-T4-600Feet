@@ -82,46 +82,6 @@ def check_item(wanted_item, room_items):
     else:
         return False
 
-""" def ps(description, delay=0.00):     
-    for char in description:         
-        print(char, end='', flush=True)         
-        time.sleep(delay) """
-
-####################################
-######Save and Load Game Code#######
-####################################
-
-def save_game(player, submarine):
-    save_data = {
-        "current_room": player.current_room,
-        "inventory": player.inventory,
-        "sanity": player.sanity,
-        "rooms":{}
-    }
-    for i in range(1, 7):
-        save_data["rooms"]["room"+str(i)] = submarine.get_room_content(i)
-    with open("save_game.json", "w") as save_file:
-        json.dump(save_data, save_file)
-        print("Game saved.")
-
-def load_game(player, submarine):
-    #first clear the room
-    for room in submarine.rooms:
-        submarine.rooms[room]['content'][1].clear()
-
-    try:
-        with open("save_game.json", "r") as save_file:
-            save_data = json.load(save_file)
-            player.current_room = save_data["current_room"]
-            player.inventory = save_data["inventory"]
-            player.sanity = save_data["sanity"]
-            for room in submarine.rooms:
-                #get items only NOT NPCs
-                submarine.rooms[room]['content'][1] = save_data["rooms"]["room" + str(room)][1]
-        print("Game loaded.")
-    except FileNotFoundError:
-        print("\nNo saved game found.\n")
-
 ####################################
 ####Save Rest and Override##########
 ####################################
@@ -180,33 +140,6 @@ class Submarine:
     
     def rem_room_content(self, content, room):
         self.rooms[room]['content'][1].pop(content)
-    
-    def display_map(self, player_current_room):
-        map_visual = [
-            "         ------>Alan's Quarters[6]<--------------",
-            "        |              ^                        |",
-            "        |              |                        |",
-            "        |              |                        |",
-            "        V              V                        V",
-            "Connor's Quarters[5]<--->John's Quarters[3]<--->Chad's Quarters[4]",
-            "               ^                                       ^",
-            "               |                                       |",
-            "               |                                       |",
-            "               V                                       V",
-            "    Supply Room[1](advil)                      Storage Area[2](Key)"
-        ]
-
-        # Highlight the player's current room
-        for idx, line in enumerate(map_visual):
-            if f"[{player_current_room}]" in line:
-                map_visual[idx] = line.replace(f"[{player_current_room}]", f"[YOU ARE HERE {player_current_room}]")
-
-        for line in map_visual:
-            update_output(line)
-
-# Example of usage
-#sub = Submarine()
-#sub.display_map(3)
 
 ############################################
 ######Commands, Stats and Information#######
@@ -311,12 +244,6 @@ def handle_player_movement(player, target_room, submarine, sfx_volume):
         print("\n\nAs the weight of unseen horrors and twisted visions press down upon you, you feel your last thread of sanity snap. The depths of the abyss are nothing compared to the chasm that now yawns within your mind. You've lost your grip on reality, and the darkness swallows you whole. You can no longer continue...\n\n")
         ### SAMMY: SET UP FUNCTION OR TRANSITION BACK TO GAME? ###
         start_game()
-
-def handle_save_load(command, player, submarine):
-    if command == "save":
-        save_game(player, submarine)
-    elif command == "load":
-        load_game(player, submarine)
 
 # DEF HANDLE_SOUND_COUNTROL(COMMAND, SFX_VOLUME) IN COMMON.PY
 

@@ -247,9 +247,44 @@ def initialize_tkinter(): # Initialize Tkinter
     root.geometry('800x600') # window size
     root.configure(bg='black')  # set window background color to black
 
-##################
-#### COMMANDS ####
-##################
+####################################
+######Save and Load Game Code#######
+####################################
+
+def save_game(player, submarine):
+    save_data = {
+        "current_room": player.current_room,
+        "inventory": player.inventory,
+        "sanity": player.sanity,
+        "rooms":{}
+    }
+    for i in range(1, 7):
+        save_data["rooms"]["room"+str(i)] = submarine.get_room_content(i)
+    with open("save_game.json", "w") as save_file:
+        json.dump(save_data, save_file)
+        print("Game saved.")
+
+def load_game(player, submarine):
+    #first clear the room
+    for room in submarine.rooms:
+        submarine.rooms[room]['content'][1].clear()
+
+    try:
+        with open("save_game.json", "r") as save_file:
+            save_data = json.load(save_file)
+            player.current_room = save_data["current_room"]
+            player.inventory = save_data["inventory"]
+            player.sanity = save_data["sanity"]
+            for room in submarine.rooms:
+                #get items only NOT NPCs
+                submarine.rooms[room]['content'][1] = save_data["rooms"]["room" + str(room)][1]
+        update_output("Game loaded.")
+    except FileNotFoundError:
+        update_output("\nNo saved game found.\n")
+
+################
+### MAP CODE ###
+################
 
 def display_map(player_current_room):
     map_visual = [
@@ -274,10 +309,14 @@ def display_map(player_current_room):
     for line in map_visual:
         update_output(line)
 
+##################
+#### COMMANDS ####
+##################
+
 def handle_cheat(command, player):
     if command == "setsanity1":
         player.sanity = 1
-        update_output("!! CHEAT ACTIVATED !! Sanity set to 1.")
+        update_output("\n!! CHEAT ACTIVATED !! Sanity set to 1.")
 
 def handle_help(game_output_widget):
     #clear_screen() -- command broken at moment, not needed since user can scroll up?
@@ -308,6 +347,12 @@ def handle_quit():
     #Add delay?
     update_output("Goodbye...\n")
     sys.exit()
+
+def handle_save_load(command, player, submarine):
+    if command == "save":
+        save_game(player, submarine)
+    elif command == "load":
+        load_game(player, submarine)
 
 ## START PROGRAM ##
 root = tk.Tk()
