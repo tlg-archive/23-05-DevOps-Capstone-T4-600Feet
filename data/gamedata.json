@@ -16,7 +16,7 @@
             "name": "Supply Room",
             "id": 1,
             "adjacent": [1, 3],
-            "intros": "It is easy to stop feeling like yourself in such grim conditions thankfully the supply room has just the thing to take the edge off. The room is filled with different medicine and supplies need to make you feel like yourself again",
+            "Description": "It is easy to stop feeling like yourself in such grim conditions thankfully the supply room has just the thing to take the edge off. The room is filled with different medicine and supplies need to make you feel like yourself again",
             "content": {
                "npc": {
                   "nameOfNpc": "nobody",
