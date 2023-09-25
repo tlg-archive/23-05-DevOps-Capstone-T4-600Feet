@@ -9,25 +9,8 @@ import pygame.mixer
 import tkinter as tk
 from common import clear_screen, press_enter_to_return, update_main_window, handle_sound_control
 
-root = tk.Tk()
-main_frame = tk.Frame(root)
-main_text = tk.Text(main_frame)
-
 f = open('./data/gamedata.json')
 gen = json.load(f)
-
-####################################
-#### TKinter Logic and Commands ####
-####################################
-
-# ^ example 
-# print("You picked up a key\n")
-# becomes
-# update_main_window("You picked up a key")
-
-# function to clear main window
-def clear_main_window():
-    main_text.delete(1.0, tk.END)
 
 ##################################
 #####Available Action Commands#####
@@ -264,37 +247,7 @@ class Player:
 ### tkinter handlers ###
 ########################
 
-def handle_game_cheats(command, player):
-    if command == "setsanity1":
-        player.sanity = 1
-        print("Cheat activated! Sanity set to 1.")
-
-def handle_game_help():
-    clear_screen()
-    print("=-=-Game Commands-=-=")
-    print("-type 'm (room #)' to move rooms ")
-    print("-type 't (item name)' to pick up an item")
-    print("-type 'look' to see descriptions of the rooms ")
-    print("-type 'TA (NPC name)' to talk to an NPC")
-    print("-type 'quit' at any point to exit the game")
-    print("-type 'drop (item)' to drop an item")
-    print("-type 'map' to view a map of the submarine")
-    #print("=-=-=-=-=-=-=-=-=")
-    print("\n=-=-Items-=-=")
-    print("-there is a key in this game. find the key and take it")
-    print("-there is an advil in this game. use the advil to gain 5 sanity points")
-    print("\n=-=-Sound Commands-=-=")
-    print("-type music (any number 0-100) to lower or increase the music volume")
-    print("-type sfx (any number 0-100) to lower or increase the sfx volume")
-    print("\n=-=-Save Your Game-=-=")
-    print("1. type 'save' 2. exit the game 3. start a new game 4. type 'load'")
-    print("you should see your previous game")
-    print("=-=-=-=-=-=-=-=-=")
-    press_enter_to_return()
-
-def handle_game_quit():
-    print("Goodbye...\n")
-    sys.exit()
+####  in main: cheat, help, quit
 
 def handle_item_interaction(player, item_choice, action, submarine):
     if action == "take":

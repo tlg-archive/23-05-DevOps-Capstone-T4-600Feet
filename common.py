@@ -1,25 +1,21 @@
 import tkinter as tk
+from tkinter import END
 import pygame
 import pygame.mixer
 
 def clear_screen():
+    from main import clear_main_frame
     clear_main_frame() # Updated to TKinter function
 
 def press_enter_to_return():
-    print("\nPress Enter to return to the game.")
+    update_output("\nPress Enter to return to the game.")
     while True:
         return_input = input("\n> ").strip().lower()
         if return_input == '':
             clear_screen()
             break
         else:
-            print("Invalid input. Press Enter to return to the game.")
-
-# had the below twice
-""" def update_main_window(message, text_widget):
-    print(f"Updating main window with message: {message}") # debugging
-    text_widget.insert(tk.END, message + "\n")
-    text_widget.see(tk.END) """
+            update_output("Invalid input. Press Enter to return to the game.")
 
 # replace every print with function to append text to main window text widget
 def update_main_window(message):
@@ -36,11 +32,10 @@ def handle_sound_control(command, sfx_volume):
             set = test_vol/100
             pygame.mixer.music.set_volume(0.3 *set)
         else:
-            print("that isnt possible")
+            update_output("that isnt possible")
 
     elif command.startswith("fx"):   # <-- Fixed line
         test_vol = check_wanted_vol(pair[1])
         if type(test_vol) == type(1) and test_vol in range(0,101):
             sfx_volume = test_vol/100
-        print("sound effects volume changed")
-
+        update_output("sound effects volume changed")

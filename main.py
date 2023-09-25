@@ -1,14 +1,3 @@
-""" working thru: 
-Traceback (most recent call last):
-  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/tkinter/__init__.py", line 1921, in __call__
-    return self.func(*args)
-  File "/Users/stamimi/Capstone-T4-600Feet/main.py", line 42, in handle_input
-    update_game_state_display(game_status_text_widget, player_instance, submarine_instance)
-  File "/Users/stamimi/Capstone-T4-600Feet/main.py", line 189, in update_game_state_display
-    adjacent_rooms = submarine.get_adjacent_rooms(player.current_room)
-AttributeError: 'NoneType' object has no attribute 'get_adjacent_rooms'
- """
-
 import os
 #import functions
 import sys
@@ -29,8 +18,8 @@ continue_label = None
 game_status_text_widget = None
 player_instance = None
 submarine_instance = None
-game_output = None 
-sfx_volume = None
+#game_output = None  # redundant? 
+sfx_volume = 1   # out of 1.0
 
 # function to clear main window
 def clear_main_frame():
@@ -39,7 +28,8 @@ def clear_main_frame():
 # handle user commands
 def handle_input(event):
     # added player_instance, submarine_instance, sfx_volume due to "not defined" errors
-    global state, submarine_instance, player_instance, sfx_volume
+    global state, game_output, player_instance, submarine_instance, sfx_volume
+
     command = user_input.get()
     print(f"Enter key pressed. Command entered: {command}") #debugging
     
@@ -67,10 +57,8 @@ def handle_input(event):
             sys.exit()
         else:
             update_output("Invalid choice. Please choose 1 or 2.")
-    
-    # Process the command and update the GUI text widget
-    process_command(command)
 
+# updates output area #
 def update_output(text): 
     global game_output
     # set text to modifiable 
@@ -86,13 +74,13 @@ def process_command(command, player, submarine, game_output_widget, sfx_volume):
     action = command_parts[0]
 
     if action == "help":
-        handle_game_help(game_output_widget)
+        handle_help(game_output_widget)
     elif action in ["save", "load"]:
         handle_save_load(action, player, submarine)
     elif action == "quit":
-        handle_game_quit()
+        handle_quit()
     elif action == "setsanity1":
-        handle_game_cheats(action, player)
+        handle_cheat(action, player)
     elif action == "map":
         handle_map_display(submarine, player.current_room, game_output_widget)
     elif action == "m":
@@ -154,7 +142,9 @@ def splash_clear(event=None):
     create_main_game_frame()
     bottom_frame()
 
-    global state
+    global state, submarine_instance, player_instance, sfx_volume
+    submarine_instance, player_instance, sfx_volume = initialize_game()
+
     state = "choose_input"
     update_output("Enter '1' for new game, or '2' to quit")
 
@@ -193,6 +183,15 @@ def bottom_frame():
 def update_game_state_display(text_widget, player, submarine):
     # Update the output display with the current game state
     global game_status_text_widget
+
+    ## seeing if it resolves none type error
+    if not submarine:
+        print("Error: submarine object is not initialized.")
+        return
+    if not player:
+        print("Error: player object is not initialized.")
+        return
+    
     text_widget.config(state=tk.NORMAL)  # Enable editing
     text_widget.delete("1.0", tk.END)  # Clear current display
     
@@ -213,10 +212,13 @@ def update_game_state_display(text_widget, player, submarine):
 
 def start_game():
     global state, submarine_instance, player_instance, sfx_volume 
-    #state = "game_state" 
     state = "game_setup" # adding state for debugging
-    submarine, player, sfx_volume, submarine_instance, player_instance, sfx_volume = initialize_game()
-    update_game_state_display(game_status_text_widget, player, submarine)  # Display initial game status
+    print("in game_setup state")
+    
+    submarine_instance, player_instance, sfx_volume = initialize_game()
+    update_game_state_display(game_status_text_widget, player_instance, submarine_instance)
+    #old veersion
+    #update_game_state_display(game_status_text_widget, player, submarine)  # Display initial game status
 
 def initialize_game():
     """Initializes the game state."""
@@ -243,6 +245,41 @@ def initialize_tkinter(): # Initialize Tkinter
     root.title('600 Feet') # title bar
     root.geometry('800x600') # window size
     root.configure(bg='black')  # set window background color to black
+
+##################
+#### COMMANDS ####
+##################
+
+def handle_cheat(command, player):
+    if command == "setsanity1":
+        player.sanity = 1
+        update_output("!! CHEAT ACTIVATED !! Sanity set to 1.")
+
+def handle_help(game_output_widget):
+    #clear_screen() -- command broken at moment, not needed since user can scroll up?
+    update_output("\n=-=-Game Commands-=-=")
+    update_output("-type 'm (room #)' to move rooms ")
+    update_output("-type 't (item name)' to pick up an item")
+    update_output("-type 'look' to see descriptions of the rooms ")
+    update_output("-type 'TA (NPC name)' to talk to an NPC")
+    update_output("-type 'quit' at any point to exit the game")
+    update_output("-type 'drop (item)' to drop an item")
+    update_output("-type 'map' to view a map of the submarine")
+    update_output("\n=-=-Items-=-=")
+    update_output("-there is a key in this game. find the key and take it")
+    update_output("-there is an advil in this game. use the advil to gain 5 sanity points")
+    update_output("\n=-=-Sound Commands-=-=")
+    update_output("-type music (any number 0-100) to lower or increase the music volume")
+    update_output("-type sfx (any number 0-100) to lower or increase the sfx volume")
+    update_output("\n=-=-Save Your Game-=-=")
+    update_output("1. type 'save' 2. at any point type 'load' to restore your save 3. NOTE: saves do not currently carry across sessions")
+    update_output("you should see your previous game")
+    update_output("\n=-=-=-=-=-=-=-=-=\n")
+    #press_enter_to_return() -- not needed in GUI
+
+def handle_quit():
+    update_output("Goodbye...\n")
+    sys.exit()
 
 ## START PROGRAM ##
 root = tk.Tk()
