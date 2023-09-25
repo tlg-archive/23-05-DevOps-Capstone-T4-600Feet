@@ -56,6 +56,7 @@ def handle_input(event):
             sys.exit()
         else:
             update_output("Invalid choice. Please choose 1 or 2.")
+            # Bug: nothing stopping user from entering anything and continuing game
 
 # updates output area #
 def update_output(text): 
@@ -359,7 +360,6 @@ def handle_help(game_output_widget):
     update_output("\n=-=-=-=-=-=-=-=-=\n")
     #press_enter_to_return() -- not needed in GUI
 
-#change action to command? when I finally import
 def handle_item_interaction(player, item_choice, action, submarine):
     if action == "t":
         if submarine.is_item_in_room(item_choice, player.current_room):
@@ -416,8 +416,6 @@ def handle_npc_interaction(player, npc_name, room_content, game_output_widget):
 
         for question in npc_data["dialogue"]:
             update_output(npc_data["dialogue"].get(question)) #, game_output_widget
-            ### ^ getting error AttributeError: 'list' object has no attribute 'get'
-            ### ^ get is for dictionaries, update source?
 
         dialogue_choice = input("\nHow do you want to respond?\n>")
         os.system("cls" if os.name == 'nt' else 'clear')
