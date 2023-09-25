@@ -419,7 +419,7 @@ def handle_npc_interaction(player, npc_name, room_content, game_output_widget):
             ### ^ getting error AttributeError: 'list' object has no attribute 'get'
             ### ^ get is for dictionaries, update source?
 
-        dialogue_choice = input("\nHow do you want to respond?\n> ")
+        dialogue_choice = input("\nHow do you want to respond?\n>")
         os.system("cls" if os.name == 'nt' else 'clear')
 
         while dialogue_choice != '4':
