@@ -2,11 +2,12 @@ import os
 import sys
 import json
 import pygame
+import random
 import tkinter as tk
 from tkinter import Tk, Text, Entry, Frame, Button, Scrollbar, END
 from title import *
 from functions import Submarine, Player, gamedata
-from common import clear_screen, press_enter_to_return, update_main_window, handle_sound_control, play_sound, check_action
+from common import clear_screen, press_enter_to_return, update_main_window, play_sound, check_action
 
 # setting global variables
 game_output = None
@@ -17,7 +18,7 @@ continue_label = None
 game_status_text_widget = None
 player_instance = None
 submarine_instance = None
-sfx_volume = 1   # out of 1.0
+sfx_volume = .9   # out of 1.0
 
 # deprecated globals below
 # player_current_room = 4
@@ -112,10 +113,7 @@ def process_command(command, player, submarine, game_output_widget, sfx_volume):
         else:
             update_output("You need to specify an NPC to talk to.", game_output_widget)
     elif action in ["mu", "fx"]:
-        handle_sound_control(command, sfx_volume)
-    #SAMMY: remarking to test -game_output to fix bug
-    #else:
-        #update_output("Invalid command. Type 'help' for a list of available commands.", game_output_widget)
+        handle_sound_control(command, sfx_volume, game_output_widget)
     else:
         update_output("Invalid command. Type 'help' for a list of available commands.")
 
@@ -406,7 +404,7 @@ def handle_move(player, target_room, submarine, sfx_volume, game_output_widget):
         return
     
     player.move(target_room)
-    # play_sound("walk.mp3", sfx_volume) #disabled until importing sound
+    play_sound("walk.mp3", sfx_volume) 
 
     if player.sanity == 0:
         reset_saved_data() # why did OG team implement?
@@ -414,6 +412,62 @@ def handle_move(player, target_room, submarine, sfx_volume, game_output_widget):
         ### SAMMY: SET UP FUNCTION OR TRANSITION BACK TO GAME? ###
         update_output("Dread stains your soul as you realize you are caught in a dreadful loop. The cycle of suffering begins anew...")
         start_game()
+
+def handle_npc_interaction(player, npc_name, room_content, game_output_widget):
+    npc_data = room_content[0]
+    
+    if npc_name.lower() == npc_data['nameOfNpc'].lower():
+        npc_intros = npc_data['intros']
+        update_output(random.choice(npc_intros)) #, game_output_widget
+
+        for question in npc_data["dialogue"]:
+            update_output(npc_data["dialogue"].get(question)) #, game_output_widget
+            ### ^ getting error AttributeError: 'list' object has no attribute 'get'
+            ### ^ get is for dictionaries, update source?
+
+        dialogue_choice = input("\nHow do you want to respond?\n> ")
+        os.system("cls" if os.name == 'nt' else 'clear')
+
+        while dialogue_choice != '4':
+            if npc_data["responses"].get(dialogue_choice) == None:
+                update_output("You must input a value between 1 and 4.\n") #, game_output_widget
+            else:
+                update_output(npc_data["responses"].get(dialogue_choice)) #, game_output_widget
+
+            for question in npc_data["dialogue"]:
+                update_output(npc_data["dialogue"].get(question)) #, game_output_widget
+
+            dialogue_choice = input("\nHow do you want to respond?\n> ")
+
+        update_output(npc_data["responses"].get('4')) #, game_output_widget
+    else:
+        update_output(f"You can't talk to {npc_name}\n") #, game_output_widget
+        update_output(f"Did you mean 'talk {npc_data['nameOfNpc']}'?\n") #, game_output_widget
+
+""" OLD def handle_npc_interaction(player, npc_name, room_content):
+    if npc_name.lower() == room_content[0]['nameOfNpc'].lower():
+        npc_intros = room_content[0]['intros']
+        print(random.choice(npc_intros))
+        if pair[1].lower() == room_content[0]['nameOfNpc'].lower():
+            npc_intros = room_content[0]['intros']
+            update_output(random.choice(npc_intros))
+            for question in room_content[0]["dialogue"]:
+                update_output(room_content[0]["dialogue"].get(question))
+            dialogue_choice = input("\nHow do you want to respond?\n> ")
+            os.system("cls" if os.name == 'nt' else 'clear')
+            while dialogue_choice != '4':
+                if room_content[0]["responses"].get(dialogue_choice) == None:
+                    update_output("You must input a value between 1 and 4.\n")
+                else:
+                    update_output(room_content[0]["responses"].get(dialogue_choice))
+                for question in room_content[0]["dialogue"]:
+                    update_output(room_content[0]["dialogue"].get(question))
+                dialogue_choice = input("\nHow do you want to respond?\n> ")
+                #os.system("cls" if os.name == 'nt' else 'clear') # not needed?
+            update_output(room_content[0]["responses"].get('4'))
+        else:
+            update_output(f"You can't talk to {pair[1]}\n")
+            update_output(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n") """
 
 def handle_quit():
     #Add delay?
@@ -425,6 +479,48 @@ def handle_save_load(command, player, submarine):
         save_game(player, submarine)
     elif command == "load":
         load_game(player, submarine)
+
+def handle_sound_control(command, sfx_volume, game_output_widget):
+    from functions import check_wanted_vol
+
+    # Split the command into action and arguments
+    command_parts = command.lower().split()
+
+    if len(command_parts) < 2:
+        update_output("You need to specify a volume level.")
+        return
+
+    # Check the desired volume level
+    test_vol = check_wanted_vol(command_parts[1])
+
+    if type(test_vol) == type(1) and 0 <= test_vol <= 100:
+        set_volume = test_vol / 100
+
+        if command.startswith("mu"):
+            pygame.mixer.music.set_volume(0.3 * set_volume)
+            update_output("Music volume changed.")
+        elif command.startswith("fx"):
+            sfx_volume = set_volume
+            update_output("Sound effects volume changed.")
+    else:
+        update_output("That isn't possible.")
+
+""" OLD: def handle_sound_control(command, sfx_volume):
+    from functions import check_wanted_vol
+    global pair
+    if command.startswith("mu"):
+        test_vol = check_wanted_vol(pair[1])
+        if type(test_vol) == type(1) and test_vol in range(0,101):
+            set = test_vol/100
+            pygame.mixer.music.set_volume(0.3 *set)
+        else:
+            update_output("that isnt possible")
+
+    elif command.startswith("fx"):   # <-- Fixed line
+        test_vol = check_wanted_vol(pair[1])
+        if type(test_vol) == type(1) and test_vol in range(0,101):
+            sfx_volume = test_vol/100
+        update_output("sound effects volume changed") """
 
 # def handle_sound_control() in common.py 
 

@@ -83,24 +83,7 @@ def check_action(given_action):
 ########################
 ### SOUND AND VOLUME ###
 ########################
-
-def handle_sound_control(command, sfx_volume):
-    from functions import check_wanted_vol
-    global pair
-    if command.startswith("mu"):
-        test_vol = check_wanted_vol(pair[1])
-        if type(test_vol) == type(1) and test_vol in range(0,101):
-            set = test_vol/100
-            pygame.mixer.music.set_volume(0.3 *set)
-        else:
-            update_output("that isnt possible")
-
-    elif command.startswith("fx"):   # <-- Fixed line
-        test_vol = check_wanted_vol(pair[1])
-        if type(test_vol) == type(1) and test_vol in range(0,101):
-            sfx_volume = test_vol/100
-        update_output("sound effects volume changed")
-
+ 
 def play_sound(filename, volume):
     sound = pygame.mixer.Sound(filename)
     sound.set_volume(volume)
