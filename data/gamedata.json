@@ -85,9 +85,9 @@
                     "Location": "",
                     "intros": "",
                     "dialogue": {
-                      "question1": "Has something felt off with Connor to you?",
-                      "question2": "Has Chad been acting weird to you",
-                      "question3": "Alan has been pretty on edge, do you think happened?",
+                      "question1": "[user type 1-4]\n1. Has something felt off with Connor to you?",
+                      "question2": "2. Has Chad been acting weird to you",
+                      "question3": "3. Alan has been pretty on edge, do you think happened?",
                       "question4": ""
                   },
                   "responses": {
@@ -115,10 +115,10 @@
                   "Location": "Chad's Quarters",
                   "intros": ["Hey buddy!!! Great to see you, come on in, I am just reading my DM manual"],
                   "dialogue": {
-                    "question1": "Have you seen Connor he has been acting a little different",
-                    "question2": "What do you think of John?",
-                    "question3": "Have you seen Alan?",
-                    "question4": ""
+                    "question1": "[user type 1-4]\n1. Have you seen Connor he has been acting a little different",
+                    "question2": "2. What do you think of John?",
+                    "question3": "3. Have you seen Alan?",
+                    "question4": "4. "
                 },
                 "responses": {
                     "1": "Thats a weird question to ask you ok?",
@@ -140,18 +140,18 @@
                 "npc": {
                     "nameOfNpc": "Connor",
                   "Location": "Connor's Quarters",
-                  "intros": ["What do you want?"],
+                  "intros": ["What do you want?\n"],
                   "dialogue": {
-                    "question1": "You ok?",
-                    "question2": "You talk to Chad about the game tonight",
-                    "question3": "You worked with John right? You get along?",
-                    "question4": "Have you checked on Alan"
+                    "question1": "[user type 1-4]\n1.You ok?",
+                    "question2": "2.You talk to Chad about the game tonight",
+                    "question3": "3.You worked with John right? You get along?",
+                    "question4": "4.Have you checked on Alan"
                 },
                 "responses": {
-                    "1": "yes",
-                    "2": "yes and if not I will",
-                    "3": "Do we?",
-                    "4": "Probably should"
+                    "1": "Connor: 'Yes'\n",
+                    "2": "Connor: 'yes and if not I will'\n",
+                    "3": "Connor: 'Do we?'\n",
+                    "4": "Connor: 'Probably should'\n"
                 }
                },
                 "items": {
@@ -167,18 +167,18 @@
                 "npc": {
                     "nameOfNpc": "Alan",
                     "Location": "Alan's Quarters",
-                    "intros": ["Hey young blood what do you need, I am just cleaning up"],
+                    "intros": ["Alan: 'Hey young blood what do you need, I am just cleaning up' \n"],
                     "dialogue": {
-                      "question1": "Oh my god what happened",
-                      "question2": "Have you asked Chad",
-                      "question3": "Where you mad at Connor?",
-                      "question4": "You ask John?"
+                      "question1": "[user type 1-4]\n1. Oh my god what happened",
+                      "question2": "2. Have you asked Chad",
+                      "question3": "3. Have you talked to Connor?",
+                      "question4": "4. You ask John?"
                   },
                   "responses": {
-                      "1": "Someone broke into my room and destroyed everything even dented my safe.",
-                      "2": "Chad is too busy with his elf dragon books to know what happened.",
-                      "3": "um....... no did you see anything",
-                      "4": "John doesn't leave his room he doesnt have to"
+                      "1": "Alan: 'Someone broke into my room and destroyed everything even dented my safe.'\n",
+                      "2": "Alan: 'Chad is too busy with his elf dragon books to know what happened.'\n",
+                      "3": "Alan: 'um....... no did you see anything'\n",
+                      "4": "Alan: 'John doesn't leave his room he doesnt have to'\n"
                   }
                  },
                 "items": {
