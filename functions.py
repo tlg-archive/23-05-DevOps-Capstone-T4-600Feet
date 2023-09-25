@@ -442,7 +442,7 @@ def main():
                     print(random.choice(npc_intros))
                     for question in room_content[0]["dialogue"]:
                         print(room_content[0]["dialogue"].get(question))
-                    dialogue_choice = input("\nHow do you want to respond?\n> ")
+                    dialogue_choice = input("\nHow do you want to respond? [user type 1-4] \n> ")
                     os.system("cls" if os.name == 'nt' else 'clear')
                     while dialogue_choice != '4':
                         if room_content[0]["responses"].get(dialogue_choice) == None:
