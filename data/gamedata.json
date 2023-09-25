@@ -17,7 +17,7 @@
             "id": 1,
             "adjacent": [1, 3],
             "intros": "It is easy to stop feeling like yourself in such grim conditions thankfully the supply room has just the thing to take the edge off. The room is filled with different medicine and supplies need to make you feel like yourself again",
-            "room_content": {
+            "content": {
                "npc": {
                   "nameOfNpc": "nobody",
                   "Location": "",
@@ -48,7 +48,7 @@
             "id": 2,
             "adjacent": [2, 4],
             "Description": "A room that can be described as organized chaos, nothings looks like it is where it is supposed to be but you know where everything is. Oddly enough there is a key on the floor that stands out from the chaos",
-            "room_content": {
+            "content": {
                "npc": {
                 "nameOfNpc": "nobody",
                 "Location": "",
@@ -79,7 +79,7 @@
             "id": 3,
             "adjacent": [3, 5, 4, 1],
             "Description": "A clean and organized room, not pictures or anything to show some type of personality. It has the bare minimum to survive and be comfortable",
-            "room_content": {
+            "content": {
                 "npc": {
                     "nameOfNpc": "nobody",
                     "Location": "",
@@ -109,7 +109,7 @@
             "id": 4,
             "adjacent": [4, 2, 3, 6],
             "Description": "A room full of personality, posters all around with different dragons and fantasy characters.",
-            "room_content": {
+            "content": {
                 "npc": {
                     "nameOfNpc": "Chad",
                   "Location": "Chad's Quarters",
@@ -136,7 +136,7 @@
             "id": 5,
             "adjacent": [5, 6, 3],
             "Description": "A rather plain room, clean and organized but nothing special about it",
-            "room_content": {
+            "content": {
                 "npc": {
                     "nameOfNpc": "Connor",
                   "Location": "Connor's Quarters",
@@ -163,7 +163,7 @@
             "id": 6,
             "adjacent": [6, 5, 4],
             "Description": "A room that is usually organized and clean is now completely destroyed. There is a dented safe in the corner and boxes and paper thrown across the ground",
-            "room_content": {
+            "content": {
                 "npc": {
                     "nameOfNpc": "Alan",
                     "Location": "Alan's Quarters",
