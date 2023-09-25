@@ -202,7 +202,7 @@ class Submarine:
                 map_visual[idx] = line.replace(f"[{player_current_room}]", f"[YOU ARE HERE {player_current_room}]")
 
         for line in map_visual:
-            print(line)
+            update_output(line)
 
 # Example of usage
 #sub = Submarine()
@@ -266,9 +266,6 @@ def handle_item_interaction(player, item_choice, action, submarine):
             print(f"You dropped {item_choice} in the room.")
         else:
             print(f"You don't have a {item_choice} to drop.")
-
-def handle_map_display(submarine, player_current_room):
-    submarine.display_map(player_current_room)
 
 def handle_npc_interaction(player, npc_name, room_content):
     if npc_name.lower() == room_content[0]['nameOfNpc'].lower():

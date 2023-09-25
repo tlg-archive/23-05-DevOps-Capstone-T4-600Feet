@@ -20,6 +20,7 @@ player_instance = None
 submarine_instance = None
 #game_output = None  # redundant? 
 sfx_volume = 1   # out of 1.0
+#player_current_room = 4
 
 # function to clear main window
 def clear_main_frame():
@@ -82,7 +83,7 @@ def process_command(command, player, submarine, game_output_widget, sfx_volume):
     elif action == "setsanity1":
         handle_cheat(action, player)
     elif action == "map":
-        handle_map_display(submarine, player.current_room, game_output_widget)
+        handle_map(submarine, player.current_room, game_output_widget)
     elif action == "m":
         if len(command_parts) > 1:
             target_room = int(command_parts[1])
@@ -156,13 +157,13 @@ def create_main_game_frame():
     
     # Print game status info
     # SAMMY: LIMITED TO 10 FOR NOW BUT CAN BE ADJUSTED
-    game_status_text_widget = tk.Text(main_frame, wrap=tk.WORD, height=10, width=70, font=("Arial", 20), fg='white', bg='black', bd=0, highlightthickness=0)
+    game_status_text_widget = tk.Text(main_frame, wrap=tk.WORD, height=10, width=70, font=("Courier New", 20), fg='white', bg='black', bd=0, highlightthickness=0)
     game_status_text_widget.pack(pady=10, padx=20, fill="both", expand=True)
     game_status_text_widget.config(state=tk.DISABLED)
 
     # Place game_output in the main frame
     # SAMMY: LIMITED TO 5 FOR NOW BUT CAN BE ADJUSTED
-    game_output = Text(main_frame, wrap=tk.WORD, height=5, width=70, font=("Arial", 20), fg='white', bg='black', bd=0, highlightthickness=0)
+    game_output = Text(main_frame, wrap=tk.WORD, height=5, width=70, font=("Courier New", 20), fg='white', bg='black', bd=0, highlightthickness=0)
     game_output.pack(pady=10, padx=20, fill="both", expand=True)
     game_output.config(state=tk.DISABLED)
 
@@ -174,7 +175,7 @@ def bottom_frame():
     bottom_frame = Frame(root, bg='red')
     bottom_frame.pack(pady=10, padx=20, fill="x")
     # Place user_input in the bottom frame
-    user_input = tk.Entry(bottom_frame, font=("Arial", 20), fg='black', bg='white', width=50)
+    user_input = tk.Entry(bottom_frame, font=("Courier New", 20), fg='black', bg='white', width=50)
     user_input.pack(pady=10, padx=20, fill="x")
     # Place curson in input box
     user_input.focus_set()
@@ -250,6 +251,29 @@ def initialize_tkinter(): # Initialize Tkinter
 #### COMMANDS ####
 ##################
 
+def display_map(player_current_room):
+    map_visual = [
+        "                ------>Alan's Quarters[6]<--------------",
+        "               |              ^                        |",
+        "               |              |                        |",
+        "               |              |                        |",
+        "               V              V                        V",
+        "Connor's Quarters[5]<--->John's Quarters[3]<--->Chad's Quarters[4]",
+        "               ^                                       ^",
+        "               |                                       |",
+        "               |                                       |",
+        "               V                                       V",
+        "    Supply Room[1](Advil)                      Storage Area[2](Key)"
+    ]
+
+    # Highlight the player's current room
+    for idx, line in enumerate(map_visual):
+        if f"[{player_current_room}]" in line:
+            map_visual[idx] = line.replace(f"[{player_current_room}]", f"[YOU ARE HERE {player_current_room}]")
+
+    for line in map_visual:
+        update_output(line)
+
 def handle_cheat(command, player):
     if command == "setsanity1":
         player.sanity = 1
@@ -277,7 +301,11 @@ def handle_help(game_output_widget):
     update_output("\n=-=-=-=-=-=-=-=-=\n")
     #press_enter_to_return() -- not needed in GUI
 
+def handle_map(submarine, player_current_room, game_output_widget):
+    display_map(player_current_room)
+
 def handle_quit():
+    #Add delay?
     update_output("Goodbye...\n")
     sys.exit()
 
