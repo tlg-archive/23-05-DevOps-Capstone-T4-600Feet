@@ -1,4 +1,5 @@
-"titlesplash": {
+{
+    "titlesplash": {
         "name": "600ft",
         "description": "In the depths of the ocean, where sunlight rarely pierces through the water's murky veil, there you live aboard a submarine. It's a world in itself, a metal giant that flows through the undersea depths, carrying a diverse crew of sailors into the unknown. But within the confines of this steel vessel, reality begins to blur, and sanity is a fragile commodity. As you walk the fine line between reality and illusion, your interactions with the crew will shape your journey. Will you uncover the truth of what's happening on board, or will you succumb to the inevitable madness and fall victim to an unknown truth? You must talk to your fellow crew members and find out what is really going on. There are several objects and people on board that may point you in the right direction of what’s going on. Make sure you work quickly; a mind is a terrible thing to waste or, in this case, lose...",
         "intro": "You zoned out and slowly come back to reality. You realize you are outside of Chad’s room but vaguely remember coming over to talk to him. You walk through the galley, assuming you needed something from Chad, hoping to remember when you get there. \nAt any point, you can type 'help' to bring up valid commands.",
@@ -20,7 +21,7 @@
                "npc": {
                   "nameOfNpc": "nobody",
                   "Location": "",
-                  "intros": "",
+                  "intros": ["You hear silence"],
                   "dialogue": {
                     "question1": "",
                     "question2": "",
@@ -51,7 +52,7 @@
                "npc": {
                 "nameOfNpc": "nobody",
                 "Location": "",
-                "intros": "",
+                "intros": ["You hear silence"],
                 "dialogue": {
                   "question1": "",
                   "question2": "",
@@ -174,10 +175,10 @@
                       "question4": "You ask John?"
                   },
                   "responses": {
-                      "1": "",
-                      "2": "",
-                      "3": "",
-                      "4": ""
+                      "1": "Someone broke into my room and destroyed everything even dented my safe.",
+                      "2": "Chad is too busy with his elf dragon books to know what happened.",
+                      "3": "um....... no did you see anything",
+                      "4": "John doesn't leave his room he doesnt have to"
                   }
                  },
                 "items": {
@@ -186,4 +187,3 @@
         }
     ]
 }
-
