@@ -17,18 +17,28 @@
             "id": 1,
             "adjacent": [1, 3],
             "intros": "It is easy to stop feeling like yourself in such grim conditions thankfully the supply room has just the thing to take the edge off. The room is filled with different medicine and supplies need to make you feel like yourself again",
-            "content": {
+            "room_content": {
                "npc": {
                   "nameOfNpc": "nobody",
                   "Location": "",
                   "intros": "",
-                  "dialogue": []
+                  "dialogue": {
+                    "question1": "",
+                    "question2": "",
+                    "question3": "",
+                    "question4": ""
+                },
+                "responses": {
+                    "1": "",
+                    "2": "",
+                    "3": "",
+                    "4": ""
+                }
                },
 
                 "items": {
                     "advil": {
-                        "heal": 5,
-                        "description": "Will help to recover lost sanity points and prevent you from falling victim to your thoughts"
+                        "heal": 5
                     }
                 }
             }
@@ -38,18 +48,28 @@
             "id": 2,
             "adjacent": [2, 4],
             "Description": "A room that can be described as organized chaos, nothings looks like it is where it is supposed to be but you know where everything is. Oddly enough there is a key on the floor that stands out from the chaos",
-            "content": {
+            "room_content": {
                "npc": {
-                  "nameOfNpc": "nobody",
-                  "Location": "",
-                  "intros": "A room that can be described as organized chaos, nothings looks like it is where it is supposed to be but you know where everything is. Oddly enough there is a key on the floor that stands out from the chaos",
-                  "dialogue": []
-               },
+                "nameOfNpc": "nobody",
+                "Location": "",
+                "intros": "",
+                "dialogue": {
+                  "question1": "",
+                  "question2": "",
+                  "question3": "",
+                  "question4": ""
+              },
+              "responses": {
+                  "1": "",
+                  "2": "",
+                  "3": "",
+                  "4": ""
+              }
+             },
 
                 "items": {
                     "Computer": {},
                     "key": {
-                        "description": "A mysterious key lays on the floor, it does not match the dark gloomy feeling of the room. It looks to be lined with gold and have a bright red design on it there is also a name that you cannot make out on it"
                     }
                 }
             }
@@ -59,26 +79,24 @@
             "id": 3,
             "adjacent": [3, 5, 4, 1],
             "Description": "A clean and organized room, not pictures or anything to show some type of personality. It has the bare minimum to survive and be comfortable",
-            "content": {
+            "room_content": {
                 "npc": {
-                    "nameOfNpc": "John",
-                    "Location": "John's Quarters",
-                    "intros": "What you want I'm off the clock for another 4 hours",
-                    "dialogue": [
-                        {
-                            "Choice": "Has something felt off with Connor to you?",
-                            "Response": "..... stay away from that topic."
-                        },
-                        {
-                            "Choice": "Has Chad been acting weird to you",
-                            "Response": "Chad is always weird with all those voices, if he was acting normal then I'd be concerned"
-                        },
-                        {
-                            "Choice": "Alan has been pretty on edge, do you think happened?",
-                            "Response": "Someone went through his room and put a dent in his safe, so I would be on edge too."
-                        }
-                    ]
-                },
+                    "nameOfNpc": "nobody",
+                    "Location": "",
+                    "intros": "",
+                    "dialogue": {
+                      "question1": "Has something felt off with Connor to you?",
+                      "question2": "Has Chad been acting weird to you",
+                      "question3": "Alan has been pretty on edge, do you think happened?",
+                      "question4": ""
+                  },
+                  "responses": {
+                      "1": "..... stay away from that topic.",
+                      "2": "Chad is always weird with all those voices, if he was acting normal then I'd be concerned",
+                      "3": "Someone went through his room and put a dent in his safe, so I would be on edge too.",
+                      "4": ""
+                  }
+                 },
 
                 "items": {
                    }
@@ -91,26 +109,24 @@
             "id": 4,
             "adjacent": [4, 2, 3, 6],
             "Description": "A room full of personality, posters all around with different dragons and fantasy characters.",
-            "content": {
+            "room_content": {
                 "npc": {
                     "nameOfNpc": "Chad",
-                    "Location": "Chad's Quarters",
-                    "intros": "Hey buddy!!! Great to see you, come on in, I am just reading my DM manual",
-                    "dialogue": [
-                        {
-                            "Choice": "Have you seen Connor he has been acting a little different",
-                            "Response": "Thats a weird question to ask you ok?."
-                        },
-                        {
-                            "Choice": "What do you think of John?",
-                            "Response": "He is a little introverted but a lot of fun to game with"
-                        },
-                        {
-                            "Choice": "Have you seen Alan?",
-                            "Response": "He is in his room someone destroyed it, not cool at all"
-                        }
-                    ]
+                  "Location": "Chad's Quarters",
+                  "intros": "Hey buddy!!! Great to see you, come on in, I am just reading my DM manual",
+                  "dialogue": {
+                    "question1": "Have you seen Connor he has been acting a little different",
+                    "question2": "What do you think of John?",
+                    "question3": "Have you seen Alan?",
+                    "question4": ""
                 },
+                "responses": {
+                    "1": "Thats a weird question to ask you ok?",
+                    "2": "He is a little introverted but a lot of fun to game with",
+                    "3": "He is in his room someone destroyed it, not cool at all",
+                    "4": ""
+                }
+               },
                 "items": {
                }
             }
@@ -120,30 +136,24 @@
             "id": 5,
             "adjacent": [5, 6, 3],
             "Description": "A rather plain room, clean and organized but nothing special about it",
-            "content": {
+            "room_content": {
                 "npc": {
                     "nameOfNpc": "Connor",
-                    "Location": "Connor's Quarters",
-                    "intros": "What do you want?",
-                    "dialogue": [
-                        {
-                            "Choice": "You ok?",
-                            "Response": "yes"
-                        },
-                        {
-                            "Choice": "You talk to Chad about the game tonight",
-                            "Response": "yes and if not I will"
-                        },
-                        {
-                            "Choice": "You worked with John right? You get along?",
-                            "Response": "Do we?"
-                        },
-                        {
-                            "Choice": "Have you checked on Alan",
-                            "Response": "Probably should"
-                        }
-                    ]
+                  "Location": "Connor's Quarters",
+                  "intros": "What do you want?",
+                  "dialogue": {
+                    "question1": "You ok?",
+                    "question2": "You talk to Chad about the game tonight",
+                    "question3": "You worked with John right? You get along?",
+                    "question4": "Have you checked on Alan"
                 },
+                "responses": {
+                    "1": "yes",
+                    "2": "yes and if not I will",
+                    "3": "Do we?",
+                    "4": "Probably should"
+                }
+               },
                 "items": {
                }
             }
@@ -153,30 +163,24 @@
             "id": 6,
             "adjacent": [6, 5, 4],
             "Description": "A room that is usually organized and clean is now completely destroyed. There is a dented safe in the corner and boxes and paper thrown across the ground",
-            "content": {
+            "room_content": {
                 "npc": {
                     "nameOfNpc": "Alan",
                     "Location": "Alan's Quarters",
-                    "intros": "Hey Green horn what do you need",
-                    "dialogue": [
-                        {
-                            "Choice": "Oh my god what happened",
-                            "Response": "Someone completely destroyed my room, for no clear reason"
-                        },
-                        {
-                            "Choice": "Have you asked Chad",
-                            "Response": "He was with me when it happened, and no one else could lift my safe"
-                        },
-                        {
-                            "Choice": "Where you mad at Connor?",
-                            "Response": "We had some beef but nothing to destroy my room over"
-                        },
-                        {
-                            "Choice": "You ask John?",
-                            "Response": "I don't think he did it but who knows"
-                        }
-                    ]
-                },
+                    "intros": "Hey young blood what do you need, I am just cleaning up",
+                    "dialogue": {
+                      "question1": "Oh my god what happened",
+                      "question2": "Have you asked Chad",
+                      "question3": "Where you mad at Connor?",
+                      "question4": "You ask John?"
+                  },
+                  "responses": {
+                      "1": "",
+                      "2": "",
+                      "3": "",
+                      "4": ""
+                  }
+                 },
                 "items": {
                }
             }
