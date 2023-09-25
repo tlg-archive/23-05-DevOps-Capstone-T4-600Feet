@@ -82,6 +82,9 @@ def process_command(command, player, submarine, game_output_widget, sfx_volume):
         handle_quit()
     elif action == "setsanity1":
         handle_cheat(action, player)
+    # Not sure about this
+    elif action == "look":
+        handle_look(command, player, submarine)
     elif action == "map":
         handle_map(submarine, player.current_room, game_output_widget)
     elif action == "m":
@@ -300,20 +303,32 @@ def display_map(player_current_room):
         "               |              |                        |",
         "               V              V                        V",
         "Connor's Quarters[5]<--->John's Quarters[3]<--->Chad's Quarters[4]",
-        "               ^                                       ^",
-        "               |                                       |",
-        "               |                                       |",
-        "               V                                       V",
-        "    Supply Room[1](Advil)                      Storage Area[2](Key)"
+        "                              |                        ^",
+        "                              |                        |",
+        "                              |                        |",
+        "                              V                        V",
+        "                    Supply Room[1](Advil)      Storage Area[2](Key)"
     ]
 
     # Highlight the player's current room
     for idx, line in enumerate(map_visual):
         if f"[{player_current_room}]" in line:
-            map_visual[idx] = line.replace(f"[{player_current_room}]", f"[YOU ARE HERE {player_current_room}]")
+            map_visual[idx] = line.replace(f"[{player_current_room}]", f"[*YOU* {player_current_room}]")
 
     for line in map_visual:
         update_output(line)
+
+#################
+### LOOK CODE ### 
+#################
+
+def display_look(oobject):
+    npc = oobject[0]['nameOfNpc']
+    items = ' and '.join(oobject[1].keys())
+
+    update_output(f"You look around and see {npc}.\n")
+    if len(oobject[1]) > 0:
+        update_output(f"You also see {items}.\n")
 
 ##################
 #### COMMANDS ####
@@ -345,6 +360,31 @@ def handle_help(game_output_widget):
     update_output("you should see your previous game")
     update_output("\n=-=-=-=-=-=-=-=-=\n")
     #press_enter_to_return() -- not needed in GUI
+
+#change action to command? when I finally import
+def handle_item_interaction(player, item_choice, action, submarine):
+    if action == "take":
+        if submarine.is_item_in_room(item_choice, player.current_room):
+            player.add_to_inventory(item_choice)
+            submarine.rem_room_content(item_choice, player.current_room)
+            update_output(f"You picked up {item_choice}")
+        else:
+            update_output(f"There is no {item_choice} to pick up.")
+    elif action == "use":
+        player.use_item(item_choice)
+    elif action == "drop":
+        if item_choice in player.inventory:
+            player.remove_from_inventory(item_choice)
+            submarine.place_item(item_choice, player.current_room)
+            update_output(f"You dropped {item_choice} in the room.")
+        else:
+            update_output(f"You don't have a {item_choice} to drop.")
+
+#not sure about this
+def handle_look(command, player, submarine):
+    if command == "look":
+        room_content = submarine.get_room_content(player.current_room)
+        display_look(room_content)
 
 def handle_map(submarine, player_current_room, game_output_widget):
     display_map(player_current_room)

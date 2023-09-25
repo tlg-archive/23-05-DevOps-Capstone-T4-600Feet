@@ -91,14 +91,6 @@ def play_sound(filename, volume):
     sound.set_volume(volume)
     sound.play()
 
-def display_look(oobject):
-    npc = oobject[0]['nameOfNpc']
-    items = ' and '.join(oobject[1].keys())
-
-    print(f"You look around and see {npc}.\n")
-    if len(oobject[1]) > 0:
-        print(f"You also see {items}.\n")
-
 ######################################
 #######Map and Submarine Code#########
 ######################################
@@ -169,26 +161,6 @@ class Player:
 ### tkinter handlers ###
 ########################
 
-####  in main: cheat, help, quit
-
-def handle_item_interaction(player, item_choice, action, submarine):
-    if action == "take":
-        if submarine.is_item_in_room(item_choice, player.current_room):
-            player.add_to_inventory(item_choice)
-            submarine.rem_room_content(item_choice, player.current_room)
-            print(f"You picked up {item_choice}")
-        else:
-            print(f"There is no {item_choice} to pick up.")
-    elif action == "use":
-        player.use_item(item_choice)
-    elif action == "drop":
-        if item_choice in player.inventory:
-            player.remove_from_inventory(item_choice)
-            submarine.place_item(item_choice, player.current_room)
-            print(f"You dropped {item_choice} in the room.")
-        else:
-            print(f"You don't have a {item_choice} to drop.")
-
 def handle_npc_interaction(player, npc_name, room_content):
     if npc_name.lower() == room_content[0]['nameOfNpc'].lower():
         npc_intros = room_content[0]['intros']
@@ -214,41 +186,11 @@ def handle_npc_interaction(player, npc_name, room_content):
             print(f"You can't talk to {pair[1]}\n")
             print(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n")
 
-
-
-# DEF HANDLE_SOUND_COUNTROL(COMMAND, SFX_VOLUME) IN COMMON.PY
-
 ##################################
 ######Game Setup / Start #########
 ##################################
 
 
-""" while True:  KILLING TO TEST FOR BUGS
-    command = input("What do you want to do?\n>").lower()
-
-    # One word commands    
-    if command == "help":
-        handle_game_help()
-    elif command in ["save", "load"]:
-        handle_save_load(command, player, submarine)
-    elif command == "quit":
-        handle_game_quit()
-    elif command == "setsanity1":
-        handle_game_cheats(command, player)
-    elif command == "map":
-        handle_map_display(submarine, player.current_room)
-
-    # Two word commands
-    action = command.split()[0]
-    if action == "m":
-        handle_player_movement(player, int(command.split()[1]), submarine, sfx_volume)
-    elif action in ["take", "use", "drop"]:
-        handle_item_interaction(player, command.split()[1], action, submarine)
-    elif action == "ta":
-        handle_npc_interaction(player, command.split()[1], submarine.get_room_content(player.current_room))
-    elif action in ["mu", "fx"]:
-        handle_sound_control(command, sfx_volume)
- """
 # OLD CODE UINCORPORATED FOR CONSOLE LOOP
 
 """ def main():
