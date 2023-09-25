@@ -1,5 +1,4 @@
 import os
-#import functions
 import sys
 import json
 import pygame
@@ -7,7 +6,7 @@ import tkinter as tk
 from tkinter import Tk, Text, Entry, Frame, Button, Scrollbar, END
 from title import *
 from functions import Submarine, Player, gamedata
-from common import clear_screen, press_enter_to_return, update_main_window, handle_sound_control
+from common import clear_screen, press_enter_to_return, update_main_window, handle_sound_control, play_sound, check_action
 
 # setting global variables
 game_output = None
@@ -18,9 +17,11 @@ continue_label = None
 game_status_text_widget = None
 player_instance = None
 submarine_instance = None
-#game_output = None  # redundant? 
 sfx_volume = 1   # out of 1.0
-#player_current_room = 4
+
+# deprecated globals below
+# player_current_room = 4
+# game_output = None  # redundant? 
 
 # function to clear main window
 def clear_main_frame():
@@ -72,7 +73,12 @@ def update_output(text):
 def process_command(command, player, submarine, game_output_widget, sfx_volume):
     # Split the command into action and arguments
     command_parts = command.lower().split()
-    action = command_parts[0]
+    action = check_action(command_parts[0])
+
+    if action == 'invalid':
+        update_output("That is not a valid action. Type 'help' for a list of available commands.")
+        # was: update_output("That is not a valid action. Type 'help' for a list of available commands.", game_output_widget)
+        return
 
     if action == "help":
         handle_help(game_output_widget)
@@ -248,9 +254,9 @@ def initialize_tkinter(): # Initialize Tkinter
     root.geometry('800x600') # window size
     root.configure(bg='black')  # set window background color to black
 
-############################################
-###### SAVE, LOAD, & RESET SAVE CODE #######
-############################################
+#####################################
+### SAVE, LOAD, & RESET SAVE CODE ###
+#####################################
 
 def save_game(player, submarine):
     save_data = {
@@ -330,9 +336,9 @@ def display_look(oobject):
     if len(oobject[1]) > 0:
         update_output(f"You also see {items}.\n")
 
-##################
-#### COMMANDS ####
-##################
+################
+### COMMANDS ###
+################
 
 def handle_cheat(command, player):
     if command == "setsanity1":
@@ -422,7 +428,10 @@ def handle_save_load(command, player, submarine):
 
 # def handle_sound_control() in common.py 
 
-## START PROGRAM ##
+#####################
+### START PROGRAM ###
+#####################
+
 root = tk.Tk()
 initialize_tkinter()
 splash()

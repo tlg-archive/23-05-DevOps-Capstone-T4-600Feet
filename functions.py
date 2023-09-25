@@ -11,54 +11,11 @@ from common import clear_screen, press_enter_to_return, update_main_window, hand
 
 f = open('./data/gamedata.json')
 gen = json.load(f)
-
-##################################
-#####Available Action Commands#####
-##################################
-
-move = ["move", "go", "travel", "run", "m"]
-talk = ["talk", "speak", "chat", "ta", "ask"]
-look = ["examine", "look", "focus", "observe", "inspect", "l"]
-take = ["grab", "take", "t", "pickup", "get"]
-use = ["use", "interact", "u"]
-map = ["map"]
-drop = ['delete', 'drop']
-music = ["music"]
-effects = ["sfx", "fx"]
-allpossible = ["u", "map", "get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact", "music", 'sfx', 'fx']
-
 gamedata = gen#json.load(f)
 
 ################################################
-###Action Command Check from Previous List######
+### ROOM AND FLOOR SET UP WITH NUMERIC VALUE ###
 ################################################
-
-def check_action(given_action):
-    if given_action in allpossible:
-        if given_action in music:
-            return 'mu'
-        elif given_action in talk:
-            return 'ta'
-        elif given_action in look:
-            return 'l'
-        elif given_action in take:
-            return 't'
-        elif given_action in map:
-            return 'map'
-        elif given_action in drop:
-            return 'd'
-        elif given_action in effects:
-            return 'fx'
-        elif given_action in move:
-            return 'm'
-        else:
-            return 'u'
-    else:
-        return 'invalid'
-
-####################################################
-####Room and Floor set up with numeric values#######
-####################################################
 
 def check_location(wanted_room, adjacent_rooms):
     if wanted_room.isnumeric():
@@ -82,18 +39,9 @@ def check_item(wanted_item, room_items):
     else:
         return False
 
-#####################################
-#########Sound and Volume############
-#####################################
-
-def play_sound(filename, volume):
-    sound = pygame.mixer.Sound(filename)
-    sound.set_volume(volume)
-    sound.play()
-
-######################################
-####### Submarine Class ##############
-######################################
+#######################
+### SUBMARINE CLASS ###
+#######################
 
 class Submarine:
     def __init__(self):
@@ -122,9 +70,10 @@ class Submarine:
     def rem_room_content(self, content, room):
         self.rooms[room]['content'][1].pop(content)
 
-############################################
-###### Player Class ########################
-############################################           
+####################
+### PLAYER CLASS ###
+####################
+           
 class Player:
     def __init__(self):
         self.current_room = 4
@@ -158,7 +107,7 @@ class Player:
         self.sanity = self.sanity - 1
 
 ########################
-### tkinter handlers ###
+### TKINTER HANDLERS ###
 ########################
 
 def handle_npc_interaction(player, npc_name, room_content):
@@ -185,36 +134,3 @@ def handle_npc_interaction(player, npc_name, room_content):
         else:
             print(f"You can't talk to {pair[1]}\n")
             print(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n")
-
-##################################
-######Game Setup / Start #########
-##################################
-
-
-# OLD CODE UINCORPORATED FOR CONSOLE LOOP
-
-""" def main():
-
-    while True:
-        adjacent_rooms = submarine.get_adjacent_rooms(player.current_room)       
-        room_content = submarine.get_room_content(player.current_room)
-        print("=-=-=-=-=-=-=-=-=Location Data=-=-=-=-=-=-=-=-=")
-        print(f"you are in room {player.current_room}")
-        print(f"Adjacent rooms {adjacent_rooms}\n")
-        print("=-=-=-=-=-=-=-=-=Player Data=-=-=-=-=-=-=-=-=") 
-        print(f"Your sanity is at {player.sanity}\n")
-        print("=-=-=-=-=-=-=-=-=Inventory Data=-=-=-=-=-=-=-=-=")
-        print(f"Things in your inventory {player.inventory}\n")
-        #SAMMY: Tkinter replacement
-        #pair = input("What do you want to do\n>").lower()
-        pair = command.lower()
-        os.system("cls" if os.name == 'nt' else 'clear')
-        pair = pair.split()
-        action = pair[0] 
-        action = check_action(action)
-        if action == 'invalid':
-            print("That is not a valid action\n")
-            print("Valid options are 'move' 'talk' 'take' 'use' and 'look'\n")
-            continue
-        #action = input("\n> ").lower()
- """
