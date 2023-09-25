@@ -11,6 +11,7 @@ from common import clear_screen, press_enter_to_return, update_main_window
 
 f = open('./data/gamedata.json')
 gen = json.load(f)
+
 gamedata = gen#json.load(f)
 
 ################################################
