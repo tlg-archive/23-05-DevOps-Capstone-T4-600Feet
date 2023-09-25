@@ -82,17 +82,6 @@ def check_item(wanted_item, room_items):
     else:
         return False
 
-####################################
-####Save Rest and Override##########
-####################################
-
-def reset_saved_data():
-    try:
-        os.remove("save_game.json")
-        print("\nSaved data reset to default.\n")
-    except FileNotFoundError:
-        print("No saved data found.")
-
 #####################################
 #########Sound and Volume############
 #####################################
@@ -225,25 +214,7 @@ def handle_npc_interaction(player, npc_name, room_content):
             print(f"You can't talk to {pair[1]}\n")
             print(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n")
 
-def handle_player_movement(player, target_room, submarine, sfx_volume):
-    adjacent_rooms = submarine.get_adjacent_rooms(player.current_room)
-    
-    if not target_room:
-        print("You need to specify a room number. For example, 'm 3' to move to room 3.\n")
-        return
-    
-    if target_room not in adjacent_rooms:
-        print("You cannot move there.\n")
-        return
-    
-    player.move(target_room)
-    play_sound("walk.mp3", sfx_volume)
 
-    if player.sanity == 0:
-        reset_saved_data()
-        print("\n\nAs the weight of unseen horrors and twisted visions press down upon you, you feel your last thread of sanity snap. The depths of the abyss are nothing compared to the chasm that now yawns within your mind. You've lost your grip on reality, and the darkness swallows you whole. You can no longer continue...\n\n")
-        ### SAMMY: SET UP FUNCTION OR TRANSITION BACK TO GAME? ###
-        start_game()
 
 # DEF HANDLE_SOUND_COUNTROL(COMMAND, SFX_VOLUME) IN COMMON.PY
 

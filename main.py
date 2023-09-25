@@ -87,9 +87,9 @@ def process_command(command, player, submarine, game_output_widget, sfx_volume):
     elif action == "m":
         if len(command_parts) > 1:
             target_room = int(command_parts[1])
-            handle_player_movement(player, target_room, submarine, sfx_volume, game_output_widget)
+            handle_move(player, target_room, submarine, sfx_volume, game_output_widget)
         else:
-            update_output("You need to specify a room number. For example, 'm 3' to move to room 3.", game_output_widget)
+            update_output("You need to specify a room number. For example, 'm 3' to move to room 3.")
     elif action in ["take", "use", "drop"]:
         if len(command_parts) > 1:
             item_choice = command_parts[1]
@@ -185,7 +185,7 @@ def update_game_state_display(text_widget, player, submarine):
     # Update the output display with the current game state
     global game_status_text_widget
 
-    ## seeing if it resolves none type error
+    ## seeing if it resolves none type error for debugging
     if not submarine:
         print("Error: submarine object is not initialized.")
         return
@@ -218,8 +218,6 @@ def start_game():
     
     submarine_instance, player_instance, sfx_volume = initialize_game()
     update_game_state_display(game_status_text_widget, player_instance, submarine_instance)
-    #old veersion
-    #update_game_state_display(game_status_text_widget, player, submarine)  # Display initial game status
 
 def initialize_game():
     """Initializes the game state."""
@@ -247,9 +245,9 @@ def initialize_tkinter(): # Initialize Tkinter
     root.geometry('800x600') # window size
     root.configure(bg='black')  # set window background color to black
 
-####################################
-######Save and Load Game Code#######
-####################################
+############################################
+###### SAVE, LOAD, & RESET SAVE CODE #######
+############################################
 
 def save_game(player, submarine):
     save_data = {
@@ -262,7 +260,7 @@ def save_game(player, submarine):
         save_data["rooms"]["room"+str(i)] = submarine.get_room_content(i)
     with open("save_game.json", "w") as save_file:
         json.dump(save_data, save_file)
-        print("Game saved.")
+        update_output("Your game is saved, but you are still lost...")
 
 def load_game(player, submarine):
     #first clear the room
@@ -281,6 +279,14 @@ def load_game(player, submarine):
         update_output("Game loaded.")
     except FileNotFoundError:
         update_output("\nNo saved game found.\n")
+
+# SAMMY: need to test and see why they implemented it. does save not overwrite?
+def reset_saved_data():
+    try:
+        os.remove("save_game.json")
+        update_output("\nSaved data reset to default.\n")
+    except FileNotFoundError:
+        update_output("No saved data found.")
 
 ################
 ### MAP CODE ###
@@ -342,6 +348,27 @@ def handle_help(game_output_widget):
 
 def handle_map(submarine, player_current_room, game_output_widget):
     display_map(player_current_room)
+
+def handle_move(player, target_room, submarine, sfx_volume, game_output_widget):
+    adjacent_rooms = submarine.get_adjacent_rooms(player.current_room)
+    
+    if not target_room:
+        update_output("You need to specify a room number. For example, 'm 3' to move to room 3.\n")
+        return
+    
+    if target_room not in adjacent_rooms:
+        update_output("You cannot move there.\n")
+        return
+    
+    player.move(target_room)
+    # play_sound("walk.mp3", sfx_volume) #disabled until importing sound
+
+    if player.sanity == 0:
+        reset_saved_data() # why did OG team implement?
+        update_output("\n\nAs the weight of unseen horrors and twisted visions press down upon you, you feel your last thread of sanity snap. The depths of the abyss are nothing compared to the chasm that now yawns within your mind. You've lost your grip on reality, and the darkness swallows you whole. You can no longer continue...\n\n")
+        ### SAMMY: SET UP FUNCTION OR TRANSITION BACK TO GAME? ###
+        update_output("Dread stains your soul as you realize you are caught in a dreadful loop. The cycle of suffering begins anew...")
+        start_game()
 
 def handle_quit():
     #Add delay?
