@@ -4,7 +4,7 @@ import json
 import pygame
 import random
 import tkinter as tk
-from tkinter import Tk, Text, Entry, Frame, Button, Scrollbar, END
+from tkinter import Tk, Text, Entry, Frame, Button, Scrollbar, END, Toplevel, Label
 from title import *
 from functions import Submarine, Player, gamedata
 from common import clear_screen, press_enter_to_return, update_main_window, play_sound, check_action
@@ -56,6 +56,7 @@ def handle_input(event):
             sys.exit()
         else:
             update_output("Invalid choice. Please choose 1 or 2.")
+            # Bug: nothing stopping user from entering anything and
 
 # updates output area #
 def update_output(text): 
@@ -212,6 +213,66 @@ def update_game_state_display(text_widget, player, submarine):
     game_status_text_widget.insert(tk.END, display_text)
     game_status_text_widget.config(state=tk.DISABLED)  # Disable editing after updating
 
+def open_npc_dialogue_window(npc_data):
+    dialogue_window = Toplevel(root)
+    dialogue_window.grab_set()  # Restrict interaction with the main window
+    dialogue_window.title("Talking to Crewmate")
+    dialogue_window.configure(bg='black')
+    custom_font = ("Courier New", 20)
+
+    prompt_label = Label(dialogue_window, text="(Click a Button to Ask a Question)", 
+                         font=("Courier New", 14, "italic"), bg="black", fg="white")
+    prompt_label.pack(pady=10)
+
+    # Border attributes
+    border_attrs = {
+        'bd': 5, 
+        'relief': 'solid', 
+        'highlightbackground': '#006400', 
+        'highlightcolor': '#006400', 
+        'highlightthickness': 2
+    }
+
+    # Create a single bordered frame for all the questions
+    questions_frame = Frame(dialogue_window, bg='black', **border_attrs)
+    questions_frame.pack(pady=10, padx=20, fill="both", expand=True)
+
+    for idx, (question_key, question_value) in enumerate(npc_data["dialogue"].items()):
+        # Get the related NPC response
+        npc_response = npc_data["responses"].get(question_key)
+        
+        # Print out the data for diagnostic purposes
+        print(f"Question Key: {question_key}, NPC Response: {npc_response}")
+
+        question_frame = Frame(questions_frame, bg='black')
+        question_frame.pack(pady=5, fill="x")
+
+        button = Button(question_frame, text=f"{idx+1}", 
+                        command=lambda resp=npc_response: display_response(resp), width=5)
+        button['font'] = custom_font
+        button['bg'] = 'white'  # set button bg color
+        button['fg'] = 'black'  # set button text color
+        button.pack(side="left", padx=(0, 10))
+
+        question_label = Label(question_frame, text=question_value, bg='black', fg='white')  # Set label bg and text color
+        question_label['font'] = custom_font
+        question_label.pack(side="left", fill="x")
+
+    response_frame = Frame(dialogue_window, bg='black')
+    response_frame.pack(pady=20, fill="x", expand=True)
+
+    response_label = Label(response_frame, bg='black', fg='white')  # Set label bg and text color
+    response_label['font'] = custom_font
+    response_label.pack(pady=10)
+
+    def display_response(response):
+        print(f"Displaying Response: {response}")  # Printing the response for diagnostics
+        response_label.config(text=response)
+
+    close_button = Button(dialogue_window, text="Close", command=dialogue_window.destroy, bg='white', fg='black')  # Set button bg and text color
+    close_button['font'] = custom_font
+    close_button.pack(pady=10, side="bottom")
+
 def start_game():
     global state, submarine_instance, player_instance, sfx_volume 
     state = "game_setup" # adding state for debugging
@@ -248,6 +309,66 @@ def initialize_tkinter(): # Initialize Tkinter
     root.title('600 Feet') # title bar
     root.geometry('800x800') # window size
     root.configure(bg='black')  # set window background color to black
+
+############
+### HELP ###
+############
+
+def show_help():
+    help_win = tk.Toplevel(root) # new toplevel window
+    help_win.title("HELP")
+
+    help_win.configure(bg="black")
+
+    help_text = """
+=-=-Game Commands-=-=
+-type 'drop (item)' to drop an item
+-type 'look' for descriptions of the rooms
+-type 'map' to view a map of the submarine
+-type 'move (room #)' to move rooms 
+-type 'quit' to exit the game
+-type 'take (item name)' to pick up an item
+-type 'talk (NPC name)' to talk to an NPC
+-type 'use (item name)' to use an item
+
+=-=-Items-=-=
+-KEY: Find and take it!
+-ADVIL: Use it to regain 5 sanity points!
+
+=-=-Sound Commands-=-=
+-type 'music (any number 0-100)' to change the music volume
+-type 'fx (any number 0-100)' to change the fx volume
+
+=-=-Save Your Game-=-=
+-type 'save'. 
+-type 'load' to restore your save 
+-NOTE: saves do not carry across sessions
+"""
+
+    
+    text_widget = tk.Text(
+        help_win, 
+        wrap=tk.WORD, 
+        bg="black", 
+        fg="white",  # Text color
+        font=("Courier New", 20),
+        padx=10,  # Padding to the left/right
+        pady=10   # Padding to the top/bottom
+    )
+    text_widget.insert(tk.END, help_text)
+    text_widget.config(state=tk.DISABLED) # read-only
+    text_widget.pack(padx=10, pady=10)
+
+    # close bttn
+    close_btn = tk.Button(
+        help_win, 
+        text="Close", 
+        command=help_win.destroy, 
+        bg="white", 
+        fg="black", 
+        font=("Courier New", 20)
+    )
+    close_btn.pack(pady=10)
 
 #####################################
 ### SAVE, LOAD, & RESET SAVE CODE ###
@@ -341,6 +462,9 @@ def handle_cheat(command, player):
         update_output("\n!! CHEAT ACTIVATED !! Sanity set to 1.")
 
 def handle_help(game_output_widget):
+    show_help()
+
+""" def handle_help(game_output_widget):
     #clear_screen() -- command broken at moment, not needed since user can scroll up?
     update_output("\n=-=-Game Commands-=-=")
     update_output("-type 'm (room #)' to move rooms ")
@@ -360,9 +484,8 @@ def handle_help(game_output_widget):
     update_output("1. type 'save' 2. at any point type 'load' to restore your save 3. NOTE: saves do not currently carry across sessions")
     update_output("you should see your previous game")
     update_output("\n=-=-=-=-=-=-=-=-=\n")
-    #press_enter_to_return() -- not needed in GUI
+    #press_enter_to_return() -- not needed in GUI """
 
-#change action to command? when I finally import
 def handle_item_interaction(player, item_choice, action, submarine):
     if action == "t":
         if submarine.is_item_in_room(item_choice, player.current_room):
@@ -417,57 +540,11 @@ def handle_npc_interaction(player, npc_name, room_content, game_output_widget):
     npc_data = room_content[0]
     
     if npc_name.lower() == npc_data['nameOfNpc'].lower():
-        npc_intros = npc_data['intros']
-        update_output(random.choice(npc_intros)) #, game_output_widget
-
-        for question in npc_data["dialogue"]:
-            update_output(npc_data["dialogue"].get(question)) #, game_output_widget
-            ### ^ getting error AttributeError: 'list' object has no attribute 'get'
-            ### ^ get is for dictionaries, update source?
-
-        dialogue_choice = input("\nHow do you want to respond?\n>")
-        os.system("cls" if os.name == 'nt' else 'clear')
-
-        while dialogue_choice != '4':
-            if npc_data["responses"].get(dialogue_choice) == None:
-                update_output("You must input a value between 1 and 4.\n") #, game_output_widget
-            else:
-                update_output(npc_data["responses"].get(dialogue_choice)) #, game_output_widget
-
-            for question in npc_data["dialogue"]:
-                update_output(npc_data["dialogue"].get(question)) #, game_output_widget
-
-            dialogue_choice = input("\nHow do you want to respond?\n> ")
-
-        update_output(npc_data["responses"].get('4')) #, game_output_widget
+        open_npc_dialogue_window(npc_data)
+        
     else:
-        update_output(f"You can't talk to {npc_name}\n") #, game_output_widget
-        update_output(f"Did you mean 'talk {npc_data['nameOfNpc']}'?\n") #, game_output_widget
-
-""" OLD def handle_npc_interaction(player, npc_name, room_content):
-    if npc_name.lower() == room_content[0]['nameOfNpc'].lower():
-        npc_intros = room_content[0]['intros']
-        print(random.choice(npc_intros))
-        if pair[1].lower() == room_content[0]['nameOfNpc'].lower():
-            npc_intros = room_content[0]['intros']
-            update_output(random.choice(npc_intros))
-            for question in room_content[0]["dialogue"]:
-                update_output(room_content[0]["dialogue"].get(question))
-            dialogue_choice = input("\nHow do you want to respond?\n> ")
-            os.system("cls" if os.name == 'nt' else 'clear')
-            while dialogue_choice != '4':
-                if room_content[0]["responses"].get(dialogue_choice) == None:
-                    update_output("You must input a value between 1 and 4.\n")
-                else:
-                    update_output(room_content[0]["responses"].get(dialogue_choice))
-                for question in room_content[0]["dialogue"]:
-                    update_output(room_content[0]["dialogue"].get(question))
-                dialogue_choice = input("\nHow do you want to respond?\n> ")
-                #os.system("cls" if os.name == 'nt' else 'clear') # not needed?
-            update_output(room_content[0]["responses"].get('4'))
-        else:
-            update_output(f"You can't talk to {pair[1]}\n")
-            update_output(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n") """
+        update_output(f"You can't talk to {npc_name}")
+        update_output(f"Did you mean 'talk {npc_data['nameOfNpc']}'?")
 
 def handle_quit():
     #Add delay?
@@ -505,25 +582,6 @@ def handle_sound_control(command, sfx_volume, game_output_widget):
     else:
         update_output("That isn't possible.")
 
-""" OLD: def handle_sound_control(command, sfx_volume):
-    from functions import check_wanted_vol
-    global pair
-    if command.startswith("mu"):
-        test_vol = check_wanted_vol(pair[1])
-        if type(test_vol) == type(1) and test_vol in range(0,101):
-            set = test_vol/100
-            pygame.mixer.music.set_volume(0.3 *set)
-        else:
-            update_output("that isnt possible")
-
-    elif command.startswith("fx"):   # <-- Fixed line
-        test_vol = check_wanted_vol(pair[1])
-        if type(test_vol) == type(1) and test_vol in range(0,101):
-            sfx_volume = test_vol/100
-        update_output("sound effects volume changed") """
-
-# def handle_sound_control() in common.py 
-
 #####################
 ### START PROGRAM ###
 #####################
@@ -536,3 +594,4 @@ if __name__ == '__main__':
     # Return to continue
     root.bind('<Return>', splash_clear)
     root.mainloop()
+
