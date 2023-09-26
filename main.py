@@ -307,6 +307,66 @@ def initialize_tkinter(): # Initialize Tkinter
     root.geometry('800x800') # window size
     root.configure(bg='black')  # set window background color to black
 
+############
+### HELP ###
+############
+
+def show_help():
+    help_win = tk.Toplevel(root) # new toplevel window
+    help_win.title("HELP")
+
+    help_win.configure(bg="black")
+
+    help_text = """
+=-=-Game Commands-=-=
+-type 'drop (item)' to drop an item
+-type 'look' for descriptions of the rooms
+-type 'map' to view a map of the submarine
+-type 'move (room #)' to move rooms 
+-type 'quit' to exit the game
+-type 'take (item name)' to pick up an item
+-type 'talk (NPC name)' to talk to an NPC
+-type 'use (item name)' to use an item
+
+=-=-Items-=-=
+-KEY: Find and take it!
+-ADVIL: Use it to regain 5 sanity points!
+
+=-=-Sound Commands-=-=
+-type 'music (any number 0-100)' to change the music volume
+-type 'fx (any number 0-100)' to change the fx volume
+
+=-=-Save Your Game-=-=
+-type 'save'. 
+-type 'load' to restore your save 
+-NOTE: saves do not carry across sessions
+"""
+
+    
+    text_widget = tk.Text(
+        help_win, 
+        wrap=tk.WORD, 
+        bg="black", 
+        fg="white",  # Text color
+        font=("Courier New", 20),
+        padx=10,  # Padding to the left/right
+        pady=10   # Padding to the top/bottom
+    )
+    text_widget.insert(tk.END, help_text)
+    text_widget.config(state=tk.DISABLED) # read-only
+    text_widget.pack(padx=10, pady=10)
+
+    # close bttn
+    close_btn = tk.Button(
+        help_win, 
+        text="Close", 
+        command=help_win.destroy, 
+        bg="white", 
+        fg="black", 
+        font=("Courier New", 20)
+    )
+    close_btn.pack(pady=10)
+
 #####################################
 ### SAVE, LOAD, & RESET SAVE CODE ###
 #####################################
@@ -399,6 +459,9 @@ def handle_cheat(command, player):
         update_output("\n!! CHEAT ACTIVATED !! Sanity set to 1.")
 
 def handle_help(game_output_widget):
+    show_help()
+
+""" def handle_help(game_output_widget):
     #clear_screen() -- command broken at moment, not needed since user can scroll up?
     update_output("\n=-=-Game Commands-=-=")
     update_output("-type 'm (room #)' to move rooms ")
@@ -418,7 +481,7 @@ def handle_help(game_output_widget):
     update_output("1. type 'save' 2. at any point type 'load' to restore your save 3. NOTE: saves do not currently carry across sessions")
     update_output("you should see your previous game")
     update_output("\n=-=-=-=-=-=-=-=-=\n")
-    #press_enter_to_return() -- not needed in GUI
+    #press_enter_to_return() -- not needed in GUI """
 
 def handle_item_interaction(player, item_choice, action, submarine):
     if action == "t":
