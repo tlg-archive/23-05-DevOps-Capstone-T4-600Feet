@@ -1,187 +1,188 @@
 {
-	"titlesplash":	{
-	"name": "600ft ",
-	"description": "In the depths of the ocean, where sunlight rarely pierces through the water's murky veil, there you live aboard a submarine. It's a world in itself, a metal giant that flows through the undersea depths, carrying a diverse crew of sailors into the unknown. But within the confines of this steel vessel, reality begins to blur, and sanity is a fragile commodity.\n As you walk the fine line between reality and illusion, your interactions with the crew will determine your journey. Will you uncover the truth of what's happening on board, or will you succumb to the inevitable madness that lurks in the sub’s dark corners?\nThere are several objects and people on board that may point you in the right direction of what’s going on. Be careful not to linger, as actions will drain what’s left of your sanity…\n",
-	"intro":"\nYou wake up in a dimly lit cabin onboard to the smell of must, metal, and cheap cleaning supplies. You walk to the galley, dreading the idea of unseasoned, barely-heated, frozen meat in a stale taco shell.\nAt any point, you can type 'help' to bring up valid commands",
-	"controls": "you can do the following actions Move (M) Take (T) Look (L) Talk (TA)"      
-},
+    "titlesplash": {
+        "name": "600ft",
+        "description": "In the depths of the ocean, where sunlight rarely pierces through the water's murky veil, there you live aboard a submarine. It's a world in itself, a metal giant that flows through the undersea depths, carrying a diverse crew of sailors into the unknown. But within the confines of this steel vessel, reality begins to blur, and sanity is a fragile commodity. As you walk the fine line between reality and illusion, your interactions with the crew will shape your journey. Will you uncover the truth of what's happening on board, or will you succumb to the inevitable madness and fall victim to an unknown truth? You must talk to your fellow crew members and find out what is really going on. There are several objects and people on board that may point you in the right direction of what’s going on. Make sure you work quickly; a mind is a terrible thing to waste or, in this case, lose...",
+        "intro": "You zoned out and slowly come back to reality. You realize you are outside of Chad’s room but vaguely remember coming over to talk to him. You walk through the galley, assuming you needed something from Chad, hoping to remember when you get there. \nAt any point, you can type 'help' to bring up valid commands.",
+        "Objective": "Find out what is going on, on the ship and if there is anyone behind it or if something is behind it...",
+        "Items": {
+            "Advil": "Advil can be used to maintain and regain sanity throughout your journey. Just remember you are underwater, and there are limited resources."
+        }
+    },
 
 
-"rooms": [{
-"name":"Tech",
-"id": 1,
-"adjacent": [1 ,3],
-"content" : {
-	"npc": {
-		"nameOfNpc": "nobody",
-		"intros" : ["You hear silence."],
-		"dialogue": {
-			"question1": "",
-			"question2": "",
-			"question3": "",
-			"question4": "4. Stop talking to yourself"
-		},
-		"responses": {
-			"1": "response1",
-			"2": "response2",
-			"3": "response3",
-			"4": "You come to your senses..."
-		}
-	},
-	"items": {
-		"advil": {"heal": 5},
-		"key": {"unlock": "True"}
-	},
-	"computer" :{
-		
-	}
 
-}},
-{
-"name":"Sonar",
-"id": 2,
-"adjacent": [2 ,4],
-"content" : {
-	"npc": {
-		"nameOfNpc": "nobody",
-		"intros" : ["You hear silence."],
-		"dialogue": {
-			"question1": "",
-			"question2": "",
-			"question3": "",
-			"question4": "4. Stop talking to yourself"
-		},
-		"responses": {
-			"1": "response1",
-			"2": "response2",
-			"3": "response3",
-			"4": "You come to your senses..."
-		}
-	},
-	"items": {
-		"a key": {"unlock": "True"}
-	},
-	"computer" :{
+        "rooms": [
+        {
+            "name": "Supply Room",
+            "id": 1,
+            "adjacent": [1, 3],
+            "Description": "It is easy to stop feeling like yourself in such grim conditions thankfully the supply room has just the thing to take the edge off. The room is filled with different medicine and supplies need to make you feel like yourself again",
+            "content": {
+               "npc": {
+                  "nameOfNpc": "nobody",
+                  "Location": "",
+                  "intros": ["You hear silence"],
+                  "dialogue": {
+                    "question1": "",
+                    "question2": "",
+                    "question3": "",
+                    "question4": ""
+                },
+                "responses": {
+                    "1": "",
+                    "2": "",
+                    "3": "",
+                    "4": ""
+                }
+               },
 
-	}
+                "items": {
+                    "advil": {
+                        "heal": 5
+                    }
+                }
+            }
+        },
+        {
+            "name": "Storage Room",
+            "id": 2,
+            "adjacent": [2, 4],
+            "Description": "A room that can be described as organized chaos, nothings looks like it is where it is supposed to be but you know where everything is. Oddly enough there is a key on the floor that stands out from the chaos",
+            "content": {
+               "npc": {
+                "nameOfNpc": "nobody",
+                "Location": "",
+                "intros": ["You hear silence"],
+                "dialogue": {
+                  "question1": "",
+                  "question2": "",
+                  "question3": "",
+                  "question4": ""
+              },
+              "responses": {
+                  "1": "",
+                  "2": "",
+                  "3": "",
+                  "4": ""
+              }
+             },
 
-}},
-	 {
-"name":"Head",
-"id": 3,
-	"adjacent": [3 ,5 ,4 ,1],
-	"content" : {
-			"npc": {
-					"nameOfNpc": "nobody",
-					"intros" : ["You hear silence."],
-					"dialogue": {
-						"question1": "",
-						"question2": "",
-						"question3": "",
-						"question4": "4. Stop talking to yourself"
-					},
-					"responses": {
-						"1": "response1",
-						"2": "response2",
-						"3": "response3",
-						"4": "You come to your senses..."
-					}
-				},
-			"items": {
-					"advil": {"heal": 5}
-			},
-			"computer" :{
+                "items": {
+                    "key": {
+                    }
+                }
+            }
+        },
+        {
+            "name": "John's Quarters",
+            "id": 3,
+            "adjacent": [3, 5, 4, 1],
+            "Description": ["A clean and organized room, not pictures or anything to show some type of personality. It has the bare minimum to survive and be comfortable"],
+            "content": {
+                "npc": {
+                    "nameOfNpc": "John",
+                    "Location": "",
+                    "intros": "",
+                    "dialogue": {
+                      "question1": "Has something felt off with Connor to you?",
+                      "question2": "Has Chad been acting weird to you?",
+                      "question3": "Alan has been pretty on edge, do you think happened?",
+                      "question4": "Bye!"
+                  },
+                  "responses": {
+                      "question1": "John: '..... stay away from that topic.'\n",
+                      "question2": "John: 'Chad is always weird with all those voices, if he was acting normal then I'd be concerned.'\n",
+                      "question3": "John: 'Someone went through his room and put a dent in his safe, so I would be on edge too.'\n",
+                      "question4": "John: 'Later!'"
+                  }
+                 },
 
-			}
-	}},
-{
-"name":"Galley",
-"id": 4,
-"adjacent": [4 ,2 ,3 ,6],
-"content" : {
-	"npc": {
-		"nameOfNpc": "Chad",
-		"intros" : ["Hey there",
-		"Great day, isn't it?",
-		"What's up, fellow sailor?"
-		],
-		"dialogue": {
-			"question1": "1. How do you feel on our first deployment? Doesn't it feel a little weird not to have seen the sun for so long?",
-			"question2": "2. What's it like being a machinist's mate?",
-			"question3": "3. Where are you at with your quals?",
-			"question4": "4. Bye."
-		},
-		"responses": {
-			"1": "I mean, I'll be excited to see it when we get to Japan, of course. But it's just as cool down here!\nHow many people get to see the inside of a nuclear sub\nlet alone work on one. How cool is that?",
-			"2": "I mean, it's grimy work, sure. But the people we work with makes it all worth it.\nAlso, have you seen the way civilians look up to us?\n\n We're heroes!",
-			"3": "Toughest part of being a sailor. Well, we showed up on the boat together, and I'd say I'm about halfway done.\nMaybe another 2 months or so and I'll have them done.",
-			"4": "Keep your chin up, dude!"
-		}
-	},
-	"items": {
-	},
-	"computer" :{
+                "items": {
+                   }
+                
 
-	}
-}},
-{
-"name":"Rack",
-"id": 5,
-"adjacent" : [5 ,6 ,3],
-"content" : {
-	"npc": {
-		"nameOfNpc": "Connors",
-		"intros" : ["What's up, dude?",
-		"Why so mopey?",
-		"Just 2 more months to go before we port... I can't wait to see Okinawa."],
-		"dialogue": {
-			"question1": "1. You look pretty awake, considering you’ve been working on the reactor for the last 8 hours or so.",
-			"question2": "2. Is working as a nuke as hard as they say?",
-			"question3": "3. How much longer do you have on your contract?",
-			"question4": "4. Bye."
-		},
-		"responses": {
-			"1": "I'm excited, man. We're supposed to port in Japan in a month. Okinawa is supposed to be beautiful. Long beaches, great seafood… If Chad's as happy as he is living down here, I can't imagine how giddy he's going to be when he's throwing back a cocktail on the Japanese coast.",
-			"2": "Meh. The training was really hard. Stressed guys out like crazy. But now? It's tough at times, but more than anything it's actually really interesting. It's crazy how we're running on pure nuclear energy, we manage to do so cleanly, and I get to help make that work.",
-			"3": "I don't know that it matters. I'm planning on resigning anyway.",
-			"4": "See you around."
-		}
-	},
-	"items": {
-	},
-	"computer" :{
-
-	}
-}},
-{
-"name":"Water",
-"id": 6,
-"adjacent" : [6 ,5 ,4],
-"content" : {
-	"npc": {
-		"nameOfNpc": "Alan",
-		"intros" : ["Man these contracts are really something...",
-		"Harvard better be ready for me when I get out of here, man.",
-		"Hey, man, I don't want to be here either but....\nyou look like you'd rather be ANYWHERE else."],
-		"dialogue": {
-			"question1": "1. How are your quals going?",
-			"question2": "2. What are you going to do when you get out?",
-			"question3": "3. How much longer do you have on your contract?",
-			"question4": "4. Bye."
-		},
-		"responses": {
-			"1": "Honestly? They suck. We have no free time, no time to sleep...\nBut hey, I guess it's better than boot camp was.\n",
-			"2": "Only what I've told you a thousand times, man.\nI'm going to college, getting a real job.\nSomething that pays better and treats you like an actual human being, you know what I'm saying?\n",
-			"3": "3 years. 3 years and then life REALLY begins.\nJust hope I manage to stay sane until then...\n\nSame goes for you\n<Alan looks at you strangely>\n",
-			"4": "See you around."
-		}
-	},
-	"items": {
-	},
-	"computer" :{
-
-	}
-}
-}
-]
+            }
+        },
+        {
+            "name": "Chad's Quarters",
+            "id": 4,
+            "adjacent": [4, 2, 3, 6],
+            "Description": "A room full of personality, posters all around with different dragons and fantasy characters.",
+            "content": {
+                "npc": {
+                    "nameOfNpc": "Chad",
+                  "Location": "Chad's Quarters",
+                  "intros": ["Chad: 'Hey buddy!!! Great to see you, come on in, I am just reading my DM manual'\n"],
+                  "dialogue": {
+                    "question1": "Have you seen Connor? He has been acting a little different.",
+                    "question2": "What do you think of John?",
+                    "question3": "Have you seen Alan?",
+                    "question4": "Bye"
+                },
+                "responses": {
+                    "question1": "Chad: 'Thats a weird question to ask you ok?'",
+                    "question2": "Chad: 'He is a little introverted but a lot of fun to game with.'",
+                    "question3": "Chad: 'He is in his room--someone destroyed it! Not cool at all.'",
+                    "question4": "Chad: 'Seeya!'"
+                }
+               },
+                "items": {
+               }
+            }
+        },
+        {
+            "name": "Connor's Quarters",
+            "id": 5,
+            "adjacent": [5, 6, 3],
+            "Description": "A rather plain room, clean and organized but nothing special about it",
+            "content": {
+                "npc": {
+                    "nameOfNpc": "Connor",
+                  "Location": "Connor's Quarters",
+                  "intros": ["Connor: 'What do you want?'\n"],
+                  "dialogue": {
+                    "question1": "'You talk to Chad about the game tonight?'",
+                    "question2": "'You worked with John right? You get along?'",
+                    "question3": "'Have you checked on Alan?'",
+                    "question4": "'Bye!'"
+                },
+                "responses": {
+                    "question1": "Connor: 'Yes--and if not I will.'\n",
+                    "question2": "Connor: 'Do we?'\n",
+                    "question3": "Connor: 'Probably should.'\n",
+                    "question4": "Connor: 'I am always here!'\n"
+                }
+               },
+                "items": {
+               }
+            }
+        },
+        {
+            "name": "Alan's Quarters",
+            "id": 6,
+            "adjacent": [6, 5, 4],
+            "Description": "A room that is usually organized and clean is now completely destroyed. There is a dented safe in the corner and boxes and paper thrown across the ground",
+            "content": {
+                "npc": {
+                    "nameOfNpc": "Alan",
+                    "Location": "Alan's Quarters",
+                    "intros": ["Alan: 'Hey young blood what do you need, I am just cleaning up' \n"],
+                    "dialogue": {
+                      "question1": "'Have you asked Chad?'",
+                      "question2": "'Have you talked to Connor'",
+                      "question3": "'You ask John?'",
+                      "question4": "'Bye!'"
+                  },
+                  "responses": {
+                      "question1": "Alan: 'Chad is too busy with his elf dragon books to know what happened.'\n",
+                      "question2": "Alan: 'um....... no did you see anything?'\n",
+                      "question3": "Alan: 'John doesn't leave his room he doesnt have to.'\n",
+                      "question4": "Alan: 'Talk to you later!'\n"
+                  }
+                 },
+                "items": {
+               }
+            }
+        }
+    ]
 }

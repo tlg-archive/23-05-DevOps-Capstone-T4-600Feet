@@ -1,50 +1,26 @@
+#All imports needed for game to run
 import time
 import random
 import json
 import sys
 import os
-import random
+import pygame
 import pygame.mixer
+import tkinter as tk
+from common import clear_screen, press_enter_to_return, update_main_window
 
-f = open('./data/gamedata.json')
+# changed to absolute path for unit testing
+current_directory = os.path.dirname(os.path.abspath(__file__))
+gamedata_path = os.path.join(current_directory, 'data', 'gamedata.json')
+f = open(gamedata_path)
+
 gen = json.load(f)
-
-
-move = ["move", "go", "travel", "run", "m"]
-talk = ["talk", "speak", "chat", "ta", "ask"]
-look = ["examine", "look", "focus", "observe", "inspect", "l"]
-take = ["grab", "take", "t", "pickup", "get"]
-use = ["use", "interact", "u"]
-map = ["map"]
-drop = ['delete', 'drop']
-music = ["music"]
-effects = ["sfx", "fx"]
-allpossible = ["u", "map", "get", "drop", "delete", "move", "go", "travel", "run", "m", "talk", "speak", "chat", "ta", "ask", "examine", "look", "focus", "observe", "inspect", "l", "grab", "take", "t", "pickup", "use", "interact", "music", 'sfx', 'fx']
 
 gamedata = gen#json.load(f)
 
-def check_action(given_action):
-    if given_action in allpossible:
-        if given_action in music:
-            return 'mu'
-        elif given_action in talk:
-            return 'ta'
-        elif given_action in look:
-            return 'l'
-        elif given_action in take:
-            return 't'
-        elif given_action in map:
-            return 'map'
-        elif given_action in drop:
-            return 'd'
-        elif given_action in effects:
-            return 'fx'
-        elif given_action in move:
-            return 'm'
-        else:
-            return 'u'
-    else:
-        return 'invalid'
+################################################
+### ROOM AND FLOOR SET UP WITH NUMERIC VALUE ###
+################################################
 
 def check_location(wanted_room, adjacent_rooms):
     if wanted_room.isnumeric():
@@ -52,6 +28,7 @@ def check_location(wanted_room, adjacent_rooms):
             return True
     else:
         return False
+
 def check_wanted_vol(wanted_vol):
     if wanted_vol.lower() == 'on':
         return 100
@@ -60,88 +37,16 @@ def check_wanted_vol(wanted_vol):
     elif wanted_vol.isnumeric() and int(wanted_vol) in range (0, 101):
         return int(wanted_vol)
     return False
+
 def check_item(wanted_item, room_items):
     if wanted_item.lower() in room_items:
         return True
     else:
         return False
 
-def ps(description, delay=0.00):     
-    for char in description:         
-        print(char, end='', flush=True)         
-        time.sleep(delay)
-
-def start_menu():
-    print("1.New Game")
-    print("2.Quit")
-    player_choice = input("Enter your choice '1 or 2'> ")
-    if player_choice == "1":
-        os.system("cls" if os.name == 'nt' else 'clear')
-        start_game()
-    elif player_choice == "2":
-        ps("Goodbye!")
-        sys.exit()
-    else:
-        print("Invalid answer, try again")
-        start_menu()
-def start_game():
-    ps(gen["titlesplash"]["intro"] + '\n') # remember to make slow print()
-    main()
-
-def save_game(player, submarine):
-    save_data = {
-        "current_room": player.current_room,
-        "inventory": player.inventory,
-        "sanity": player.sanity,
-        "rooms":{}
-    }
-    for i in range(1, 7):
-        save_data["rooms"]["room"+str(i)] = submarine.get_room_content(i)
-    with open("save_game.json", "w") as save_file:
-        json.dump(save_data, save_file)
-        print("Game saved.")
-
-def load_game(player, submarine):
-    #first clear the room
-    for room in submarine.rooms:
-        submarine.rooms[room]['content'][1].clear()
-
-    try:
-        with open("save_game.json", "r") as save_file:
-            save_data = json.load(save_file)
-            player.current_room = save_data["current_room"]
-            player.inventory = save_data["inventory"]
-            player.sanity = save_data["sanity"]
-            for room in submarine.rooms:
-                #get items only NOT NPCs
-                submarine.rooms[room]['content'][1] = save_data["rooms"]["room" + str(room)][1]
-        print("Game loaded.")
-    except FileNotFoundError:
-        print("No saved game found.")
-
-def reset_saved_data():
-    try:
-        os.remove("save_game.json")
-        print("Saved data reset to default.")
-    except FileNotFoundError:
-        print("No saved data found.")
-
-
-def play_sound(filename, volume):
-    sound = pygame.mixer.Sound(filename)
-    sound.set_volume(volume)
-    sound.play()
-
-
-
-
-def display_look(oobject):
-    npc = oobject[0]['nameOfNpc']
-    items = ' and '.join(oobject[1].keys())
-
-    print(f"You look around and see {npc}.\n")
-    if len(oobject[1]) > 0:
-        print(f"You also see {items}.\n")
+#######################
+### SUBMARINE CLASS ###
+#######################
 
 class Submarine:
     def __init__(self):
@@ -170,19 +75,19 @@ class Submarine:
     def rem_room_content(self, content, room):
         self.rooms[room]['content'][1].pop(content)
     
-    def display_map(self, player_current_room):
-        mapstring = ""
-        for room_num, room_data in self.rooms.items():
-            mapstring += f"Room {room_num}: "
-            if room_num == player_current_room:
-                mapstring+="[you  r here]"
-            else:
-                mapstring += " " *13
-            for adj_room in room_data["adjacent"]:
-                mapstring += f"-> room {adj_room} "
-        print("++++++++++++++++++++++++++++++++++++")
-        print(mapstring)
-            
+    ## CHAT GPT PROVIDED THIS, NEED TO CORRECT ARGS AND VARIABLES? ##
+    def is_item_in_room(self, item_name, room):
+        room_content = self.get_room_content(room)
+        for content in room_content:
+            if isinstance(content, dict) and item_name in content:
+                return True
+        return False
+
+
+####################
+### PLAYER CLASS ###
+####################
+           
 class Player:
     def __init__(self):
         self.current_room = 4
@@ -201,6 +106,7 @@ class Player:
         self.has_bathroom_access = True
     def use_item(self, item_name):
         if item_name == "advil" and item_name in self.inventory:
+            from main import update_output
             self.sanity += 5
             self.remove_from_inventory('advil')
             print("You used advil and your sanity has increased by 5.\n")
@@ -214,131 +120,3 @@ class Player:
     def move(self, room):
         self.current_room = room
         self.sanity = self.sanity - 1
-
-def main():
-    submarine = Submarine()
-    player = Player()
-    pygame.mixer.init()
-    pygame.mixer.music.load('music.mp3')
-    pygame.mixer.music.set_volume(0.3)
-    pygame.mixer.music.play(-1)
-    sfx_volume = 1
-    for i in range(len(gamedata['rooms'])):
-        stuffinroom = gamedata['rooms'][i]['content'].keys()
-        npc_data = gamedata['rooms'][i]['content']['npc']
-        item_data = gamedata['rooms'][i]['content']['items']
-        submarine.place_content(npc_data, i+1)
-        submarine.place_content(item_data, i+1)
-
-    while True:
-        adjacent_rooms = submarine.get_adjacent_rooms(player.current_room)       
-        room_content = submarine.get_room_content(player.current_room)
-        print("=-=-=-=-=-=-=-=-=Location Data=-=-=-=-=-=-=-=-=")
-        print(f"you are in room {player.current_room}")
-        print(f"Adjacent rooms {adjacent_rooms}\n")
-        print("=-=-=-=-=-=-=-=-=Player Data=-=-=-=-=-=-=-=-=") 
-        print(f"Your sanity is at {player.sanity}")
-        print("=-=-=-=-=-=-=-=-=Inventory Data=-=-=-=-=-=-=-=-=")
-        print(f"Things in your inventory {player.inventory}")
-        pair = input("What do you want to do\n>").lower()
-        os.system("cls" if os.name == 'nt' else 'clear')
-        if pair.lower() == 'help':
-            print("You can do the following actions: Move (M) Take (T) Look (L) Talk (TA) Music(Music (any number 0-100))\nAt any point, you can type in 'quit' to exit the game.\n")
-            continue
-        if pair.lower() == 'quit':
-            ps("Goodbye...\n")
-            sys.exit()
-        elif pair.lower() == 'save':
-            save_game(player, submarine)
-            continue
-        elif pair.lower() == 'load':
-            load_game(player, submarine)
-            continue
-        pair = pair.split()
-        action = pair[0] 
-        action = check_action(action)
-        if action == 'invalid':
-            print("That is not a valid action\n")
-            print("Valid options are 'move' 'talk' 'take' 'use' and 'look'\n")
-            continue
-        #action = input("\n> ").lower()
-        if action == "m":
-            room_choice = check_location(pair[1], adjacent_rooms) 
-            if room_choice:
-                player.move(int(pair[1]))
-                play_sound("walk.mp3", sfx_volume)
-                if player.sanity == 0:
-                    reset_saved_data()
-                    print("GAME OVER")
-                    break
-            else:
-                print("you cannot move there\n")
-                continue
-        elif action == 'u':
-            player.use_item(pair[1].lower())
-        elif action == 'mu':
-            test_vol = check_wanted_vol(pair[1])
-            if type(test_vol) == type(1) and test_vol in range(0,101):
-                set = test_vol/100
-                pygame.mixer.music.set_volume(0.3 *set)
-            else:
-                print("that isnt possible")
-        elif action == 'fx':
-            test_vol = check_wanted_vol(pair[1])
-            if type(test_vol) == type(1) and test_vol in range(0,101):
-                sfx_volume = test_vol/100
-            print("sound effects volume changed")
-        elif action == 'l':
-            display_look(room_content)
-        elif action == 't':
-            if pair[1].lower() == 'key':
-                item_choice = check_item('a key', room_content[1].keys())
-                if item_choice == True:
-                    player.add_to_inventory(pair[1].lower())
-                    submarine.rem_room_content('a key', player.current_room)
-                    print("You picked up a key\n")
-                else:
-                    print(f"There is no {pair[1]} to pick up.\n")
-            else:
-                item_choice = check_item(pair[1].lower(), room_content[1].keys())
-                if item_choice == True:
-                    player.add_to_inventory(pair[1].lower())
-                    submarine.rem_room_content(pair[1].lower(), player.current_room)
-                    print(f"You picked up {pair[1]}\n")
-                else:
-                    print(f"You cannot pick up {pair[1]}\n")
-        elif action == "map":
-            submarine.display_map(player.current_room)
-            continue
-        elif action == 'd':
-            item_choice = check_item(pair[1], player.inventory)
-            if item_choice:
-                player.remove_from_inventory(pair[1].lower())
-                submarine.place_item(pair[1].lower(), player.current_room)
-                ps(f"You dropped {pair[1]} in the room.\n\n")
-        elif action == "ta":
-            if pair[1].lower() == room_content[0]['nameOfNpc'].lower():
-                npc_intros = room_content[0]['intros']
-                print(random.choice(npc_intros))
-                for question in room_content[0]["dialogue"]:
-                    print(room_content[0]["dialogue"].get(question))
-                dialogue_choice = input("\nHow do you want to respond?\n> ")
-                os.system("cls" if os.name == 'nt' else 'clear')
-                while dialogue_choice != '4':
-                    if room_content[0]["responses"].get(dialogue_choice) == None:
-                        print("You must input a value between 1 and 4.\n")
-                    else:
-                        print(room_content[0]["responses"].get(dialogue_choice))
-                    for question in room_content[0]["dialogue"]:
-                        print(room_content[0]["dialogue"].get(question))
-                    dialogue_choice = input("\nHow do you want to respond?\n> ")
-                    os.system("cls" if os.name == 'nt' else 'clear')
-                print(room_content[0]["responses"].get('4'))
-
-            else:
-                print(f"You can't talk to {pair[1]}\n")
-                print(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n")
-
-        else:
-            print("endgame ")
-            break
