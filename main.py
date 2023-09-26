@@ -216,9 +216,81 @@ def update_game_state_display(text_widget, player, submarine):
 def open_npc_dialogue_window(npc_data):
     dialogue_window = Toplevel(root)
     dialogue_window.grab_set()  # Restrict interaction with the main window
+    dialogue_window.title("Talking to Crewmate")
+    dialogue_window.configure(bg='black')
+    custom_font = ("Courier New", 20)
 
+    prompt_label = Label(dialogue_window, text="(Click a Button to Ask a Question)", 
+                         font=("Courier New", 14, "italic"), bg="black", fg="white")
+    prompt_label.pack(pady=10)
+
+    # Border attributes
+    border_attrs = {
+        'bd': 5, 
+        'relief': 'solid', 
+        'highlightbackground': '#006400', 
+        'highlightcolor': '#006400', 
+        'highlightthickness': 2
+    }
+
+    # Create a single bordered frame for all the questions
+    questions_frame = Frame(dialogue_window, bg='black', **border_attrs)
+    questions_frame.pack(pady=10, padx=20, fill="both", expand=True)
+
+    for idx, (question_key, question_value) in enumerate(npc_data["dialogue"].items()):
+        # Get the related NPC response
+        npc_response = npc_data["responses"].get(question_key)
+        
+        # Print out the data for diagnostic purposes
+        print(f"Question Key: {question_key}, NPC Response: {npc_response}")
+
+        question_frame = Frame(questions_frame, bg='black')
+        question_frame.pack(pady=5, fill="x")
+
+        button = Button(question_frame, text=f"{idx+1}", 
+                        command=lambda resp=npc_response: display_response(resp), width=5)
+        button['font'] = custom_font
+        button['bg'] = 'white'  # set button bg color
+        button['fg'] = 'black'  # set button text color
+        button.pack(side="left", padx=(0, 10))
+
+        question_label = Label(question_frame, text=question_value, bg='black', fg='white')  # Set label bg and text color
+        question_label['font'] = custom_font
+        question_label.pack(side="left", fill="x")
+
+    response_frame = Frame(dialogue_window, bg='black')
+    response_frame.pack(pady=20, fill="x", expand=True)
+
+    response_label = Label(response_frame, bg='black', fg='white')  # Set label bg and text color
+    response_label['font'] = custom_font
+    response_label.pack(pady=10)
+
+    def display_response(response):
+        print(f"Displaying Response: {response}")  # Printing the response for diagnostics
+        response_label.config(text=response)
+
+    close_button = Button(dialogue_window, text="Close", command=dialogue_window.destroy, bg='white', fg='black')  # Set button bg and text color
+    close_button['font'] = custom_font
+    close_button.pack(pady=10, side="bottom")
+
+
+""" def open_npc_dialogue_window(npc_data):
+    dialogue_window = Toplevel(root)
+    dialogue_window.grab_set()  # Restrict interaction with the main window
+    dialogue_window.title("Talking to Crewmate")
+    dialogue_window.configure(bg='black')
+    custom_font = ("Courier New", 20)
     dialogue_frame = Frame(dialogue_window)
-    dialogue_frame.pack(pady=20, fill="x", expand=True)
+    dialogue_frame.pack(pady=20, padx=20, fill="x", expand=True)
+
+    # Border attributes
+    border_attrs = {
+        'bd': 5, 
+        'relief': 'solid', 
+        'highlightbackground': '#006400', 
+        'highlightcolor': '#006400', 
+        'highlightthickness': 2
+    }
 
     for idx, (question_key, question_value) in enumerate(npc_data["dialogue"].items()):
         # Get the related NPC response
@@ -228,19 +300,24 @@ def open_npc_dialogue_window(npc_data):
         print(f"Question Key: {question_key}, NPC Response: {npc_response}")
 
         frame = Frame(dialogue_frame)
+        frame = Frame(dialogue_window, bg='black', **border_attrs)
         frame.pack(pady=5, fill="x")
 
         button = Button(frame, text=f"{idx+1}", 
                         command=lambda resp=npc_response: display_response(resp), width=5)
+        button['font'] = custom_font
         button.pack(side="left", padx=(0, 10))
 
         question_label = Label(frame, text=question_value)
+        question_label['font'] = custom_font
         question_label.pack(side="left", fill="x")
 
     response_frame = Frame(dialogue_window)
+    response_frame = Frame(dialogue_window, bg='black', **border_attrs)
     response_frame.pack(pady=20, fill="x", expand=True)
 
     response_label = Label(response_frame)
+    response_label['font'] = custom_font
     response_label.pack(pady=10)
 
     def display_response(response):
@@ -248,101 +325,8 @@ def open_npc_dialogue_window(npc_data):
         response_label.config(text=response)
 
     close_button = Button(dialogue_window, text="Close", command=dialogue_window.destroy)
-    close_button.pack(pady=10, side="bottom")
-
-
-""" def open_npc_dialogue_window(npc_data):
-    dialogue_window = Toplevel(root)
-    dialogue_window.grab_set()  # Restrict interaction with the main window
-
-    response_frame = Frame(dialogue_window)
-    response_frame.pack(pady=20, fill="x", expand=True)
-
-    response_label = Label(response_frame)
-    response_label.pack(pady=10)
-
-    def display_response(response):
-        response_label.config(text=response)
-
-    for idx, (question_key, question_value) in enumerate(npc_data["dialogue"].items()):
-        # Get the related NPC response
-        npc_response = npc_data["responses"].get(question_key)
-
-        # Create a frame to hold the button and the question
-        frame = Frame(dialogue_window)
-        frame.pack(pady=5, fill="x")
-
-        # Create a button for the number
-        button = Button(frame, text=f"{idx+1}", 
-                        command=lambda resp=npc_response: display_response(resp), width=5)
-        button.pack(side="left", padx=(0, 10))
-
-        # Create a label for the question
-        question_label = Label(frame, text=question_value)
-        question_label.pack(side="left", fill="x")
-
-    close_button = Button(dialogue_window, text="Close", command=dialogue_window.destroy)
+    close_button['font'] = custom_font
     close_button.pack(pady=10, side="bottom") """
-
-""" def open_npc_dialogue_window(npc_data):
-    dialogue_window = Toplevel(root)
-    dialogue_window.grab_set()  # Restrict interaction with the main window
-
-    response_frame = Frame(dialogue_window)
-    response_frame.pack(pady=20, fill="x", expand=True)
-
-    response_label = Label(response_frame)
-    response_label.pack(pady=10)
-
-    def display_response(response):
-        response_label.config(text=response)
-
-    for idx, (question_key, question_value) in enumerate(npc_data["dialogue"].items()):
-        # Get the related NPC response
-        npc_response = npc_data["responses"].get(question_key)
-
-        # Create a frame to hold the button and the question
-        frame = Frame(dialogue_window)
-        frame.pack(pady=5, fill="x")
-
-        # Create a button for the number
-        button = Button(frame, text=f"{idx+1}", 
-                        command=lambda resp=npc_response: display_response(resp), width=5)
-        button.pack(side="left", padx=(0, 10))
-
-        # Create a label for the question
-        question_label = Label(frame, text=question_value)
-        question_label.pack(side="left", fill="x")
-
-    close_button = Button(dialogue_window, text="Close", command=dialogue_window.destroy)
-    close_button.pack(pady=10, side="bottom")
- """
-
-
-""" def npc_dialogue_window(npc_data):
-    # Create new window
-    dialogue_win = Toplevel(root)
-    dialogue_win.title("Talk to NPC")
-    
-    # Restrict interaction with the main window until this window is closed
-    dialogue_win.grab_set()
-    
-    def show_response(response):
-        # Display the NPC's response when a button is pressed
-        response_label.config(text=response)
-    
-    # Create buttons for each dialogue option
-    for question, response in npc_data["dialogue"].items():
-        b = Button(dialogue_win, text=question, command=lambda resp=response: show_response(resp))
-        b.pack(pady=5)
-    
-    # Label to display the NPC's response
-    response_label = Label(dialogue_win, text="", wraplength=300)
-    response_label.pack(pady=20)
-    
-    # Close button
-    close_button = Button(dialogue_win, text="Close", command=dialogue_win.destroy)
-    close_button.pack(pady=10) """
 
 def start_game():
     global state, submarine_instance, player_instance, sfx_volume 
