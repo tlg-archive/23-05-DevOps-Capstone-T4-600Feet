@@ -8,7 +8,7 @@ WORKDIR /app
 RUN apt-get update -y
 
 # upgrade pip as necesssary
-RUN pip install --upgrade pip -y
+# RUN pip install --upgrade pip
 
 #Install the x11vnc package
 RUN apt-get install -y git x11vnc
