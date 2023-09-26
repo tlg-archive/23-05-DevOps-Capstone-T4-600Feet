@@ -9,8 +9,8 @@ resources:
 - repo: self
 
 variables:
-  imageName: 'your_image_name:$(Build.BuildId)'
-  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  imageName: 'your_image_name:$(Build.BuildId)'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
 
 stages:
 - stage: BuildAndPackage
@@ -29,11 +29,11 @@ stages:
         tags: |
           $(imageName)
     - script: |
-       docker save $(imageName) -o $(Build.ArtifactStagingDirectory)/image.tar
-      displayName: 'Save Docker image as .tar file'
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)/image.tar'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
+        docker save $(imageName) -o $(Build.ArtifactStagingDirectory)/image.tar
+      displayName: 'Save Docker image as .tar file'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/image.tar'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
 
