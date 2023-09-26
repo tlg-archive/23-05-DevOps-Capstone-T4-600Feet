@@ -4,7 +4,7 @@ import json
 import pygame
 import random
 import tkinter as tk
-from tkinter import Tk, Text, Entry, Frame, Button, Scrollbar, END
+from tkinter import Tk, Text, Entry, Frame, Button, Scrollbar, END, Toplevel, Label
 from title import *
 from functions import Submarine, Player, gamedata
 from common import clear_screen, press_enter_to_return, update_main_window, play_sound, check_action
@@ -56,7 +56,7 @@ def handle_input(event):
             sys.exit()
         else:
             update_output("Invalid choice. Please choose 1 or 2.")
-            # Bug: nothing stopping user from entering anything and continuing game
+            # Bug: nothing stopping user from entering anything and
 
 # updates output area #
 def update_output(text): 
@@ -212,6 +212,137 @@ def update_game_state_display(text_widget, player, submarine):
     
     game_status_text_widget.insert(tk.END, display_text)
     game_status_text_widget.config(state=tk.DISABLED)  # Disable editing after updating
+
+def open_npc_dialogue_window(npc_data):
+    dialogue_window = Toplevel(root)
+    dialogue_window.grab_set()  # Restrict interaction with the main window
+
+    dialogue_frame = Frame(dialogue_window)
+    dialogue_frame.pack(pady=20, fill="x", expand=True)
+
+    for idx, (question_key, question_value) in enumerate(npc_data["dialogue"].items()):
+        # Get the related NPC response
+        npc_response = npc_data["responses"].get(question_key)
+        
+        # Print out the data for diagnostic purposes
+        print(f"Question Key: {question_key}, NPC Response: {npc_response}")
+
+        frame = Frame(dialogue_frame)
+        frame.pack(pady=5, fill="x")
+
+        button = Button(frame, text=f"{idx+1}", 
+                        command=lambda resp=npc_response: display_response(resp), width=5)
+        button.pack(side="left", padx=(0, 10))
+
+        question_label = Label(frame, text=question_value)
+        question_label.pack(side="left", fill="x")
+
+    response_frame = Frame(dialogue_window)
+    response_frame.pack(pady=20, fill="x", expand=True)
+
+    response_label = Label(response_frame)
+    response_label.pack(pady=10)
+
+    def display_response(response):
+        print(f"Displaying Response: {response}")  # Printing the response for diagnostics
+        response_label.config(text=response)
+
+    close_button = Button(dialogue_window, text="Close", command=dialogue_window.destroy)
+    close_button.pack(pady=10, side="bottom")
+
+
+""" def open_npc_dialogue_window(npc_data):
+    dialogue_window = Toplevel(root)
+    dialogue_window.grab_set()  # Restrict interaction with the main window
+
+    response_frame = Frame(dialogue_window)
+    response_frame.pack(pady=20, fill="x", expand=True)
+
+    response_label = Label(response_frame)
+    response_label.pack(pady=10)
+
+    def display_response(response):
+        response_label.config(text=response)
+
+    for idx, (question_key, question_value) in enumerate(npc_data["dialogue"].items()):
+        # Get the related NPC response
+        npc_response = npc_data["responses"].get(question_key)
+
+        # Create a frame to hold the button and the question
+        frame = Frame(dialogue_window)
+        frame.pack(pady=5, fill="x")
+
+        # Create a button for the number
+        button = Button(frame, text=f"{idx+1}", 
+                        command=lambda resp=npc_response: display_response(resp), width=5)
+        button.pack(side="left", padx=(0, 10))
+
+        # Create a label for the question
+        question_label = Label(frame, text=question_value)
+        question_label.pack(side="left", fill="x")
+
+    close_button = Button(dialogue_window, text="Close", command=dialogue_window.destroy)
+    close_button.pack(pady=10, side="bottom") """
+
+""" def open_npc_dialogue_window(npc_data):
+    dialogue_window = Toplevel(root)
+    dialogue_window.grab_set()  # Restrict interaction with the main window
+
+    response_frame = Frame(dialogue_window)
+    response_frame.pack(pady=20, fill="x", expand=True)
+
+    response_label = Label(response_frame)
+    response_label.pack(pady=10)
+
+    def display_response(response):
+        response_label.config(text=response)
+
+    for idx, (question_key, question_value) in enumerate(npc_data["dialogue"].items()):
+        # Get the related NPC response
+        npc_response = npc_data["responses"].get(question_key)
+
+        # Create a frame to hold the button and the question
+        frame = Frame(dialogue_window)
+        frame.pack(pady=5, fill="x")
+
+        # Create a button for the number
+        button = Button(frame, text=f"{idx+1}", 
+                        command=lambda resp=npc_response: display_response(resp), width=5)
+        button.pack(side="left", padx=(0, 10))
+
+        # Create a label for the question
+        question_label = Label(frame, text=question_value)
+        question_label.pack(side="left", fill="x")
+
+    close_button = Button(dialogue_window, text="Close", command=dialogue_window.destroy)
+    close_button.pack(pady=10, side="bottom")
+ """
+
+
+""" def npc_dialogue_window(npc_data):
+    # Create new window
+    dialogue_win = Toplevel(root)
+    dialogue_win.title("Talk to NPC")
+    
+    # Restrict interaction with the main window until this window is closed
+    dialogue_win.grab_set()
+    
+    def show_response(response):
+        # Display the NPC's response when a button is pressed
+        response_label.config(text=response)
+    
+    # Create buttons for each dialogue option
+    for question, response in npc_data["dialogue"].items():
+        b = Button(dialogue_win, text=question, command=lambda resp=response: show_response(resp))
+        b.pack(pady=5)
+    
+    # Label to display the NPC's response
+    response_label = Label(dialogue_win, text="", wraplength=300)
+    response_label.pack(pady=20)
+    
+    # Close button
+    close_button = Button(dialogue_win, text="Close", command=dialogue_win.destroy)
+    close_button.pack(pady=10) """
 
 def start_game():
     global state, submarine_instance, player_instance, sfx_volume 
@@ -411,6 +542,17 @@ def handle_npc_interaction(player, npc_name, room_content, game_output_widget):
     npc_data = room_content[0]
     
     if npc_name.lower() == npc_data['nameOfNpc'].lower():
+        open_npc_dialogue_window(npc_data)
+        
+    else:
+        update_output(f"You can't talk to {npc_name}")
+        update_output(f"Did you mean 'talk {npc_data['nameOfNpc']}'?")
+
+
+""" def handle_npc_interaction(player, npc_name, room_content, game_output_widget):
+    npc_data = room_content[0]
+    
+    if npc_name.lower() == npc_data['nameOfNpc'].lower():
         npc_intros = npc_data['intros']
         update_output(random.choice(npc_intros)) #, game_output_widget
 
@@ -434,7 +576,7 @@ def handle_npc_interaction(player, npc_name, room_content, game_output_widget):
         update_output(npc_data["responses"].get('4')) #, game_output_widget
     else:
         update_output(f"You can't talk to {npc_name}\n") #, game_output_widget
-        update_output(f"Did you mean 'talk {npc_data['nameOfNpc']}'?\n") #, game_output_widget
+        update_output(f"Did you mean 'talk {npc_data['nameOfNpc']}'?\n") #, game_output_widget """
 
 """ OLD def handle_npc_interaction(player, npc_name, room_content):
     if npc_name.lower() == room_content[0]['nameOfNpc'].lower():
