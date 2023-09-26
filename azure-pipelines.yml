@@ -9,7 +9,7 @@ resources:
 - repo: self
 
 variables:
-  imageName: 'your_image_name:$(Build.BuildId)'
+  imageName: '600Feet:$(Build.BuildId)'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
 
 stages:
