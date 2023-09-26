@@ -273,61 +273,6 @@ def open_npc_dialogue_window(npc_data):
     close_button['font'] = custom_font
     close_button.pack(pady=10, side="bottom")
 
-
-""" def open_npc_dialogue_window(npc_data):
-    dialogue_window = Toplevel(root)
-    dialogue_window.grab_set()  # Restrict interaction with the main window
-    dialogue_window.title("Talking to Crewmate")
-    dialogue_window.configure(bg='black')
-    custom_font = ("Courier New", 20)
-    dialogue_frame = Frame(dialogue_window)
-    dialogue_frame.pack(pady=20, padx=20, fill="x", expand=True)
-
-    # Border attributes
-    border_attrs = {
-        'bd': 5, 
-        'relief': 'solid', 
-        'highlightbackground': '#006400', 
-        'highlightcolor': '#006400', 
-        'highlightthickness': 2
-    }
-
-    for idx, (question_key, question_value) in enumerate(npc_data["dialogue"].items()):
-        # Get the related NPC response
-        npc_response = npc_data["responses"].get(question_key)
-        
-        # Print out the data for diagnostic purposes
-        print(f"Question Key: {question_key}, NPC Response: {npc_response}")
-
-        frame = Frame(dialogue_frame)
-        frame = Frame(dialogue_window, bg='black', **border_attrs)
-        frame.pack(pady=5, fill="x")
-
-        button = Button(frame, text=f"{idx+1}", 
-                        command=lambda resp=npc_response: display_response(resp), width=5)
-        button['font'] = custom_font
-        button.pack(side="left", padx=(0, 10))
-
-        question_label = Label(frame, text=question_value)
-        question_label['font'] = custom_font
-        question_label.pack(side="left", fill="x")
-
-    response_frame = Frame(dialogue_window)
-    response_frame = Frame(dialogue_window, bg='black', **border_attrs)
-    response_frame.pack(pady=20, fill="x", expand=True)
-
-    response_label = Label(response_frame)
-    response_label['font'] = custom_font
-    response_label.pack(pady=10)
-
-    def display_response(response):
-        print(f"Displaying Response: {response}")  # Printing the response for diagnostics
-        response_label.config(text=response)
-
-    close_button = Button(dialogue_window, text="Close", command=dialogue_window.destroy)
-    close_button['font'] = custom_font
-    close_button.pack(pady=10, side="bottom") """
-
 def start_game():
     global state, submarine_instance, player_instance, sfx_volume 
     state = "game_setup" # adding state for debugging
@@ -532,61 +477,6 @@ def handle_npc_interaction(player, npc_name, room_content, game_output_widget):
         update_output(f"You can't talk to {npc_name}")
         update_output(f"Did you mean 'talk {npc_data['nameOfNpc']}'?")
 
-
-""" def handle_npc_interaction(player, npc_name, room_content, game_output_widget):
-    npc_data = room_content[0]
-    
-    if npc_name.lower() == npc_data['nameOfNpc'].lower():
-        npc_intros = npc_data['intros']
-        update_output(random.choice(npc_intros)) #, game_output_widget
-
-        for question in npc_data["dialogue"]:
-            update_output(npc_data["dialogue"].get(question)) #, game_output_widget
-
-        dialogue_choice = input("\nHow do you want to respond?\n>")
-        os.system("cls" if os.name == 'nt' else 'clear')
-
-        while dialogue_choice != '4':
-            if npc_data["responses"].get(dialogue_choice) == None:
-                update_output("You must input a value between 1 and 4.\n") #, game_output_widget
-            else:
-                update_output(npc_data["responses"].get(dialogue_choice)) #, game_output_widget
-
-            for question in npc_data["dialogue"]:
-                update_output(npc_data["dialogue"].get(question)) #, game_output_widget
-
-            dialogue_choice = input("\nHow do you want to respond?\n> ")
-
-        update_output(npc_data["responses"].get('4')) #, game_output_widget
-    else:
-        update_output(f"You can't talk to {npc_name}\n") #, game_output_widget
-        update_output(f"Did you mean 'talk {npc_data['nameOfNpc']}'?\n") #, game_output_widget """
-
-""" OLD def handle_npc_interaction(player, npc_name, room_content):
-    if npc_name.lower() == room_content[0]['nameOfNpc'].lower():
-        npc_intros = room_content[0]['intros']
-        print(random.choice(npc_intros))
-        if pair[1].lower() == room_content[0]['nameOfNpc'].lower():
-            npc_intros = room_content[0]['intros']
-            update_output(random.choice(npc_intros))
-            for question in room_content[0]["dialogue"]:
-                update_output(room_content[0]["dialogue"].get(question))
-            dialogue_choice = input("\nHow do you want to respond?\n> ")
-            os.system("cls" if os.name == 'nt' else 'clear')
-            while dialogue_choice != '4':
-                if room_content[0]["responses"].get(dialogue_choice) == None:
-                    update_output("You must input a value between 1 and 4.\n")
-                else:
-                    update_output(room_content[0]["responses"].get(dialogue_choice))
-                for question in room_content[0]["dialogue"]:
-                    update_output(room_content[0]["dialogue"].get(question))
-                dialogue_choice = input("\nHow do you want to respond?\n> ")
-                #os.system("cls" if os.name == 'nt' else 'clear') # not needed?
-            update_output(room_content[0]["responses"].get('4'))
-        else:
-            update_output(f"You can't talk to {pair[1]}\n")
-            update_output(f"Did you mean 'talk {room_content[0]['nameOfNpc']}'?\n") """
-
 def handle_quit():
     #Add delay?
     update_output("Goodbye...\n")
@@ -622,25 +512,6 @@ def handle_sound_control(command, sfx_volume, game_output_widget):
             update_output("Sound effects volume changed.")
     else:
         update_output("That isn't possible.")
-
-""" OLD: def handle_sound_control(command, sfx_volume):
-    from functions import check_wanted_vol
-    global pair
-    if command.startswith("mu"):
-        test_vol = check_wanted_vol(pair[1])
-        if type(test_vol) == type(1) and test_vol in range(0,101):
-            set = test_vol/100
-            pygame.mixer.music.set_volume(0.3 *set)
-        else:
-            update_output("that isnt possible")
-
-    elif command.startswith("fx"):   # <-- Fixed line
-        test_vol = check_wanted_vol(pair[1])
-        if type(test_vol) == type(1) and test_vol in range(0,101):
-            sfx_volume = test_vol/100
-        update_output("sound effects volume changed") """
-
-# def handle_sound_control() in common.py 
 
 #####################
 ### START PROGRAM ###
