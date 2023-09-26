@@ -227,7 +227,10 @@ def initialize_game():
 
     # Initialize game audio
     pygame.mixer.init()
-    pygame.mixer.music.load('music.mp3')
+    # updated below for unit tests
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    music_path = os.path.join(current_directory, 'music.mp3')
+    pygame.mixer.music.load(music_path)
     pygame.mixer.music.set_volume(0.3)
     pygame.mixer.music.play(-1)
     sfx_volume = 1
@@ -398,7 +401,10 @@ def handle_move(player, target_room, submarine, sfx_volume, game_output_widget):
         return
     
     player.move(target_room)
-    play_sound("walk.mp3", sfx_volume) 
+    # updated below for unit tests
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    walk_sound_path = os.path.join(current_directory, 'walk.mp3')
+    play_sound(walk_sound_path, sfx_volume)
 
     if player.sanity == 0:
         reset_saved_data() # why did OG team implement?
@@ -521,12 +527,12 @@ def handle_sound_control(command, sfx_volume, game_output_widget):
 #####################
 ### START PROGRAM ###
 #####################
-
-root = tk.Tk()
-initialize_tkinter()
-splash()
-# referenced by def handle_input()
-state = "splash"
-# Return to continue
-root.bind('<Return>', splash_clear)
-root.mainloop()
+if __name__ == '__main__':
+    root = tk.Tk()
+    initialize_tkinter()
+    splash()
+    # referenced by def handle_input()
+    state = "splash"
+    # Return to continue
+    root.bind('<Return>', splash_clear)
+    root.mainloop()

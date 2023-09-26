@@ -9,7 +9,11 @@ import pygame.mixer
 import tkinter as tk
 from common import clear_screen, press_enter_to_return, update_main_window
 
-f = open('./data/gamedata.json')
+# changed to absolute path for unit testing
+current_directory = os.path.dirname(os.path.abspath(__file__))
+gamedata_path = os.path.join(current_directory, 'data', 'gamedata.json')
+f = open(gamedata_path)
+
 gen = json.load(f)
 
 gamedata = gen#json.load(f)
