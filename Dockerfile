@@ -7,9 +7,11 @@ WORKDIR /app
 # Download Package Information for system-level packages
 RUN apt-get update -y
 
-RUN pip install --upgrade pip -y \
-    && apt-get update \
-    && apt-get install -y git x11vnc
+# upgrade pip as necesssary
+RUN pip install --upgrade pip -y
+
+#Install the x11vnc package
+RUN apt-get install -y git x11vnc
 
 # Install the Tkinter package
 RUN apt-get install tk -y
