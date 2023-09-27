@@ -11,6 +11,7 @@ resources:
 variables:
   imageName: '600feet'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  registryName: 'demodrw0.azurecr.io'
 
 stages:
 - stage: BuildAndPackage
@@ -32,8 +33,8 @@ stages:
           # Docker
     - task: Docker@2
       inputs:
-        containerRegistry: 'TLGDockerServiceConnection'
-        repository: 'demodrw0'
+        containerRegistry: 'demodrw0'
+        repository: '$(imageName)'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
 #    - script: |
