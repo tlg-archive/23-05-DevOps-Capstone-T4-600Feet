@@ -33,7 +33,7 @@ stages:
           # Docker
     - task: Docker@2
       inputs:
-        containerRegistry: 'demodrw0'
+        containerRegistry: 'TLGDockerServiceConnection'
         repository: '$(imageName)'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
